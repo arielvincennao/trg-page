@@ -39,8 +39,9 @@ const Scene = () => {
       setWindowWidth(window.innerWidth);
       const section = document.querySelector('.scene-section');
       if (section) {
-        setSectionHeight(section.clientHeight);
-        setSectionTop(section.offsetTop);
+        const htmlSection = section as HTMLElement;
+        setSectionHeight(htmlSection.clientHeight);
+        setSectionTop(htmlSection.offsetTop);
       }
     };
 
@@ -81,12 +82,6 @@ const Scene = () => {
   const templeAnimationEnd = sectionTop + sectionHeight - windowHeight;
   const templeProgress = (scrollY - templeAnimationStart) / (templeAnimationEnd - templeAnimationStart);
   const templeOpacity = animationsEnabled ? Math.min(1, Math.max(0, templeProgress)) : 1;
-
-  // Configuración de la animación de la sombra
-  const shadowAnimationStart = sectionTop + sectionHeight - windowHeight - 100;
-  const shadowAnimationEnd = sectionTop + sectionHeight - windowHeight;
-  const shadowProgress = (scrollY - shadowAnimationStart) / (shadowAnimationEnd - shadowAnimationStart);
-  const shadowOpacity = animationsEnabled ? Math.min(1, Math.max(0, shadowProgress)) : 1;
 
   return (
     <div className="scene-section min-h-screen relative flex items-center justify-center bg-black">
