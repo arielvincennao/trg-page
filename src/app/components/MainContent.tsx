@@ -6,9 +6,14 @@ import React, { useState, useEffect } from "react";
 const MainContent = () => {
   const [scrollY, setScrollY] = useState(0);
   const text = "We advance security and education in the crypto ecosystem with research, tools and resources for the public benefit.";
+  const lines = [
+    "We advance security and education in the",
+    "crypto ecosystem with research, tools and",
+    "resources for the public benefit."
+  ];
 
   const animationStart = 0; // ScrollY first letter
-  const animationEnd = 250;   // ScrollY last letter
+  const animationEnd = 300;   // ScrollY last letter
   const scrollOffsetPerLetter = (animationEnd - animationStart) / text.length;
 
   useEffect(() => {
@@ -32,21 +37,31 @@ const MainContent = () => {
         height={169}
         priority
       />
-      <h1 className="text-xl lg:text-4xl text-center mt-4 w-11/12 md:w-[45%]">
-        {text.split('').map((char, index) => {
-          const letterThreshold = animationStart + (index * scrollOffsetPerLetter);
-          const isActive = scrollY > letterThreshold;
+      <h1 className="text-base sm:text-xl lg:text-4xl text-center mt-4 w-11/12 md:w-[45%]">
+        <div className="flex flex-col items-center gap-2">
+          {lines.map((line, lineIndex) => {
+            const startIndex = text.indexOf(line);
+            return (
+              <div key={lineIndex} className="flex">
+                {line.split('').map((char, charIndex) => {
+                  const index = startIndex + charIndex;
+                  const letterThreshold = animationStart + (index * scrollOffsetPerLetter);
+                  const isActive = scrollY > letterThreshold;
 
-          const charClassName = isActive
-            ? "text-[color:var(--color-primary)] opacity-100 font-[family-name:var(--font-pixelify-sans)]"
-            : "text-white opacity-40 font-[family-name:var(--font-poppins)]";
+                  const charClassName = isActive
+                    ? "text-[color:var(--color-primary)] opacity-100 font-[family-name:var(--font-pixelify-sans)]"
+                    : "text-white opacity-40 font-[family-name:var(--font-poppins)]";
 
-          return (
-            <span key={index} className={charClassName}>
-              {char}
-            </span>
-          );
-        })}
+                  return (
+                    <span key={charIndex} className={charClassName}>
+                      {char === ' ' ? '\u00A0' : char}
+                    </span>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
       </h1>
     </div>
   );

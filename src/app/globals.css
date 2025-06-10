@@ -1,9 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #000000;
   --foreground: #171717;
   --color-primary: #F7392F;
+  --foreground-rgb: 0, 0, 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000000;
+    --foreground: #ededed;
+    --foreground-rgb: 255, 255, 255;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
 }
 
 @theme inline {
@@ -11,18 +25,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
 }
 
 @keyframes bounce-arrow {
@@ -74,4 +76,17 @@ body {
 
 .animate-mouse-circle {
   animation: mouse-circle 2s ease-in-out infinite;
+}
+
+/* Estilos específicos para móvil */
+@media screen and (max-width: 640px) {
+  .scene-section .sun {
+    width: 65vw !important;
+    top: 65% !important;
+  }
+  
+  .scene-section .temple {
+    width: 90vw !important;
+    top: 72% !important;
+  }
 }
