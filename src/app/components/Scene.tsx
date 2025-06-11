@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
 const Scene = () => {
-  const [scrollY, setScrollY] = useState(0);
+  // const [scrollY, setScrollY] = useState(0);
   const [sectionHeight, setSectionHeight] = useState(0);
   const [sectionTop, setSectionTop] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
@@ -16,7 +16,7 @@ const Scene = () => {
   const [isTreeHovered, setIsTreeHovered] = useState(false);
   const [isTopRightLightsHovered, setIsTopRightLightsHovered] = useState(false);
   const [isLettersHovered, setIsLettersHovered] = useState(false);
-  const [isMidLeftLightsHovered, setIsMidLeftLightsHovered] = useState(false);
+  // const [isMidLeftLightsHovered, setIsMidLeftLightsHovered] = useState(false);
   const [flowerOpacity, setFlowerOpacity] = useState(0);
   const [treeOpacity, setTreeOpacity] = useState(0);
   const [flowerPosition, setFlowerPosition] = useState(100);
@@ -28,9 +28,9 @@ const Scene = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      // const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       
-      setScrollY(currentScrollY);
+      // setScrollY(currentScrollY);
       
       // Configuración de la animación del sol
       const sunAnimationStart = 300;
