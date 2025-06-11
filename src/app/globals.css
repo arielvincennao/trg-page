@@ -82,11 +82,11 @@ body {
 @media screen and (max-width: 640px) {
   .scene-section .sun {
     width: 65vw !important;
-    top: 65% !important;
+    top: 55% !important;
   }
   
   .scene-section .temple {
     width: 90vw !important;
-    top: 72% !important;
+    top: 62% !important;
   }
 }
