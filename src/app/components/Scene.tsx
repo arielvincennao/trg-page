@@ -33,7 +33,6 @@ const Scene = () => {
   const [sunOpacity, setSunOpacity] = useState(1);
   const [sunPosition, setSunPosition] = useState(0);
   const [templeOpacity, setTempleOpacity] = useState(0);
-  const [templePosition, setTemplePosition] = useState(0);
   const [activeCard, setActiveCard] = useState<CardContent | null>(null);
 
   useEffect(() => {
