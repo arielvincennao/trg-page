@@ -15,9 +15,16 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+  overflow-y: auto;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
+  overflow-y: auto;
+  height: 100%;
 }
 
 @theme inline {

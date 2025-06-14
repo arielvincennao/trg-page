@@ -40,6 +40,6 @@ export const cardContent: CardContentMap = {
   },
   flower: {
     title: "Tooling",
-    description: "Construimos repositorios de código abierto para promover entornos de desarrollo más seguros."
+    description: "We build open-source repositories to promote safer development environments."
   }
 }; 

@@ -7,11 +7,11 @@ import Indicators from "./Indicators";
 
 const PageContent = () => {
   return (
-    <div className="bg-black">
+    <main className="bg-black">
       <MainContent />
       <Scene />
       <Indicators />
-    </div>
+    </main>
   );
 };
 
