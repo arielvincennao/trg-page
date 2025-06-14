@@ -6,8 +6,6 @@ import TempleOff from "./assets/TempleOff";
 import Temple from "./assets/Temple";
 import SunOff from "./assets/SunOff";
 import Sun from "./assets/Sun";
-import LightOff from "./assets/LightOff";
-import LightOn from "./assets/LightOn";
 import Card from './Card';
 import { cardContent, CardContent } from '../data/cardContent';
 
@@ -66,7 +64,7 @@ const Scene = () => {
         >
           {/* Sun */}
           <div 
-            className="sun absolute top-[25%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[28vw]"
+            className="sun absolute top-[30%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[28vw]"
             style={{ 
               border: '1px solid red',
               zIndex: -1
@@ -113,7 +111,7 @@ const Scene = () => {
               isHovered={isTempleHovered}
               onMouseEnter={() => setIsTempleHovered(true)}
               onMouseLeave={() => setIsTempleHovered(false)}
-              className="object-contain cursor-pointer w-full h-auto"
+              className="object-contain cursor-pointer"
               style={{ 
                 pointerEvents: 'visiblePainted'
               }}
@@ -123,51 +121,44 @@ const Scene = () => {
 
           {/* Card */}
           {activeCard && (
-            <Card
-              title={activeCard.title}
-              description={activeCard.description}
-              onClose={handleCloseCard}
-              onExplore={handleExplore}
-            />
+            <div 
+              className="card absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-lg shadow-lg p-6"
+              style={{
+                zIndex: 9999
+              }}
+            >
+              <Card
+                title={activeCard.title}
+                description={activeCard.description}
+                onClose={handleCloseCard}
+                onExplore={handleExplore}
+              />
+            </div>
           )}
 
           {/* Left Lamp Temple */}
           <div 
-            className="absolute left-[1.2%] top-[52%] transform -translate-y-1/2 w-[12%]"
+            className="absolute left-[-13%] top-[52%] transform -translate-y-1/2 w-[40%] h-[40%]"
             style={{ 
               border: '1px solid red',
               zIndex: 10
             }}
-          >
-            {isLeftLightHovered ? (
-              <LightOn
-                isHovered={isLeftLightHovered}
-                onMouseEnter={() => setIsLeftLightHovered(true)}
-                onMouseLeave={() => setIsLeftLightHovered(false)}
-                className="object-contain cursor-pointer w-full h-auto"
-                style={{ 
-                  pointerEvents: 'auto'
-                }}
-                onClick={() => setActiveCard(cardContent.leftLight)}
-              />
-            ) : (
-              <LightOff
-                isHovered={isLeftLightHovered}
-                onMouseEnter={() => setIsLeftLightHovered(true)}
-                onMouseLeave={() => setIsLeftLightHovered(false)}
-                className="object-contain cursor-pointer w-full h-auto"
-                style={{ 
-                  pointerEvents: 'auto'
-                }}
-                onClick={() => setActiveCard(cardContent.leftLight)}
-              />
-            )}
+          ><Image
+          src={isLeftLightHovered ? "/assets/light-on.svg" : "/assets/light-off.svg"}
+          alt="Light"
+          fill
+          priority
+          className="object-contain cursor-pointer scale-90"
+          onMouseEnter={() => setIsLeftLightHovered(true)}
+          onMouseLeave={() => setIsLeftLightHovered(false)}
+          onClick={() => setActiveCard(cardContent.leftLight)}
+        />
           </div>
         </div>
 
         {/* Bottom Left Flower */}
         <div 
-          className="flower absolute bottom-[-20%] left-[-28%] transition-all duration-300 w-[70%] h-[70%]"
+          className="flower absolute bottom-[-5%] left-[0%] transition-all duration-300 w-[20%] h-[40%]"
           style={{
             border: '1px solid red',
             zIndex: 0
@@ -178,16 +169,16 @@ const Scene = () => {
             alt="Flower"
             fill
             priority
-            className="object-contain cursor-pointer"
+            className="object-contain cursor-pointer scale-140"
             onMouseEnter={() => setIsFlowerHovered(true)}
             onMouseLeave={() => setIsFlowerHovered(false)}
             onClick={() => setActiveCard(cardContent.flower)}
           />
         </div>
 
-        {/* Right Tree*/}
+        {/* Right Bottom Tree*/}
         <div 
-          className="tree absolute bottom-[-30%] right-[0%] transition-all duration-300 w-[50%] h-[90%]"
+          className="tree absolute bottom-[0%] right-[12%] transition-all duration-300 w-[10%] h-[20%]"
           style={{
             border: '1px solid red'
           }}
@@ -197,7 +188,7 @@ const Scene = () => {
             alt="Tree"
             fill
             priority
-            className="object-contain cursor-pointer w-full h-auto"
+            className="object-contain cursor-pointer scale-500"
             onMouseEnter={() => setIsTreeHovered(true)}
             onMouseLeave={() => setIsTreeHovered(false)}
             onClick={() => setActiveCard(cardContent.tree)}
@@ -214,7 +205,7 @@ const Scene = () => {
             alt="Lights"
             fill
             priority
-            className="object-contain cursor-pointer w-full h-auto"
+            className="object-contain cursor-pointer w-full h-auto scale-140"
             onMouseEnter={() => setIsTopRightLightsHovered(true)}
             onMouseLeave={() => setIsTopRightLightsHovered(false)}
             onClick={() => setActiveCard(cardContent.topRightLights)}
@@ -223,7 +214,7 @@ const Scene = () => {
 
         {/* Left Top Letters */}
         <div 
-          className="absolute top-[8%] left-[2%] w-[10%] h-[14%]"
+          className="absolute top-[8%] left-[5%] w-[15%] h-[14%]"
           style={{ border: '1px solid red' }}
         >
           <Image
@@ -231,7 +222,7 @@ const Scene = () => {
             alt="Letters"
             fill
             priority
-            className="object-contain cursor-pointer w-full h-auto"
+            className="object-contain cursor-pointer w-full h-auto scale-105"
             onMouseEnter={() => setIsLettersHovered(true)}
             onMouseLeave={() => setIsLettersHovered(false)}
             onClick={() => setActiveCard(cardContent.letters)}
