@@ -308,22 +308,23 @@ export default function Scene() {
 
           {/* Left Lamp Temple */}
           <div 
-            className={`absolute left-[-13%] top-[52%] transform -translate-y-1/2 w-[40%] h-[40%] pendulum ${getAnimationClass(3)}`}
+            className={`absolute left-[-13%] top-[55%] transform -translate-y-1/2 w-[40%] h-[40%] ${getAnimationClass(3)}`}
             style={{ 
               zIndex: 10
             }}
           >
-            
-            <Image
-              src={isLeftLightHovered || activeElement === 'leftLight' ? "/assets/light-on.svg" : "/assets/light-off.svg"}
-              alt="Light"
-              fill
-              priority
-              className={`object-contain cursor-pointer scale-90 ${activeElement && activeElement !== 'leftLight' ? 'opacity-15 pointer-events-none' : ''}`}
-              onMouseEnter={() => !activeElement && setIsLeftLightHovered(true)}
-              onMouseLeave={() => setIsLeftLightHovered(false)}
-              onClick={() => handleElementClick('leftLight', cardContent.leftLight)}
-            />
+            <div className="pendulum w-full h-full">
+              <Image
+                src={isLeftLightHovered || activeElement === 'leftLight' ? "/assets/light-on.svg" : "/assets/light-off.svg"}
+                alt="Light"
+                fill
+                priority
+                className={`object-contain cursor-pointer scale-90 ${activeElement && activeElement !== 'leftLight' ? 'opacity-15 pointer-events-none' : ''}`}
+                onMouseEnter={() => !activeElement && setIsLeftLightHovered(true)}
+                onMouseLeave={() => setIsLeftLightHovered(false)}
+                onClick={() => handleElementClick('leftLight', cardContent.leftLight)}
+              />
+            </div>
           </div>
         </div>
 

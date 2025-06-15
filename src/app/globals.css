@@ -98,7 +98,7 @@ body {
 }
 
 .pendulum {
-  animation: pendulum 4s ease-in-out infinite;
+  animation: pendulum 2s ease-in-out infinite;
   transform-origin: top center;
 }
 
