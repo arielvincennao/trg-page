@@ -22,6 +22,14 @@ export default function Scene() {
   const [isVisible, setIsVisible] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
   const lastScrollY = useRef(0);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const startTimeRef = useRef(Date.now());
+
+  useEffect(() => {
+    if (isVisible) {
+      startTimeRef.current = Date.now();
+    }
+  }, [isVisible]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,6 +71,132 @@ export default function Scene() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isVisible]);
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationFrameId: number;
+    const dpr = window.devicePixelRatio || 1;
+    const sceneElement = document.getElementById('scene-section');
+    if (!sceneElement) return;
+    
+    const updateCanvasSize = () => {
+      const rect = sceneElement.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+      return { width: rect.width, height: rect.height };
+    };
+
+    let { width, height } = updateCanvasSize();
+
+    const PARTICLE_COUNT = 100;
+    const INITIAL_DELAY = 2000; // 2 segundos de delay inicial
+    const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: 1 + Math.random() * 2,
+      speed: 0.2 + Math.random() * 0.5,
+      dx: (Math.random() - 0.5) * 0.8,
+      dy: (Math.random() - 0.5) * 0.8,
+      opacity: 0,
+      targetOpacity: 0.1 + Math.random() * 0.3,
+      delay: INITIAL_DELAY
+    }));
+
+    function draw() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, width, height);
+      const currentTime = Date.now() - startTimeRef.current;
+
+      for (const p of particles) {
+        if (currentTime < p.delay) continue;
+        
+        const fadeInDuration = 1000;
+        const timeSinceDelay = currentTime - p.delay;
+        const fadeProgress = Math.min(timeSinceDelay / fadeInDuration, 1);
+        
+        p.opacity = p.targetOpacity * fadeProgress;
+        
+        ctx.globalAlpha = p.opacity;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = '#fff';
+        ctx.shadowColor = '#fff';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function update() {
+      const currentTime = Date.now() - startTimeRef.current;
+      for (const p of particles) {
+        if (currentTime < p.delay) continue;
+        
+        p.x += p.dx;
+        p.y += p.dy;
+
+        // Rebote en los bordes
+        if (p.x < 0) {
+          p.x = 0;
+          p.dx = Math.abs(p.dx);
+        }
+        if (p.x > width) {
+          p.x = width;
+          p.dx = -Math.abs(p.dx);
+        }
+        if (p.y < 0) {
+          p.y = 0;
+          p.dy = Math.abs(p.dy);
+        }
+        if (p.y > height) {
+          p.y = height;
+          p.dy = -Math.abs(p.dy);
+        }
+
+        // Variación aleatoria en la dirección
+        p.dx += (Math.random() - 0.5) * 0.1;
+        p.dy += (Math.random() - 0.5) * 0.1;
+
+        // Limitar la velocidad máxima
+        const maxSpeed = 1;
+        const currentSpeed = Math.sqrt(p.dx * p.dx + p.dy * p.dy);
+        if (currentSpeed > maxSpeed) {
+          p.dx = (p.dx / currentSpeed) * maxSpeed;
+          p.dy = (p.dy / currentSpeed) * maxSpeed;
+        }
+      }
+    }
+
+    function animate() {
+      update();
+      draw();
+      animationFrameId = requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    function handleResize() {
+      const newSize = updateCanvasSize();
+      width = newSize.width;
+      height = newSize.height;
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isVisible]);
+
   const handleCloseCard = () => {
     setActiveCard(null);
     setActiveElement(null);
@@ -91,12 +225,31 @@ export default function Scene() {
   };
 
   return (
-    <div id="scene-section" className="bg-black h-screen glitch-lines">
-      <div className="h-screen relative overflow-hidden">
+    <div id="scene-section" className="bg-black h-screen glitch-lines relative">
+      {/* Canvas de partículas */}
+      <canvas
+        ref={canvasRef}
+        className="absolute top-0 left-0 w-full h-full pointer-events-none z-[9999]"
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 9999 }}
+        aria-hidden="true"
+      />
+      <div className="h-screen relative overflow-hidden temple-glitch-lines">
         {/* Temple */}
         <div
           className={`temple absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[48vw] ${getAnimationClass(1)}`}
+          style={{ zIndex: 2 }}
         >
+          {/* Temple Shadow */}
+          <div 
+            className="absolute top-[100%] left-[50%] -translate-y-1/2 w-[40vw] h-[5vw] rounded-[50%]"
+            style={{
+              background: 'radial-gradient(ellipse at center, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0.1) 50%, rgba(255,0,0,0) 70%)',
+              filter: 'blur(40px)',
+              zIndex: 0,
+              transform: 'translate(-50%, -50%) scale(1.5)',
+              boxShadow: '0 0 50px rgba(255,0,0,0.2)'
+            }}
+          />
           {/* Sun */}
           <div 
             className={`sun absolute top-[30%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[28vw] ${getAnimationClass(2)}`}
@@ -160,6 +313,7 @@ export default function Scene() {
               zIndex: 10
             }}
           >
+            
             <Image
               src={isLeftLightHovered || activeElement === 'leftLight' ? "/assets/light-on.svg" : "/assets/light-off.svg"}
               alt="Light"
@@ -208,7 +362,7 @@ export default function Scene() {
 
         {/* Right Bottom Tree*/}
         <div 
-          className={`${getElementClasses('tree', "tree absolute bottom-[0%] right-[12%] transition-all duration-300 w-[20%] h-[30%]")} ${getAnimationClass(5)}`}
+          className={`${getElementClasses('tree', "tree absolute bottom-[0%] right-[6%] transition-all duration-300 w-[20%] h-[30%]")} ${getAnimationClass(5)}`}
         >
           <Image
             src={isTreeHovered || activeElement === 'tree' ? "/assets/tree.svg" : "/assets/tree-off.svg"}
