@@ -52,7 +52,7 @@ const Scene = () => {
   };
 
   return (
-    <div id="scene-section" className="bg-black">
+    <div id="scene-section" className="bg-black h-screen">
       <div className="h-screen relative overflow-hidden">
         {/* Temple */}
         <div
@@ -119,23 +119,6 @@ const Scene = () => {
             />
           )}
 
-          {/* Card */}
-          {activeCard && (
-            <div 
-              className="card absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-lg shadow-lg p-6"
-              style={{
-                zIndex: 9999
-              }}
-            >
-              <Card
-                title={activeCard.title}
-                description={activeCard.description}
-                onClose={handleCloseCard}
-                onExplore={handleExplore}
-              />
-            </div>
-          )}
-
           {/* Left Lamp Temple */}
           <div 
             className="absolute left-[-13%] top-[52%] transform -translate-y-1/2 w-[40%] h-[40%]"
@@ -143,18 +126,33 @@ const Scene = () => {
               border: '1px solid red',
               zIndex: 10
             }}
-          ><Image
-          src={isLeftLightHovered ? "/assets/light-on.svg" : "/assets/light-off.svg"}
-          alt="Light"
-          fill
-          priority
-          className="object-contain cursor-pointer scale-90"
-          onMouseEnter={() => setIsLeftLightHovered(true)}
-          onMouseLeave={() => setIsLeftLightHovered(false)}
-          onClick={() => setActiveCard(cardContent.leftLight)}
-        />
+          >
+            <Image
+              src={isLeftLightHovered ? "/assets/light-on.svg" : "/assets/light-off.svg"}
+              alt="Light"
+              fill
+              priority
+              className="object-contain cursor-pointer scale-90"
+              onMouseEnter={() => setIsLeftLightHovered(true)}
+              onMouseLeave={() => setIsLeftLightHovered(false)}
+              onClick={() => setActiveCard(cardContent.leftLight)}
+            />
           </div>
         </div>
+
+        {/* Card */}
+        {activeCard && (
+          <div 
+            className="fixed top-[70%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[75%] sm:w-[50%] md:w-[40%] lg:w-[35%] max-w-[500px] h-auto max-h-[90vh] rounded-lg shadow-lg p-4 sm:p-6 md:p-8 z-50 bg-black/90"
+          >
+            <Card
+              title={activeCard.title}
+              description={activeCard.description}
+              onClose={handleCloseCard}
+              onExplore={handleExplore}
+            />
+          </div>
+        )}
 
         {/* Bottom Left Flower */}
         <div 
@@ -178,7 +176,7 @@ const Scene = () => {
 
         {/* Right Bottom Tree*/}
         <div 
-          className="tree absolute bottom-[0%] right-[12%] transition-all duration-300 w-[10%] h-[20%]"
+          className="tree absolute bottom-[0%] right-[12%] transition-all duration-300 w-[20%] h-[30%]"
           style={{
             border: '1px solid red'
           }}
@@ -188,7 +186,7 @@ const Scene = () => {
             alt="Tree"
             fill
             priority
-            className="object-contain cursor-pointer scale-500"
+            className="object-contain cursor-pointer scale-300"
             onMouseEnter={() => setIsTreeHovered(true)}
             onMouseLeave={() => setIsTreeHovered(false)}
             onClick={() => setActiveCard(cardContent.tree)}
@@ -229,7 +227,6 @@ const Scene = () => {
           />
         </div>
       </div>
-      <div className="h-[500vh] bg-black"></div>
     </div>
   );
 };

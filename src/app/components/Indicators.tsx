@@ -10,7 +10,18 @@ const Indicators = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      const currentScrollY = window.scrollY;
+      setScrollY(currentScrollY);
+      
+      // Obtener la posición del elemento scene
+      const sceneElement = document.getElementById('scene-section');
+      const scenePosition = sceneElement?.offsetTop || 0;
+      
+      // Calcular si estamos en la sección de la escena
+      const isInScene = currentScrollY >= scenePosition;
+      
+      // Actualizar el estado basado en la posición
+      setIsInSceneSection(isInScene);
     };
 
     const handleResize = () => {
@@ -30,12 +41,12 @@ const Indicators = () => {
     };
   }, []);
 
-  const isNearEnd = scrollY + windowHeight >= pageHeight - 100; // 100px from the bottom
+  const [isInSceneSection, setIsInSceneSection] = useState(false);
 
   return (
-    <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-row items-center gap-2 text-white text-sm`}>
+    <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-row items-center gap-2 text-white text-sm z-50`}>
       {/* Scroll to view content */}
-      <div className={`flex flex-row items-center gap-2 transition-opacity duration-300 ${isNearEnd ? 'opacity-0' : 'opacity-100'}`}>
+      <div className={`flex flex-row items-center gap-2 transition-opacity duration-300 ${isInSceneSection ? 'opacity-0' : 'opacity-100'}`}>
         <Image
           src="/assets/arrow-down.svg"
           alt="Arrow down"
@@ -49,7 +60,7 @@ const Indicators = () => {
       </div>
 
       {/* Hover to explore content */}
-      <div className={`absolute flex flex-row items-center gap-2 transition-opacity duration-300 ${isNearEnd ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`absolute flex flex-row items-center gap-2 transition-opacity duration-300 ${isInSceneSection ? 'opacity-100' : 'opacity-0'}`}>
         <Image
           src="/assets/mouse.svg"
           alt="Mouse icon"
