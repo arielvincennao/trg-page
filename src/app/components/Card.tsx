@@ -11,7 +11,7 @@ const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore }) =
   return (
     <div className="w-full h-full flex flex-col">
       <button 
-        className="absolute -top-3 -right-3 w-8 h-8 bg-black/80 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors text-xl"
+        className="absolute -top-3 -right-3 w-8 h-8 bg-black/80 rounded-full border border-red-500 flex items-center justify-center text-white hover:bg-white/20 transition-colors text-xl"
         onClick={onClose}
       >
         ×

@@ -9,15 +9,18 @@ import Sun from "./assets/Sun";
 import Card from './Card';
 import { cardContent, CardContent } from '../data/cardContent';
 
-const Scene = () => {
-  const [isTempleHovered, setIsTempleHovered] = useState(false);
+export default function Scene() {
   const [isSunHovered, setIsSunHovered] = useState(false);
+  const [isTempleHovered, setIsTempleHovered] = useState(false);
+  const [isLeftLightHovered, setIsLeftLightHovered] = useState(false);
   const [isFlowerHovered, setIsFlowerHovered] = useState(false);
   const [isTreeHovered, setIsTreeHovered] = useState(false);
   const [isTopRightLightsHovered, setIsTopRightLightsHovered] = useState(false);
   const [isLettersHovered, setIsLettersHovered] = useState(false);
-  const [isLeftLightHovered, setIsLeftLightHovered] = useState(false);
+  const [activeElement, setActiveElement] = useState<string | null>(null);
   const [activeCard, setActiveCard] = useState<CardContent | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isLeaving, setIsLeaving] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -36,106 +39,136 @@ const Scene = () => {
         }
       }
       
+      const sceneSection = document.getElementById('scene-section');
+      if (sceneSection) {
+        const rect = sceneSection.getBoundingClientRect();
+        const isInView = rect.top <= window.innerHeight * 0.8;
+        
+        if (isInView && !isVisible) {
+          setIsLeaving(false);
+          setIsVisible(true);
+        } else if (!isInView && isVisible) {
+          setIsLeaving(true);
+          setTimeout(() => {
+            setIsVisible(false);
+          }, 600); // Tiempo suficiente para que todas las animaciones de salida terminen
+        }
+      }
+      
       lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Verificar estado inicial
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isVisible]);
 
   const handleCloseCard = () => {
     setActiveCard(null);
+    setActiveElement(null);
+  };
+
+  const handleElementClick = (elementId: string, cardContent: CardContent) => {
+    if (activeElement) return;
+    setActiveCard(cardContent);
+    setActiveElement(elementId);
   };
 
   const handleExplore = () => {
     console.log('Explorar clickeado:', activeCard?.title);
   };
 
+  const getElementClasses = (elementId: string, baseClasses: string) => {
+    const isDisabled = activeElement && activeElement !== elementId;
+    return `${baseClasses} ${isDisabled ? 'opacity-15 pointer-events-none' : ''}`;
+  };
+
+  const getAnimationClass = (delay: number) => {
+    if (isLeaving) {
+      return `fade-out-down-delay-${delay}`;
+    }
+    return isVisible ? `fade-in-up fade-in-up-delay-${delay}` : 'opacity-0';
+  };
+
   return (
-    <div id="scene-section" className="bg-black h-screen">
+    <div id="scene-section" className="bg-black h-screen glitch-lines">
       <div className="h-screen relative overflow-hidden">
         {/* Temple */}
         <div
-          className="temple absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[48vw]"
-          style={{ 
-            border: '1px solid red',
-            cursor: 'default'
-          }}
+          className={`temple absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[48vw] ${getAnimationClass(1)}`}
         >
           {/* Sun */}
           <div 
-            className="sun absolute top-[30%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[28vw]"
+            className={`sun absolute top-[30%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[28vw] ${getAnimationClass(2)}`}
             style={{ 
-              border: '1px solid red',
               zIndex: -1
             }}
           >
-            {isSunHovered ? (
+            {isSunHovered || activeElement === 'sun' ? (
               <Sun
                 isHovered={isSunHovered}
-                onMouseEnter={() => setIsSunHovered(true)}
+                onMouseEnter={() => !activeElement && setIsSunHovered(true)}
                 onMouseLeave={() => setIsSunHovered(false)}
-                className="object-contain cursor-pointer w-full h-auto"
+                className={`object-contain cursor-pointer w-full h-auto ${activeElement && activeElement !== 'sun' ? 'opacity-15 pointer-events-none' : ''}`}
                 style={{ 
                   pointerEvents: 'visiblePainted'
                 }}
-                onClick={() => setActiveCard(cardContent.sun)}
+                onClick={() => handleElementClick('sun', cardContent.sun)}
               />
             ) : (
               <SunOff
                 isHovered={isSunHovered}
-                onMouseEnter={() => setIsSunHovered(true)}
+                onMouseEnter={() => !activeElement && setIsSunHovered(true)}
                 onMouseLeave={() => setIsSunHovered(false)}
-                className="object-contain cursor-pointer w-full h-auto"
+                className={`object-contain cursor-pointer w-full h-auto ${activeElement && activeElement !== 'sun' ? 'opacity-15 pointer-events-none' : ''}`}
                 style={{ 
                   pointerEvents: 'visiblePainted'
                 }}
-                onClick={() => setActiveCard(cardContent.sun)}
+                onClick={() => handleElementClick('sun', cardContent.sun)}
               />
             )}
           </div>
 
-          {isTempleHovered ? (
+          {isTempleHovered || activeElement === 'temple' ? (
             <Temple
               isHovered={isTempleHovered}
-              onMouseEnter={() => setIsTempleHovered(true)}
+              onMouseEnter={() => !activeElement && setIsTempleHovered(true)}
               onMouseLeave={() => setIsTempleHovered(false)}
-              className="object-contain cursor-pointer w-full h-auto"
+              className={`object-contain cursor-pointer w-full h-auto ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
               style={{ 
                 pointerEvents: 'visiblePainted'
               }}
-              onClick={() => setActiveCard(cardContent.temple)}
+              onClick={() => handleElementClick('temple', cardContent.temple)}
             />
           ) : (
             <TempleOff
               isHovered={isTempleHovered}
-              onMouseEnter={() => setIsTempleHovered(true)}
+              onMouseEnter={() => !activeElement && setIsTempleHovered(true)}
               onMouseLeave={() => setIsTempleHovered(false)}
-              className="object-contain cursor-pointer"
+              className={`object-contain cursor-pointer ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
               style={{ 
                 pointerEvents: 'visiblePainted'
               }}
-              onClick={() => setActiveCard(cardContent.temple)}
+              onClick={() => handleElementClick('temple', cardContent.temple)}
             />
           )}
 
           {/* Left Lamp Temple */}
           <div 
-            className="absolute left-[-13%] top-[52%] transform -translate-y-1/2 w-[40%] h-[40%]"
+            className={`absolute left-[-13%] top-[52%] transform -translate-y-1/2 w-[40%] h-[40%] pendulum ${getAnimationClass(3)}`}
             style={{ 
-              border: '1px solid red',
               zIndex: 10
             }}
           >
             <Image
-              src={isLeftLightHovered ? "/assets/light-on.svg" : "/assets/light-off.svg"}
+              src={isLeftLightHovered || activeElement === 'leftLight' ? "/assets/light-on.svg" : "/assets/light-off.svg"}
               alt="Light"
               fill
               priority
-              className="object-contain cursor-pointer scale-90"
-              onMouseEnter={() => setIsLeftLightHovered(true)}
+              className={`object-contain cursor-pointer scale-90 ${activeElement && activeElement !== 'leftLight' ? 'opacity-15 pointer-events-none' : ''}`}
+              onMouseEnter={() => !activeElement && setIsLeftLightHovered(true)}
               onMouseLeave={() => setIsLeftLightHovered(false)}
-              onClick={() => setActiveCard(cardContent.leftLight)}
+              onClick={() => handleElementClick('leftLight', cardContent.leftLight)}
             />
           </div>
         </div>
@@ -143,7 +176,7 @@ const Scene = () => {
         {/* Card */}
         {activeCard && (
           <div 
-            className="fixed top-[70%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[75%] sm:w-[50%] md:w-[40%] lg:w-[35%] max-w-[500px] h-auto max-h-[90vh] rounded-lg shadow-lg p-4 sm:p-6 md:p-8 z-50 bg-black/90"
+            className={`fixed top-[70%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[75%] sm:w-[50%] md:w-[40%] lg:w-[35%] max-w-[500px] h-auto max-h-[90vh] rounded-lg shadow-lg p-4 sm:p-6 md:p-8 z-50 bg-black/90 border border-red-500 ${getAnimationClass(1)}`}
           >
             <Card
               title={activeCard.title}
@@ -156,79 +189,71 @@ const Scene = () => {
 
         {/* Bottom Left Flower */}
         <div 
-          className="flower absolute bottom-[-5%] left-[0%] transition-all duration-300 w-[20%] h-[40%]"
+          className={`${getElementClasses('flower', "flower absolute bottom-[-5%] left-[0%] transition-all duration-300 w-[20%] h-[40%]")} ${getAnimationClass(4)}`}
           style={{
-            border: '1px solid red',
             zIndex: 0
           }}
         >
           <Image
-            src={isFlowerHovered ? "/assets/flower.svg" : "/assets/flower-off.svg"}
+            src={isFlowerHovered || activeElement === 'flower' ? "/assets/flower.svg" : "/assets/flower-off.svg"}
             alt="Flower"
             fill
             priority
             className="object-contain cursor-pointer scale-140"
-            onMouseEnter={() => setIsFlowerHovered(true)}
+            onMouseEnter={() => !activeElement && setIsFlowerHovered(true)}
             onMouseLeave={() => setIsFlowerHovered(false)}
-            onClick={() => setActiveCard(cardContent.flower)}
+            onClick={() => handleElementClick('flower', cardContent.flower)}
           />
         </div>
 
         {/* Right Bottom Tree*/}
         <div 
-          className="tree absolute bottom-[0%] right-[12%] transition-all duration-300 w-[20%] h-[30%]"
-          style={{
-            border: '1px solid red'
-          }}
+          className={`${getElementClasses('tree', "tree absolute bottom-[0%] right-[12%] transition-all duration-300 w-[20%] h-[30%]")} ${getAnimationClass(5)}`}
         >
           <Image
-            src={isTreeHovered ? "/assets/tree.svg" : "/assets/tree-off.svg"}
+            src={isTreeHovered || activeElement === 'tree' ? "/assets/tree.svg" : "/assets/tree-off.svg"}
             alt="Tree"
             fill
             priority
             className="object-contain cursor-pointer scale-300"
-            onMouseEnter={() => setIsTreeHovered(true)}
+            onMouseEnter={() => !activeElement && setIsTreeHovered(true)}
             onMouseLeave={() => setIsTreeHovered(false)}
-            onClick={() => setActiveCard(cardContent.tree)}
+            onClick={() => handleElementClick('tree', cardContent.tree)}
           />
         </div>
 
         {/* Right Top Lights */}
         <div 
-          className="absolute top-[0] right-[8%] w-[10%] h-[40%]"
-          style={{ border: '1px solid red' }}
+          className={`${getElementClasses('topRightLights', "absolute top-[0] right-[8%] w-[10%] h-[40%]")} ${getAnimationClass(6)}`}
         >
           <Image
-            src={isTopRightLightsHovered ? "/assets/lights.svg" : "/assets/lights-off.svg"}
+            src={isTopRightLightsHovered || activeElement === 'topRightLights' ? "/assets/lights.svg" : "/assets/lights-off.svg"}
             alt="Lights"
             fill
             priority
             className="object-contain cursor-pointer w-full h-auto scale-140"
-            onMouseEnter={() => setIsTopRightLightsHovered(true)}
+            onMouseEnter={() => !activeElement && setIsTopRightLightsHovered(true)}
             onMouseLeave={() => setIsTopRightLightsHovered(false)}
-            onClick={() => setActiveCard(cardContent.topRightLights)}
+            onClick={() => handleElementClick('topRightLights', cardContent.topRightLights)}
           />
         </div>
 
         {/* Left Top Letters */}
         <div 
-          className="absolute top-[8%] left-[5%] w-[15%] h-[14%]"
-          style={{ border: '1px solid red' }}
+          className={`${getElementClasses('letters', "absolute top-[8%] left-[5%] w-[15%] h-[14%]")} ${getAnimationClass(6)}`}
         >
           <Image
-            src={isLettersHovered ? "/assets/letters.svg" : "/assets/letters-off.svg"}
+            src={isLettersHovered || activeElement === 'letters' ? "/assets/letters.svg" : "/assets/letters-off.svg"}
             alt="Letters"
             fill
             priority
             className="object-contain cursor-pointer w-full h-auto scale-105"
-            onMouseEnter={() => setIsLettersHovered(true)}
+            onMouseEnter={() => !activeElement && setIsLettersHovered(true)}
             onMouseLeave={() => setIsLettersHovered(false)}
-            onClick={() => setActiveCard(cardContent.letters)}
+            onClick={() => handleElementClick('letters', cardContent.letters)}
           />
         </div>
       </div>
     </div>
   );
-};
-
-export default Scene; 
+} 

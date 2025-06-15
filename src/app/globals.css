@@ -85,6 +85,23 @@ body {
   animation: mouse-circle 2s ease-in-out infinite;
 }
 
+@keyframes pendulum {
+  0% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(-2deg);
+  }
+}
+
+.pendulum {
+  animation: pendulum 4s ease-in-out infinite;
+  transform-origin: top center;
+}
+
 /* Estilos específicos para móvil */
 @media screen and (max-width: 640px) {
   .scene-section .sun {
@@ -96,4 +113,105 @@ body {
     width: 90vw !important;
     top: 62% !important;
   }
+}
+
+.glitch-lines {
+  position: relative;
+}
+
+.glitch-lines::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.fade-in-up-delay-1 {
+  animation-delay: 0.2s;
+}
+
+.fade-in-up-delay-2 {
+  animation-delay: 0.4s;
+}
+
+.fade-in-up-delay-3 {
+  animation-delay: 0.6s;
+}
+
+.fade-in-up-delay-4 {
+  animation-delay: 0.8s;
+}
+
+.fade-in-up-delay-5 {
+  animation-delay: 1s;
+}
+
+.fade-in-up-delay-6 {
+  animation-delay: 1.2s;
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.fade-out-down {
+  animation: fadeOutDown 0.5s ease-out forwards;
+}
+
+.fade-out-down-delay-1 {
+  animation: fadeOutDown 0.5s ease-out 0.1s forwards;
+}
+
+.fade-out-down-delay-2 {
+  animation: fadeOutDown 0.5s ease-out 0.2s forwards;
+}
+
+.fade-out-down-delay-3 {
+  animation: fadeOutDown 0.5s ease-out 0.3s forwards;
+}
+
+.fade-out-down-delay-4 {
+  animation: fadeOutDown 0.5s ease-out 0.4s forwards;
+}
+
+.fade-out-down-delay-5 {
+  animation: fadeOutDown 0.5s ease-out 0.5s forwards;
+}
+
+.fade-out-down-delay-6 {
+  animation: fadeOutDown 0.5s ease-out 0.6s forwards;
 }

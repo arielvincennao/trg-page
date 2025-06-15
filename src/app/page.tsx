@@ -1,13 +1,20 @@
 'use client';
 
+import React from "react";
 import Navbar from "./components/Navbar";
-import PageContent from "./components/PageContent";
+import MainContent from "./components/MainContent";
+import Scene from "./components/Scene";
+import Indicators from "./components/Indicators";
 
 export default function Home() {
   return (
     <div className="bg-black">
       <Navbar />
-      <PageContent />
+      <main className="bg-black">
+        <MainContent />
+        <Scene />
+        <Indicators />
+      </main>
     </div>
   );
 }

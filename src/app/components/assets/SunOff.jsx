@@ -11,7 +11,7 @@ const SunOff = ({
   return (
     <svg
       className={className}
-      viewBox="0 0 500 520"
+      viewBox="0 0 544 544"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{ cursor: onClick ? 'pointer' : 'default', ...style }}
