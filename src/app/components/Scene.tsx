@@ -227,12 +227,14 @@ export default function Scene() {
   return (
     <div id="scene-section" className="bg-black h-screen glitch-lines relative">
       {/* Canvas de partículas */}
-      <canvas
-        ref={canvasRef}
-        className="absolute top-0 left-0 w-full h-full pointer-events-none z-[9999]"
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 9999 }}
-        aria-hidden="true"
-      />
+      {isVisible && (
+        <canvas
+          ref={canvasRef}
+          className="absolute top-0 left-0 w-full h-full pointer-events-none z-[9999]"
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 9999 }}
+          aria-hidden="true"
+        />
+      )}
       <div className="h-screen relative overflow-hidden temple-glitch-lines">
         {/* Temple */}
         <div
