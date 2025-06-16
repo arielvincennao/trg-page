@@ -25,6 +25,18 @@ export default function Scene() {
   const lastScrollY = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const startTimeRef = useRef(Date.now());
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (isVisible) {
@@ -100,7 +112,7 @@ export default function Scene() {
 
     let { width, height } = updateCanvasSize();
 
-    const PARTICLE_COUNT = 100;
+    const PARTICLE_COUNT = isMobile ? 50 : 100;
     const INITIAL_DELAY = 2000; // 2 segundos de delay inicial
     const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
       x: Math.random() * width,
@@ -200,7 +212,7 @@ export default function Scene() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
     };
-  }, [isVisible]);
+  }, [isVisible, isMobile]);
 
   const handleCloseCard = () => {
     setActiveCard(null);
@@ -243,12 +255,12 @@ export default function Scene() {
       <div className="h-screen relative overflow-hidden temple-glitch-lines">
         {/* Temple */}
         <div
-          className={`temple absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[48vw] ${getAnimationClass(1)}`}
+          className={`temple absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[90vw] sm:w-[48vw] md:w-[48vw] lg:w-[48vw] ${getAnimationClass(1)}`}
           style={{ zIndex: 2 }}
         >
           {/* Temple Shadow */}
           <div 
-            className="absolute top-[100%] left-[50%] -translate-y-1/2 w-[40vw] h-[5vw] rounded-[50%]"
+            className="absolute top-[100%] left-[50%] -translate-y-1/2 w-[70vw] sm:w-[40vw] md:w-[40vw] lg:w-[40vw] h-[5vw] rounded-[50%]"
             style={{
               background: 'radial-gradient(ellipse at center, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0.1) 50%, rgba(255,0,0,0) 70%)',
               filter: 'blur(40px)',
@@ -259,7 +271,7 @@ export default function Scene() {
           />
           {/* Sun */}
           <div 
-            className={`sun absolute top-[30%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[28vw] ${getAnimationClass(2)}`}
+            className={`sun absolute top-[30%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[65vw] sm:w-[28vw] md:w-[28vw] lg:w-[28vw] ${getAnimationClass(2)}`}
             style={{ 
               zIndex: -1
             }}
@@ -273,7 +285,7 @@ export default function Scene() {
                 style={{ 
                   pointerEvents: 'visiblePainted'
                 }}
-                onClick={() => handleElementClick('sun', cardContent.sun)}
+                onClick={() => {}}
               />
             ) : (
               <SunOff
@@ -284,7 +296,7 @@ export default function Scene() {
                 style={{ 
                   pointerEvents: 'visiblePainted'
                 }}
-                onClick={() => handleElementClick('sun', cardContent.sun)}
+                onClick={() => {}}
               />
             )}
           </div>
@@ -315,7 +327,7 @@ export default function Scene() {
 
           {/* Left Lamp Temple */}
           <div 
-            className={`absolute left-[-13%] top-[55%] transform -translate-y-1/2 w-[40%] h-[40%] ${getAnimationClass(3)}`}
+            className={`absolute left-[-8%] sm:left-[-13%] md:left-[-13%] lg:left-[-13%] top-[55%] transform -translate-y-1/2 w-[45%] sm:w-[40%] md:w-[40%] lg:w-[40%] h-[45%] sm:h-[40%] md:h-[40%] lg:h-[40%] ${getAnimationClass(3)}`}
             style={{ 
               zIndex: 10
             }}
@@ -351,7 +363,7 @@ export default function Scene() {
 
         {/* Bottom Left Flower */}
         <div 
-          className={`${getElementClasses('flower', "flower absolute bottom-[-5%] left-[0%] transition-all duration-300 w-[20%] h-[40%]")} ${getAnimationClass(4)}`}
+          className={`${getElementClasses('flower', "flower absolute bottom-[-20%] sm:bottom-[-5%] md:bottom-[-5%] lg:bottom-[-5%] left-[0%] transition-all duration-300 w-[35%] h-[55%] sm:w-[20%] sm:h-[40%] md:w-[20%] md:h-[40%] lg:w-[20%] lg:h-[40%]")} ${getAnimationClass(4)}`}
           style={{
             zIndex: 0
           }}
@@ -361,7 +373,7 @@ export default function Scene() {
             alt="Flower"
             fill
             priority
-            className="object-contain cursor-pointer scale-140"
+            className="object-contain cursor-pointer scale-140 sm:scale-140 md:scale-140 lg:scale-140"
             onMouseEnter={() => !activeElement && setIsFlowerHovered(true)}
             onMouseLeave={() => setIsFlowerHovered(false)}
             onClick={() => handleElementClick('flower', cardContent.flower)}
@@ -370,14 +382,14 @@ export default function Scene() {
 
         {/* Right Bottom Tree*/}
         <div 
-          className={`${getElementClasses('tree', "tree absolute bottom-[0%] right-[6%] transition-all duration-300 w-[20%] h-[30%]")} ${getAnimationClass(5)}`}
+          className={`${getElementClasses('tree', "tree absolute bottom-[-10%] right-[6%] transition-all duration-300 w-[25%] h-[35%] sm:w-[20%] sm:h-[30%] md:w-[20%] md:h-[30%] lg:w-[20%] lg:h-[30%]")} ${getAnimationClass(5)}`}
         >
           <Image
             src={isTreeHovered || activeElement === 'tree' ? "/assets/tree.svg" : "/assets/tree-off.svg"}
             alt="Tree"
             fill
             priority
-            className="object-contain cursor-pointer scale-300"
+            className="object-contain cursor-pointer scale-300 sm:scale-300 md:scale-300 lg:scale-300"
             onMouseEnter={() => !activeElement && setIsTreeHovered(true)}
             onMouseLeave={() => setIsTreeHovered(false)}
             onClick={() => handleElementClick('tree', cardContent.tree)}
@@ -386,14 +398,14 @@ export default function Scene() {
 
         {/* Right Top Lights */}
         <div 
-          className={`${getElementClasses('topRightLights', "absolute top-[0] right-[8%] w-[10%] h-[40%]")} ${getAnimationClass(6)}`}
+          className={`${getElementClasses('topRightLights', "absolute top-[0] right-[8%] w-[15%] h-[50%] sm:w-[10%] sm:h-[40%] md:w-[10%] md:h-[40%] lg:w-[10%] lg:h-[40%]")} ${getAnimationClass(6)}`}
         >
           <Image
             src={isTopRightLightsHovered || activeElement === 'topRightLights' ? "/assets/lights.svg" : "/assets/lights-off.svg"}
             alt="Lights"
             fill
             priority
-            className="object-contain cursor-pointer w-full h-auto scale-140"
+            className="object-contain cursor-pointer w-full h-auto scale-140 sm:scale-140 md:scale-140 lg:scale-140"
             onMouseEnter={() => !activeElement && setIsTopRightLightsHovered(true)}
             onMouseLeave={() => setIsTopRightLightsHovered(false)}
             onClick={() => handleElementClick('topRightLights', cardContent.topRightLights)}
@@ -402,14 +414,14 @@ export default function Scene() {
 
         {/* Left Top Letters */}
         <div 
-          className={`${getElementClasses('letters', "absolute top-[8%] left-[5%] w-[15%] h-[14%]")} ${getAnimationClass(6)}`}
+          className={`${getElementClasses('letters', "absolute top-[8%] left-[5%] w-[30%] h-[22%] sm:w-[15%] sm:h-[14%] md:w-[15%] md:h-[14%] lg:w-[15%] lg:h-[14%]")} ${getAnimationClass(6)}`}
         >
           <Image
             src={isLettersHovered || activeElement === 'letters' ? "/assets/letters.svg" : "/assets/letters-off.svg"}
             alt="Letters"
             fill
             priority
-            className="object-contain cursor-pointer w-full h-auto scale-105"
+            className="object-contain cursor-pointer w-full h-auto scale-105 sm:scale-105 md:scale-105 lg:scale-105"
             onMouseEnter={() => !activeElement && setIsLettersHovered(true)}
             onMouseLeave={() => setIsLettersHovered(false)}
             onClick={() => handleElementClick('letters', cardContent.letters)}
