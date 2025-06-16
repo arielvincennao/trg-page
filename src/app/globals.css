@@ -25,6 +25,13 @@ body {
   color: var(--foreground);
   overflow-y: auto;
   height: 100%;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Edge */
 }
 
 @theme inline {
@@ -231,6 +238,21 @@ body {
 
 .fade-out-down {
   animation: fadeOutDown 0.5s ease-out forwards;
+}
+
+@keyframes fadeOutScene {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+}
+
+.fade-out-scene {
+  animation: fadeOutScene 0.3s ease-out forwards;
 }
 
 .fade-out-down-delay-1 {

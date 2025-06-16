@@ -21,6 +21,7 @@ export default function Scene() {
   const [activeCard, setActiveCard] = useState<CardContent | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
   const lastScrollY = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const startTimeRef = useRef(Date.now());
@@ -39,11 +40,14 @@ export default function Scene() {
       
       if (sceneElement && isScrollingUp) {
         const rect = sceneElement.getBoundingClientRect();
-        if (rect.top >= -10 && rect.top <= 10) {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
+        if (rect.top >= 0) {
+          setIsExiting(true);
+          setTimeout(() => {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          }, 200);
         }
       }
       
@@ -54,12 +58,13 @@ export default function Scene() {
         
         if (isInView && !isVisible) {
           setIsLeaving(false);
+          setIsExiting(false);
           setIsVisible(true);
         } else if (!isInView && isVisible) {
           setIsLeaving(true);
           setTimeout(() => {
             setIsVisible(false);
-          }, 600); // Tiempo suficiente para que todas las animaciones de salida terminen
+          }, 600);
         }
       }
       
@@ -67,7 +72,7 @@ export default function Scene() {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Verificar estado inicial
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isVisible]);
 
@@ -225,7 +230,7 @@ export default function Scene() {
   };
 
   return (
-    <div id="scene-section" className="bg-black h-screen glitch-lines relative">
+    <div id="scene-section" className={`bg-black h-screen glitch-lines relative ${isExiting ? 'fade-out-scene' : ''}`}>
       {/* Canvas de partículas */}
       {isVisible && (
         <canvas
