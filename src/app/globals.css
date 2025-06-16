@@ -370,3 +370,19 @@ body::-webkit-scrollbar {
   text-shadow: 2px 0 #00fff9;
   animation: glitch-anim-2 0.5s forwards;
 }
+
+@keyframes tap {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-tap {
+  animation: tap 1.5s ease-in-out infinite;
+}

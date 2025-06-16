@@ -5,6 +5,18 @@ import Image from "next/image";
 
 const Indicators = () => {
   const [isInSceneSection, setIsInSceneSection] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,17 +56,17 @@ const Indicators = () => {
         </span>
       </div>
 
-      {/* Hover to explore content */}
+      {/* Hover/Tap to explore content */}
       <div className={`absolute flex flex-row items-center gap-2 transition-opacity duration-300 ${isInSceneSection ? 'opacity-100' : 'opacity-0'}`}>
         <Image
-          src="/assets/mouse.svg"
-          alt="Mouse icon"
+          src={isMobile ? "/assets/tap.svg" : "/assets/mouse.svg"}
+          alt={isMobile ? "Tap icon" : "Mouse icon"}
           width={20}
           height={20}
-          className="animate-mouse-circle"
+          className={isMobile ? "animate-tap" : "animate-mouse-circle"}
         />
         <span className="font-[family-name:var(--font-poppins)] whitespace-nowrap">
-          Hover to explore
+          {isMobile ? "Tap to explore" : "Hover to explore"}
         </span>
       </div>
     </div>
