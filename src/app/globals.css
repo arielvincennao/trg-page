@@ -125,6 +125,11 @@ body::-webkit-scrollbar {
     width: 90vw !important;
     top: 62% !important;
   }
+
+  .scene-section .card {
+    width: 95% !important;
+    max-width: 95% !important;
+  }
 }
 
 .glitch-lines {
@@ -133,7 +138,7 @@ body::-webkit-scrollbar {
 
 .glitch-lines::before {
   content: '';
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -385,4 +390,232 @@ body::-webkit-scrollbar {
 
 .animate-tap {
   animation: tap 1.5s ease-in-out infinite;
+}
+
+/* Glitch effect for loading screen */
+.glitch-container {
+  position: relative;
+}
+
+.glitch-image {
+  position: relative;
+  animation: glitch 1s infinite;
+}
+
+.glitch-image::before,
+.glitch-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/assets/navbar-logo.svg') no-repeat center;
+  background-size: contain;
+}
+
+.glitch-image::before {
+  animation: glitch-effect 3s infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  transform: translate(-5px, -5px);
+  opacity: 0.75;
+  filter: brightness(1.5) saturate(0);
+}
+
+.glitch-image::after {
+  animation: glitch-effect 2s infinite;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  transform: translate(5px, 5px);
+  opacity: 0.75;
+  filter: brightness(1.5) saturate(0);
+}
+
+.glitch-text {
+  position: relative;
+  animation: glitch-text 2s infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: 'Loading...';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  animation: glitch-text-effect 3s infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  transform: translate(-2px, -2px);
+  opacity: 0.75;
+  color: #ff0000;
+}
+
+.glitch-text::after {
+  animation: glitch-text-effect 2s infinite;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  transform: translate(2px, 2px);
+  opacity: 0.75;
+  color: #ffffff;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-effect {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-5px, 5px);
+  }
+  40% {
+    transform: translate(-5px, -5px);
+  }
+  60% {
+    transform: translate(5px, 5px);
+  }
+  80% {
+    transform: translate(5px, -5px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-text {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-1px, 1px);
+  }
+  40% {
+    transform: translate(-1px, -1px);
+  }
+  60% {
+    transform: translate(1px, 1px);
+  }
+  80% {
+    transform: translate(1px, -1px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-text-effect {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+/* Glitch progress bar */
+.glitch-progress {
+  position: relative;
+  animation: glitch-progress 1s infinite;
+}
+
+.glitch-progress::before,
+.glitch-progress::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+}
+
+.glitch-progress::before {
+  animation: glitch-progress-effect 3s infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  transform: translate(-2px, -2px);
+  opacity: 0.75;
+  background: #ff0000;
+}
+
+.glitch-progress::after {
+  animation: glitch-progress-effect 2s infinite;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  transform: translate(2px, 2px);
+  opacity: 0.75;
+  background: #ffffff;
+}
+
+@keyframes glitch-progress {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-1px, 1px);
+  }
+  40% {
+    transform: translate(-1px, -1px);
+  }
+  60% {
+    transform: translate(1px, 1px);
+  }
+  80% {
+    transform: translate(1px, -1px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-progress-effect {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
 }

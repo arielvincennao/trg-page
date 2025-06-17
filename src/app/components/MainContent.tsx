@@ -16,7 +16,7 @@ const MainContent = () => {
   ];
 
   const animationStart = 0; // ScrollY first letter
-  const animationEnd = 1000;   // ScrollY last letter
+  const animationEnd = 1500;   // ScrollY last letter
   const scrollOffsetPerLetter = (animationEnd - animationStart) / text.length;
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const MainContent = () => {
   }, [isVisible]);
 
   return (
-    <div className="min-h-[400vh] flex flex-col items-center justify-center gap-6 relative bg-black">
+    <div className="min-h-[400vh] flex flex-col items-center justify-center gap-6 relative">
       <div className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] flex flex-col items-center gap-6 transition-all duration-200 ease-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
         <div className="w-[169px] h-[169px] relative flex-shrink-0">
           <Image

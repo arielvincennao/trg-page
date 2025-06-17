@@ -242,7 +242,7 @@ export default function Scene() {
   };
 
   return (
-    <div id="scene-section" className={`bg-black h-screen glitch-lines relative ${isExiting ? 'fade-out-scene' : ''}`}>
+    <div id="scene-section" className={`bg-black h-screen glitch-lines  relative ${isExiting ? 'fade-out-scene' : ''}`}>
       {/* Canvas de partículas */}
       {isVisible && (
         <canvas
@@ -349,16 +349,13 @@ export default function Scene() {
 
         {/* Card */}
         {activeCard && (
-          <div 
-            className={`fixed top-[70%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[75%] sm:w-[50%] md:w-[40%] lg:w-[35%] max-w-[500px] h-auto max-h-[90vh] rounded-lg shadow-lg p-4 sm:p-6 md:p-8 z-50 bg-black/90 border border-red-500 ${getAnimationClass(1)}`}
-          >
-            <Card
-              title={activeCard.title}
-              description={activeCard.description}
-              onClose={handleCloseCard}
-              onExplore={handleExplore}
-            />
-          </div>
+          <Card
+            title={activeCard.title}
+            description={activeCard.description}
+            buttonText={activeCard.buttonText}
+            onClose={handleCloseCard}
+            onExplore={handleExplore}
+          />
         )}
 
         {/* Bottom Left Flower */}

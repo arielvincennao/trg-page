@@ -27,13 +27,14 @@ const Indicators = () => {
       const scenePosition = sceneElement?.offsetTop || 0;
       
       // Calcular si estamos en la sección de la escena
-      const isInScene = currentScrollY >= scenePosition;
+      const isInScene = currentScrollY >= scenePosition - window.innerHeight * 0.2;
       
       // Actualizar el estado basado en la posición
       setIsInSceneSection(isInScene);
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Verificar posición inicial
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -43,7 +44,7 @@ const Indicators = () => {
   return (
     <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-row items-center gap-2 text-white text-sm z-50`}>
       {/* Scroll to view content */}
-      <div className={`flex flex-row items-center gap-2 transition-opacity duration-300 ${isInSceneSection ? 'opacity-0' : 'opacity-100'}`}>
+      <div className={`flex flex-row items-center gap-2 transition-opacity duration-300 ${isInSceneSection ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         <Image
           src="/assets/arrow-down.svg"
           alt="Arrow down"
@@ -57,7 +58,7 @@ const Indicators = () => {
       </div>
 
       {/* Hover/Tap to explore content */}
-      <div className={`absolute flex flex-row items-center gap-2 transition-opacity duration-300 ${isInSceneSection ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`absolute flex flex-row items-center gap-2 transition-opacity duration-300 ${isInSceneSection ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <Image
           src={isMobile ? "/assets/tap.svg" : "/assets/mouse.svg"}
           alt={isMobile ? "Tap icon" : "Mouse icon"}

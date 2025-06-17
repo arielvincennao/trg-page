@@ -31,13 +31,15 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link 
-            href="/blog" 
+          <a 
+            href="https://theredguild.org/" 
+            target="_blank"
+            rel="noopener noreferrer"
             data-text="Blog"
-            className={`transition-all duration-300 relative ${pathname === "/blog" ? "text-[color:var(--color-primary)] font-[family-name:var(--font-pixelify-sans)] text-sm" : "text-sm"} hover:text-[color:var(--color-primary)] hover:font-[family-name:var(--font-pixelify-sans)] hover:glitch-effect`}
+            className="transition-all duration-300 relative text-sm hover:text-[color:var(--color-primary)] hover:font-[family-name:var(--font-pixelify-sans)] hover:glitch-effect"
           >
             Blog
-          </Link>
+          </a>
         </li>
         <li>
           <Link 
