@@ -1,117 +1,128 @@
-'use client';
-
-import Image from "next/image";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 
 const MainContent = () => {
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false);
+  const [hasCompletedAnimation, setHasCompletedAnimation] = useState(false);
+
   const lastScrollY = useRef(0);
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
-  const text = "We advance security and education in the crypto ecosystem with research, tools and resources for the public benefit.";
+  const isTransitioningRef = useRef(false);
+  const resettingRef = useRef(false);
+  const cooldownRef = useRef(false);
+  const ticking = useRef(false);
+
+  const text =
+    'We advance security and education in the crypto ecosystem with research, tools and resources for the public benefit.';
   const lines = [
-    "We advance security and education",
-    " in the crypto ecosystem with research,",
-    " tools and resources for the public benefit."
+    'We advance security and education',
+    ' in the crypto ecosystem with research,',
+    ' tools and resources for the public benefit.',
   ];
 
-  const animationStart = 0; // ScrollY first letter
-  const animationEnd = 1500;   // ScrollY last letter
+  const animationStart = 0;
+  const animationEnd = 1000;
   const scrollOffsetPerLetter = (animationEnd - animationStart) / text.length;
 
   useEffect(() => {
-    const handleScroll = () => {
+    setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasMounted) return;
+
+    const updateScroll = () => {
       const currentScrollY = window.scrollY;
       const isScrollingDown = currentScrollY > lastScrollY.current;
-      setScrollY(currentScrollY);
 
-      // Obtener la posición de Scene
       const sceneElement = document.getElementById('scene-section');
       const scenePosition = sceneElement?.offsetTop || 0;
-      const mainContentLimit = animationEnd + 200; // Límite adicional después de la animación
 
-      // Resetear cuando volvemos arriba
-      if (currentScrollY < animationEnd) {
-        setIsVisible(true);
-        if (scrollTimeout.current) {
-          clearTimeout(scrollTimeout.current);
+      if (isVisible && !isTransitioningRef.current) {
+        if (!hasCompletedAnimation) {
+          if (currentScrollY >= animationEnd) {
+            setHasCompletedAnimation(true);
+            setScrollY(animationEnd);
+          } else {
+            setScrollY(currentScrollY);
+          }
+        } else {
+          setScrollY(animationEnd);
         }
       }
 
-      // Si sobrepasamos el límite de MainContent, ir a Scene
-      if (currentScrollY > mainContentLimit && isScrollingDown) {
-        if (scrollTimeout.current) {
-          clearTimeout(scrollTimeout.current);
-        }
+      // MAIN -> SCENE
+      if (
+        isVisible &&
+        isScrollingDown &&
+        currentScrollY >= animationEnd &&
+        !cooldownRef.current
+      ) {
+        if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
         scrollTimeout.current = setTimeout(() => {
           if (sceneElement) {
-            window.scrollTo({
-              top: scenePosition,
-              behavior: 'smooth'
-            });
-            setTimeout(() => {
-              setIsVisible(false);
-            }, 300);
+            window.scrollTo({ top: scenePosition, behavior: 'smooth' });
+            setTimeout(() => setIsVisible(false), 300);
           }
-        }, 50);
-      }
-      // Si estamos cerca de Scene o scrolleando muy rápido, desaparecer MainContent con una transición suave
-      else if (currentScrollY >= scenePosition - 600 || 
-          (isScrollingDown && currentScrollY - lastScrollY.current > 50)) {
-        if (scrollTimeout.current) {
-          clearTimeout(scrollTimeout.current);
-        }
-        // Pequeño delay antes de ocultar para evitar el "apagón"
-        scrollTimeout.current = setTimeout(() => {
-          setIsVisible(false);
-        }, 50);
-      }
-      // Activar el scroll automático cuando el texto está rojo
-      else if (isScrollingDown && currentScrollY >= animationEnd && isVisible) {
-        if (scrollTimeout.current) {
-          clearTimeout(scrollTimeout.current);
-        }
-        // Esperar un poco más antes de hacer el scroll automático
-        scrollTimeout.current = setTimeout(() => {
-          if (sceneElement) {
-            window.scrollTo({
-              top: sceneElement.offsetTop,
-              behavior: 'smooth'
-            });
-            // Desaparecer MainContent después de llegar a Scene
-            setTimeout(() => {
-              setIsVisible(false);
-            }, 300);
-          }
-        }, 150);
+        }, 100);
       }
 
-      // Si estamos volviendo de Scene (scrolleando hacia arriba desde Scene)
-      if (!isScrollingDown && currentScrollY < scenePosition - 600 && !isVisible) {
-        setIsVisible(true);
-        // Posicionar en la mitad de la animación con una transición suave
-        window.scrollTo({
-          top: animationEnd,
-          behavior: 'smooth'
-        });
+      // SCENE -> MAIN
+      if (!isVisible && !isScrollingDown && currentScrollY < scenePosition - 600) {
+        if (!cooldownRef.current) {
+          isTransitioningRef.current = true;
+          resettingRef.current = true;
+          cooldownRef.current = true;
+
+          requestAnimationFrame(() => {
+            setIsVisible(true);
+            setScrollY(0);
+            setHasCompletedAnimation(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            setTimeout(() => {
+              isTransitioningRef.current = false;
+              resettingRef.current = false;
+            }, 500);
+
+            // Cooldown para evitar reinicios inmediatos
+            setTimeout(() => {
+              cooldownRef.current = false;
+            }, 800);
+          });
+        }
       }
 
       lastScrollY.current = currentScrollY;
+      ticking.current = false;
     };
 
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current);
+    const onScroll = () => {
+      if (isTransitioningRef.current) return;
+      if (!ticking.current) {
+        requestAnimationFrame(updateScroll);
+        ticking.current = true;
       }
     };
-  }, [isVisible]);
+
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    };
+  }, [hasMounted, isVisible, hasCompletedAnimation]);
 
   return (
-    <div className="min-h-[400vh] flex flex-col items-center justify-center gap-6 relative">
-      <div className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] flex flex-col items-center gap-6 transition-all duration-200 ease-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <div className="min-h-[400vh] flex flex-col items-center justify-center gap-6 relative bg-transparent">
+      <div
+        id="main-content-wrapper"
+        className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] flex flex-col items-center gap-6 transition-opacity duration-300 ease-out pointer-events-auto ${
+          isVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        style={{ backgroundColor: 'transparent' }}
+      >
         <div className="w-[169px] h-[169px] relative flex-shrink-0">
           <Image
             src="/assets/trg-logo.svg"
@@ -122,7 +133,7 @@ const MainContent = () => {
             sizes="169px"
           />
         </div>
-        <h1 className="text-base sm:text-xl lg:text-4xl text-center w-11/12 md:w-[45%] min-h-[120px] flex items-center justify-center">
+        <h1 className="text-base sm:text-xl lg:text-4xl text-center w-11/12 md:w-[45%] min-h-[120px] flex items-center justify-center text-white">
           <div className="flex flex-col items-center gap-2">
             {lines.map((line, lineIndex) => {
               const startIndex = text.indexOf(line);
@@ -130,12 +141,14 @@ const MainContent = () => {
                 <div key={lineIndex} className="flex">
                   {line.split('').map((char, charIndex) => {
                     const index = startIndex + charIndex;
-                    const letterThreshold = animationStart + (index * scrollOffsetPerLetter);
-                    const isActive = scrollY > letterThreshold;
+                    const letterThreshold = animationStart + index * scrollOffsetPerLetter;
+                    const isActive =
+                      !resettingRef.current &&
+                      ((isVisible && scrollY > letterThreshold) || hasCompletedAnimation);
 
                     const charClassName = isActive
-                      ? "text-[color:var(--color-primary)] opacity-100 font-[family-name:var(--font-pixelify-sans)] leading-[1.2]"
-                      : "text-white opacity-40 font-[family-name:var(--font-poppins)] leading-[1.2]";
+                      ? 'text-[color:var(--color-primary)] opacity-100 font-[family-name:var(--font-pixelify-sans)] leading-[1.2]'
+                      : 'text-white opacity-40 font-[family-name:var(--font-poppins)] leading-[1.2]';
 
                     return (
                       <span key={charIndex} className={charClassName}>
@@ -153,4 +166,4 @@ const MainContent = () => {
   );
 };
 
-export default MainContent; 
+export default MainContent;
