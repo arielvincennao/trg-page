@@ -9,7 +9,7 @@ import BackgroundClouds from "./components/BackgroundClouds";
 import LoadingScreen from './components/LoadingScreen';
 
 export default function Home() {
-  const [showLoading, setShowLoading] = useState(true);
+  const [showLoading, setShowLoading] = useState(false);
   const [showIndicators, setShowIndicators] = useState(false);
 
   useEffect(() => {
