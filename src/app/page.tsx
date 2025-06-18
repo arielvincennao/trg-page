@@ -7,6 +7,7 @@ import Scene from './components/Scene';
 import Indicators from "./components/Indicators";
 import BackgroundClouds from "./components/BackgroundClouds";
 import LoadingScreen from './components/LoadingScreen';
+import ProgressBar from "./components/ProgressBar";
 
 export default function Home() {
   const [showLoading, setShowLoading] = useState(false);
@@ -29,6 +30,7 @@ export default function Home() {
 
   return (
     <div className="bg-black">
+      <ProgressBar />
       <BackgroundClouds />
       <Navbar />
       <main className="relative min-h-screen">
