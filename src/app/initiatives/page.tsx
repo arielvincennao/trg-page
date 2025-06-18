@@ -5,7 +5,6 @@ import Navbar from "../components/Navbar";
 import Card from "../components/Card";
 import { cardContent } from "../data/cardContent";
 import BackgroundClouds from "../components/BackgroundClouds";
-import GlitchBackground from '../components/GlitchBackground';
 
 export default function InitiativesPage() {
   const handleExplore = (title: string) => {
@@ -14,7 +13,6 @@ export default function InitiativesPage() {
 
   return (
     <div className="min-h-screen bg-black relative">
-      <GlitchBackground />
       <BackgroundClouds />
       <Navbar />
       <main className="container mx-auto px-4 pt-32 pb-16 relative z-10">

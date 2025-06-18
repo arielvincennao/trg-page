@@ -115,15 +115,14 @@ const MainContent = () => {
   }, [hasMounted, isVisible, hasCompletedAnimation]);
 
   return (
-    <div className="min-h-[400vh] flex flex-col items-center justify-center gap-6 relative bg-transparent">
+    <div className="min-h-[400vh] flex flex-col items-center justify-center gap-6 relative">
       <div
         id="main-content-wrapper"
         className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] flex flex-col items-center gap-6 transition-opacity duration-300 ease-out pointer-events-auto ${
           isVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
-        style={{ backgroundColor: 'transparent' }}
       >
-        <div className="w-[169px] h-[169px] relative flex-shrink-0">
+        <div className="w-[169px] h-[169px] relative flex-shrink-0 [&>*]:!opacity-100 [&>*]:!transition-none">
           <Image
             src="/assets/trg-logo.svg"
             alt="TRG Logo"

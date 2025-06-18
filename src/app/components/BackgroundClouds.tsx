@@ -1,38 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 const BackgroundClouds = () => {
-  const [cloudLeftOpacity, setCloudLeftOpacity] = useState(0.5);
-  const [cloudRightOpacity, setCloudRightOpacity] = useState(0.5);
-  const [crossOpacity, setCrossOpacity] = useState(0.3);
-  const [glitchLeftOpacity, setGlitchLeftOpacity] = useState(0.4);
-  const [glitchRightOpacity, setGlitchRightOpacity] = useState(0.4);
-
-  useEffect(() => {
-    const createRandomGlitch = (setOpacity: (value: number) => void, baseOpacity: number, maxOpacity: number) => {
-      const flash = () => {
-        setOpacity(maxOpacity);
-        setTimeout(() => setOpacity(baseOpacity), 50);
-        setTimeout(() => setOpacity(maxOpacity), 100);
-        setTimeout(() => setOpacity(baseOpacity), 150);
-      };
-
-      const randomTime = Math.random() * 6000 + 2000;
-      setTimeout(() => {
-        flash();
-        createRandomGlitch(setOpacity, baseOpacity, maxOpacity);
-      }, randomTime);
-    };
-
-    // Iniciar efectos independientes para cada elemento
-    createRandomGlitch(setCloudLeftOpacity, 0.5, 0.8);
-    createRandomGlitch(setCloudRightOpacity, 0.5, 0.8);
-    createRandomGlitch(setCrossOpacity, 0.3, 0.6);
-    createRandomGlitch(setGlitchLeftOpacity, 0.4, 0.8);
-    createRandomGlitch(setGlitchRightOpacity, 0.4, 0.8);
-  }, []);
+  // Valores fijos de opacidad
+  const cloudLeftOpacity = 1;
+  const cloudRightOpacity = 1;
+  const crossOpacity = 1;
+  const glitchLeftOpacity = 1;
+  const glitchRightOpacity = 1;
 
   return (
     <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-10 overflow-visible">
@@ -45,7 +21,7 @@ const BackgroundClouds = () => {
             width={359}
             height={316}
             style={{ opacity: cloudLeftOpacity }}
-            className="object-contain [mix-blend-mode:screen] brightness-[14.28] absolute inset-0 transition-opacity duration-50"
+            className="object-contain [mix-blend-mode:screen] brightness-[14.28] absolute inset-0"
             priority
           />
         </div>
@@ -60,7 +36,7 @@ const BackgroundClouds = () => {
             width={359}
             height={316}
             style={{ opacity: cloudRightOpacity }}
-            className="object-contain [mix-blend-mode:screen] brightness-[14.28] absolute inset-0 transition-opacity duration-50"
+            className="object-contain [mix-blend-mode:screen] brightness-[14.28] absolute inset-0"
             priority
           />
         </div>
@@ -75,7 +51,7 @@ const BackgroundClouds = () => {
             width={300}
             height={300}
             style={{ opacity: crossOpacity }}
-            className="object-contain [mix-blend-mode:screen] brightness-[1.5] absolute inset-0 transition-opacity duration-50"
+            className="object-contain [mix-blend-mode:screen] brightness-[1.5] absolute inset-0"
             priority
           />
         </div>
@@ -90,7 +66,7 @@ const BackgroundClouds = () => {
             width={200}
             height={200}
             style={{ opacity: glitchLeftOpacity }}
-            className="object-contain [mix-blend-mode:screen] brightness-[1.2] absolute inset-0 transition-opacity duration-50"
+            className="object-contain [mix-blend-mode:screen] brightness-[1.2] absolute inset-0"
             priority
           />
         </div>
@@ -105,7 +81,7 @@ const BackgroundClouds = () => {
             width={200}
             height={200}
             style={{ opacity: glitchRightOpacity, transform: 'scaleX(-1)' }}
-            className="object-contain [mix-blend-mode:screen] brightness-[1.2] absolute inset-0 transition-opacity duration-50"
+            className="object-contain [mix-blend-mode:screen] brightness-[1.2] absolute inset-0"
             priority
           />
         </div>

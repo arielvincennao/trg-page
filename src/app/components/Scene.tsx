@@ -91,7 +91,7 @@ export default function Scene() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
     let animationFrameId: number;
@@ -242,38 +242,29 @@ export default function Scene() {
   };
 
   return (
-    <div id="scene-section" className={`bg-black h-screen glitch-lines  relative ${isExiting ? 'fade-out-scene' : ''}`}>
-      {/* Canvas de partículas */}
-      {isVisible && (
-        <canvas
-          ref={canvasRef}
-          className="absolute top-0 left-0 w-full h-full pointer-events-none z-[9999]"
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 9999 }}
-          aria-hidden="true"
-        />
-      )}
-      <div className="h-screen relative overflow-hidden temple-glitch-lines">
+    <div id="scene-section" className={`bg-black h-screen relative ${isExiting ? 'fade-out-scene' : ''}`}>
+      <div className="h-screen relative overflow-hidden" style={{ zIndex: 20 }}>
+        {/* Canvas de partículas */}
+        {isVisible && (
+          <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 25 }}>
+            <canvas
+              ref={canvasRef}
+              className="absolute top-0 left-0 w-full h-full pointer-events-none"
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
+              aria-hidden="true"
+            />
+          </div>
+        )}
         {/* Temple */}
         <div
           className={`temple absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[90vw] sm:w-[48vw] md:w-[48vw] lg:w-[48vw] ${getAnimationClass(1)}`}
-          style={{ zIndex: 2 }}
+          style={{ zIndex: 21 }}
         >
-          {/* Temple Shadow */}
-          <div 
-            className="absolute top-[100%] left-[50%] -translate-y-1/2 w-[70vw] sm:w-[40vw] md:w-[40vw] lg:w-[40vw] h-[5vw] rounded-[50%]"
-            style={{
-              background: 'radial-gradient(ellipse at center, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0.1) 50%, rgba(255,0,0,0) 70%)',
-              filter: 'blur(40px)',
-              zIndex: 0,
-              transform: 'translate(-50%, -50%) scale(1.5)',
-              boxShadow: '0 0 50px rgba(255,0,0,0.2)'
-            }}
-          />
-          {/* Sun */}
+          {/* Sun - Movido al principio para que esté detrás */}
           <div 
             className={`sun absolute top-[30%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[65vw] sm:w-[28vw] md:w-[28vw] lg:w-[28vw] ${getAnimationClass(2)}`}
             style={{ 
-              zIndex: -1
+              zIndex: 1
             }}
           >
             {isSunHovered || activeElement === 'sun' ? (
@@ -301,14 +292,28 @@ export default function Scene() {
             )}
           </div>
 
+          {/* Temple Shadow */}
+          <div 
+            className="absolute top-[100%] left-[50%] -translate-y-1/2 w-[70vw] sm:w-[40vw] md:w-[40vw] lg:w-[40vw] h-[5vw] rounded-[50%]"
+            style={{
+              background: 'radial-gradient(ellipse at center, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0.1) 50%, rgba(255,0,0,0) 70%)',
+              filter: 'blur(40px)',
+              zIndex: 20,
+              transform: 'translate(-50%, -50%) scale(1.5)',
+              boxShadow: '0 0 50px rgba(255,0,0,0.2)'
+            }}
+          />
+
           {isTempleHovered || activeElement === 'temple' ? (
             <Temple
               isHovered={isTempleHovered}
               onMouseEnter={() => !activeElement && setIsTempleHovered(true)}
               onMouseLeave={() => setIsTempleHovered(false)}
-              className={`object-contain cursor-pointer w-full h-auto ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
+              className={`object-contain cursor-pointer w-full h-auto ${activeElement && activeElement !== 'temple' ? 'pointer-events-none' : ''}`}
               style={{ 
-                pointerEvents: 'visiblePainted'
+                pointerEvents: 'visiblePainted',
+                position: 'relative',
+                zIndex: 2
               }}
               onClick={() => handleElementClick('temple', cardContent.temple)}
             />
@@ -317,9 +322,11 @@ export default function Scene() {
               isHovered={isTempleHovered}
               onMouseEnter={() => !activeElement && setIsTempleHovered(true)}
               onMouseLeave={() => setIsTempleHovered(false)}
-              className={`object-contain cursor-pointer ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
+              className={`object-contain cursor-pointer ${activeElement && activeElement !== 'temple' ? 'pointer-events-none' : ''}`}
               style={{ 
-                pointerEvents: 'visiblePainted'
+                pointerEvents: 'visiblePainted',
+                position: 'relative',
+                zIndex: 2
               }}
               onClick={() => handleElementClick('temple', cardContent.temple)}
             />
@@ -329,7 +336,7 @@ export default function Scene() {
           <div 
             className={`absolute left-[-8%] sm:left-[-13%] md:left-[-13%] lg:left-[-13%] top-[55%] transform -translate-y-1/2 w-[45%] sm:w-[40%] md:w-[40%] lg:w-[40%] h-[45%] sm:h-[40%] md:h-[40%] lg:h-[40%] ${getAnimationClass(3)}`}
             style={{ 
-              zIndex: 10
+              zIndex: 22
             }}
           >
             <div className="pendulum w-full h-full">
@@ -338,7 +345,7 @@ export default function Scene() {
                 alt="Light"
                 fill
                 priority
-                className={`object-contain cursor-pointer scale-90 ${activeElement && activeElement !== 'leftLight' ? 'opacity-15 pointer-events-none' : ''}`}
+                className={`object-contain cursor-pointer scale-90 ${activeElement && activeElement !== 'leftLight' ? 'pointer-events-none' : ''}`}
                 onMouseEnter={() => !activeElement && setIsLeftLightHovered(true)}
                 onMouseLeave={() => setIsLeftLightHovered(false)}
                 onClick={() => handleElementClick('leftLight', cardContent.leftLight)}
@@ -349,20 +356,22 @@ export default function Scene() {
 
         {/* Card */}
         {activeCard && (
-          <Card
-            title={activeCard.title}
-            description={activeCard.description}
-            buttonText={activeCard.buttonText}
-            onClose={handleCloseCard}
-            onExplore={handleExplore}
-          />
+          <div className="fixed top-[65%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000]">
+            <Card
+              title={activeCard.title}
+              description={activeCard.description}
+              buttonText={activeCard.buttonText}
+              onClose={handleCloseCard}
+              onExplore={handleExplore}
+            />
+          </div>
         )}
 
         {/* Bottom Left Flower */}
         <div 
           className={`${getElementClasses('flower', "flower absolute bottom-[-20%] sm:bottom-[-5%] md:bottom-[-5%] lg:bottom-[-5%] left-[0%] transition-all duration-300 w-[35%] h-[55%] sm:w-[20%] sm:h-[40%] md:w-[20%] md:h-[40%] lg:w-[20%] lg:h-[40%]")} ${getAnimationClass(4)}`}
           style={{
-            zIndex: 0
+            zIndex: 21
           }}
         >
           <Image
@@ -380,6 +389,9 @@ export default function Scene() {
         {/* Right Bottom Tree*/}
         <div 
           className={`${getElementClasses('tree', "tree absolute bottom-[-10%] right-[6%] transition-all duration-300 w-[25%] h-[35%] sm:w-[20%] sm:h-[30%] md:w-[20%] md:h-[30%] lg:w-[20%] lg:h-[30%]")} ${getAnimationClass(5)}`}
+          style={{
+            zIndex: 21
+          }}
         >
           <Image
             src={isTreeHovered || activeElement === 'tree' ? "/assets/tree.svg" : "/assets/tree-off.svg"}
@@ -396,6 +408,9 @@ export default function Scene() {
         {/* Right Top Lights */}
         <div 
           className={`${getElementClasses('topRightLights', "absolute top-[0] right-[8%] w-[15%] h-[50%] sm:w-[10%] sm:h-[40%] md:w-[10%] md:h-[40%] lg:w-[10%] lg:h-[40%]")} ${getAnimationClass(6)}`}
+          style={{
+            zIndex: 21
+          }}
         >
           <Image
             src={isTopRightLightsHovered || activeElement === 'topRightLights' ? "/assets/lights.svg" : "/assets/lights-off.svg"}
@@ -412,6 +427,9 @@ export default function Scene() {
         {/* Left Top Letters */}
         <div 
           className={`${getElementClasses('letters', "absolute top-[8%] left-[5%] w-[30%] h-[22%] sm:w-[15%] sm:h-[14%] md:w-[15%] md:h-[14%] lg:w-[15%] lg:h-[14%]")} ${getAnimationClass(6)}`}
+          style={{
+            zIndex: 21
+          }}
         >
           <Image
             src={isLettersHovered || activeElement === 'letters' ? "/assets/letters.svg" : "/assets/letters-off.svg"}
