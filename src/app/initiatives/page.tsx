@@ -122,7 +122,7 @@ export default function InitiativesPage() {
       <ParticlesDOM />
       <Navbar />
       <main className="container mx-auto px-4 pt-32 pb-16 relative z-20">
-        <h1 className="text-4xl font-bold mb-12 text-center text-white">Our Initiatives</h1>
+        <h1 className="text-4xl font-bold mb-12 text-center text-white font-[family-name:var(--font-poppins)]">Our Initiatives</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
           {Object.entries(cardContent).map(([key, content]) => (
             <div 
