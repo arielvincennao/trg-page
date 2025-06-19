@@ -1,7 +1,13 @@
+export interface CardLink {
+  label: string;
+  url: string;
+}
+
 export interface CardContent {
   title: string;
   description: string;
-  buttonText: string;
+  buttonText?: string;
+  links?: CardLink[];
 }
 
 export interface CardContentMap {
@@ -32,7 +38,20 @@ export const cardContent: CardContentMap = {
   tree: {
     title: "Education & awareness",
     description: "We organize, coordinate and participate in conferences, workshops and hackathons. With a strong foothold in LATAM.",
-    buttonText: "Recent Events"
+    links: [
+      {
+        label: "Recent Events",
+        url: "#"
+      },
+      {
+        label: "Smart contract security course with cyfrin",
+        url: "#"
+      },
+      {
+        label: "Undercover campaign in ethargentina",
+        url: "#"
+      }
+    ]
   },
   letters: {
     title: "Security research & bug hunting",
@@ -42,6 +61,15 @@ export const cardContent: CardContentMap = {
   flower: {
     title: "Tooling",
     description: "We build open-source repositories to promote safer development environments.",
-    buttonText: "Web3 devcontainer"
+    links: [
+      {
+        label: "Web3 devcontainer",
+        url: "#"
+      },
+      {
+        label: "devsecops toolkit",
+        url: "#"
+      }
+    ]
   }
 }; 

@@ -1,14 +1,17 @@
 import React from 'react';
 
+import { CardLink } from '../data/cardContent';
+
 interface CardProps {
   title: string;
   description: string;
   onClose?: () => void;
   onExplore: () => void;
   buttonText?: string;
+  links?: CardLink[];
 }
 
-const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, buttonText }) => {
+const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, buttonText, links }) => {
   return (
     <div className="relative w-[90vw] sm:w-[420px]">
       <div className="relative w-full">
@@ -37,20 +40,32 @@ const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, but
           )}
           <h2 className="text-white text-xl font-bold mb-4 font-[family-name:var(--font-poppins)]">{title}</h2>
           <p className="text-white/80 text-base mb-6 font-[family-name:var(--font-poppins)]">{description}</p>
-          <a 
-            href="#" 
-            onClick={(e) => {
-              e.preventDefault();
-              onExplore();
-            }}
-            className="text-white hover:text-white/80 text-base font-medium inline-block transition-colors uppercase font-[family-name:var(--font-poppins)]"
-            style={{
-              borderBottom: '1px solid white',
-              width: 'fit-content'
-            }}
-          >
-            {buttonText || "Explore"}
-          </a>
+          {links && links.length > 0 ? (
+            <div className="flex flex-col gap-2">
+              {links.map((link, idx) => (
+                <a
+                  key={idx}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-white/80 text-base font-medium transition-colors uppercase font-[family-name:var(--font-poppins)] underline underline-offset-2 decoration-white"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          ) : (
+            <a 
+              href="#" 
+              onClick={(e) => {
+                e.preventDefault();
+                onExplore();
+              }}
+              className="text-white hover:text-white/80 text-base font-medium transition-colors uppercase font-[family-name:var(--font-poppins)] underline underline-offset-2 decoration-white"
+            >
+              {buttonText || "Explore"}
+            </a>
+          )}
         </div>
       </div>
     </div>

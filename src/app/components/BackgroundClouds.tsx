@@ -73,7 +73,7 @@ const BackgroundClouds = () => {
       </div>
 
       {/* Glitch derecho */}
-      <div className="absolute top-[80%] right-[5%] w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] lg:w-[200px] lg:h-[200px] overflow-visible -translate-y-1/2">
+      <div className="absolute top-[81%] right-[0%] w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] lg:w-[200px] lg:h-[200px] overflow-visible -translate-y-1/2">
         <div className="relative w-full h-full">
           <Image
             src="/assets/background/bg-glitch.svg"

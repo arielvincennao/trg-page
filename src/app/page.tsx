@@ -11,7 +11,7 @@ import ProgressBar from "./components/ProgressBar";
 
 export default function Home() {
   const [showLoading, setShowLoading] = useState(false);
-  const [showIndicators, setShowIndicators] = useState(false);
+  const [showIndicators, setShowIndicators] = useState(true);
 
   useEffect(() => {
     // Verificar si la página se cargó por navegación o por refresh
