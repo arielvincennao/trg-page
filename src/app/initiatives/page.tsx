@@ -33,7 +33,6 @@ function ParticlesDOM() {
   }, []);
 
   useEffect(() => {
-    const sceneElement = document.body;
     const width = window.innerWidth;
     const height = window.innerHeight;
     const PARTICLE_COUNT = isMobile ? 24 : 48;
