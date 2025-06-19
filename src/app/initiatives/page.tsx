@@ -1,13 +1,26 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from "../components/Navbar";
 import Card from "../components/Card";
 import { cardContent } from "../data/cardContent";
 import BackgroundClouds from "../components/BackgroundClouds";
 
-function ParticlesBackground() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+// Sistema de partículas DOM igual que en Scene
+type Particle = {
+  x: number;
+  y: number;
+  r: number;
+  dx: number;
+  dy: number;
+  speed: number;
+  opacity: number;
+  targetOpacity: number;
+  delay: number;
+};
+
+function ParticlesDOM() {
+  const [particles, setParticles] = useState<Particle[]>([]);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -20,26 +33,13 @@ function ParticlesBackground() {
   }, []);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d', { alpha: true });
-    if (!ctx) return;
-    let animationFrameId: number;
-    const dpr = window.devicePixelRatio || 1;
-    const updateCanvasSize = () => {
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvas.style.width = window.innerWidth + 'px';
-      canvas.style.height = window.innerHeight + 'px';
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(dpr, dpr);
-      return { width: window.innerWidth, height: window.innerHeight };
-    };
-    let { width, height } = updateCanvasSize();
-    const PARTICLE_COUNT = isMobile ? 50 : 100;
+    const sceneElement = document.body;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const PARTICLE_COUNT = isMobile ? 24 : 48;
     const INITIAL_DELAY = 2000;
-    const startTime = Date.now();
-    const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+    const now = Date.now();
+    let particlesArr: Particle[] = Array.from({ length: PARTICLE_COUNT }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
       r: 1 + Math.random() * 2,
@@ -48,74 +48,66 @@ function ParticlesBackground() {
       dy: (Math.random() - 0.5) * 0.8,
       opacity: 0,
       targetOpacity: 0.1 + Math.random() * 0.3,
-      delay: INITIAL_DELAY
+      delay: now + INITIAL_DELAY
     }));
-    function draw() {
-      if (!ctx) return;
-      ctx.clearRect(0, 0, width, height);
-      const currentTime = Date.now() - startTime;
-      for (const p of particles) {
-        if (currentTime < p.delay) continue;
-        const fadeInDuration = 1000;
-        const timeSinceDelay = currentTime - p.delay;
-        const fadeProgress = Math.min(timeSinceDelay / fadeInDuration, 1);
-        p.opacity = p.targetOpacity * fadeProgress;
-        ctx.globalAlpha = p.opacity;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-        ctx.fillStyle = '#fff';
-        ctx.shadowColor = '#fff';
-        ctx.shadowBlur = 8;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        ctx.globalAlpha = 1;
-      }
-    }
-    function update() {
-      const currentTime = Date.now() - startTime;
-      for (const p of particles) {
-        if (currentTime < p.delay) continue;
-        p.x += p.dx;
-        p.y += p.dy;
-        if (p.x < 0) { p.x = 0; p.dx = Math.abs(p.dx); }
-        if (p.x > width) { p.x = width; p.dx = -Math.abs(p.dx); }
-        if (p.y < 0) { p.y = 0; p.dy = Math.abs(p.dy); }
-        if (p.y > height) { p.y = height; p.dy = -Math.abs(p.dy); }
-        p.dx += (Math.random() - 0.5) * 0.1;
-        p.dy += (Math.random() - 0.5) * 0.1;
-        const maxSpeed = 1;
-        const currentSpeed = Math.sqrt(p.dx * p.dx + p.dy * p.dy);
-        if (currentSpeed > maxSpeed) {
-          p.dx = (p.dx / currentSpeed) * maxSpeed;
-          p.dy = (p.dy / currentSpeed) * maxSpeed;
-        }
-      }
-    }
+    setParticles(particlesArr);
+
+    let animationId: number;
     function animate() {
-      update();
-      draw();
-      animationFrameId = requestAnimationFrame(animate);
+      const now = Date.now();
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      particlesArr = particlesArr.map(p => {
+        // Fade-in según delay y targetOpacity
+        let opacity = p.opacity;
+        if (now > p.delay && opacity < p.targetOpacity) {
+          opacity = Math.min(p.targetOpacity, opacity + 0.02);
+        }
+        // Movimiento
+        let nx = p.x + p.dx;
+        let ny = p.y + p.dy;
+        if (nx < 0) { nx = 0; p.dx = Math.abs(p.dx); }
+        if (nx > width) { nx = width; p.dx = -Math.abs(p.dx); }
+        if (ny < 0) { ny = 0; p.dy = Math.abs(p.dy); }
+        if (ny > height) { ny = height; p.dy = -Math.abs(p.dy); }
+        // Variación aleatoria
+        let ndx = p.dx + (Math.random() - 0.5) * 0.1;
+        let ndy = p.dy + (Math.random() - 0.5) * 0.1;
+        // Limitar velocidad
+        const maxSpeed = 1;
+        const currentSpeed = Math.sqrt(ndx * ndx + ndy * ndy);
+        if (currentSpeed > maxSpeed) {
+          ndx = (ndx / currentSpeed) * maxSpeed;
+          ndy = (ndy / currentSpeed) * maxSpeed;
+        }
+        return { ...p, x: nx, y: ny, dx: ndx, dy: ndy, opacity };
+      });
+      setParticles([...particlesArr]);
+      animationId = requestAnimationFrame(animate);
     }
-    animate();
-    function handleResize() {
-      const newSize = updateCanvasSize();
-      width = newSize.width;
-      height = newSize.height;
-    }
-    window.addEventListener('resize', handleResize);
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', handleResize);
-    };
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
   }, [isMobile]);
+
   return (
     <div className="fixed inset-0 pointer-events-none z-20">
-      <canvas
-        ref={canvasRef}
-        className="absolute top-0 left-0 w-full h-full pointer-events-none"
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
-        aria-hidden="true"
-      />
+      {particles.map((particle, index) => (
+        <div
+          key={index}
+          className="absolute rounded-full"
+          style={{
+            width: particle.r * 2,
+            height: particle.r * 2,
+            left: particle.x,
+            top: particle.y,
+            opacity: particle.opacity,
+            background: '#fff',
+            boxShadow: '0 0 4px 1px #fff',
+            transition: 'opacity 0.2s',
+            pointerEvents: 'none',
+          }}
+        />
+      ))}
     </div>
   );
 }
@@ -128,7 +120,7 @@ export default function InitiativesPage() {
   return (
     <div className="min-h-screen bg-black relative">
       <BackgroundClouds />
-      <ParticlesBackground />
+      <ParticlesDOM />
       <Navbar />
       <main className="container mx-auto px-4 pt-32 pb-16 relative z-20">
         <h1 className="text-4xl font-bold mb-12 text-center text-white">Our Initiatives</h1>

@@ -15,11 +15,11 @@ const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, but
   return (
     <div className="relative w-[90vw] sm:w-[420px]">
       <div className="relative w-full">
-        <div className="absolute inset-0 bg-black rounded-2xl border border-red-500/50" />
+        <div className="absolute inset-0 bg-[#D02D301A] backdrop-blur-[15px] rounded-2xl border border-[#D02D30]" />
         <div className="relative z-10 p-6 flex flex-col">
           {onClose && (
             <button 
-              className="absolute -top-3 -right-3 w-8 h-8 bg-black/80 rounded-full border border-red-500 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+              className="absolute -top-3 -right-3 w-8 h-8 bg-white/80 rounded-full border border-[#D02D30] flex items-center justify-center text-[#D02D30] hover:bg-white transition-colors cursor-pointer"
               onClick={onClose}
             >
               <svg 
@@ -33,8 +33,8 @@ const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, but
                 strokeLinejoin="round"
                 className="w-4 h-4"
               >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
           )}
