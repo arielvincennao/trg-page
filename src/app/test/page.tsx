@@ -53,7 +53,7 @@ export default function TestPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [showSection2, transitioning, blockScroll]);
 
-  // Wheel listener para volver de la sección 2
+  // Wheel listener para volver de la sección 2 (desktop)
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (!showSection2 || transitioning || blockScroll) return;
@@ -78,6 +78,41 @@ export default function TestPage() {
 
     window.addEventListener('wheel', handleWheel, { passive: true });
     return () => window.removeEventListener('wheel', handleWheel);
+  }, [showSection2, transitioning, blockScroll]);
+
+  // Touch listener para volver de la sección 2 (mobile)
+  useEffect(() => {
+    let lastY = null as number | null;
+    const handleTouchStart = (e: TouchEvent) => {
+      if (!showSection2 || transitioning || blockScroll) return;
+      lastY = e.touches[0].clientY;
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!showSection2 || transitioning || blockScroll || lastY === null) return;
+      const currentY = e.touches[0].clientY;
+      if (currentY - lastY > 20) { // swipe hacia abajo
+        setTransitioning(true);
+        setBlockScroll(true);
+        setTimeout(() => {
+          setShowSection2(false);
+          setShowSection1(false);
+          setProgress(0);
+          setResetKey(k => k + 1);
+          window.scrollTo({ top: 0, behavior: 'auto' });
+          setTimeout(() => {
+            setShowSection1(true);
+            setTransitioning(false);
+            setBlockScroll(false);
+          }, 100);
+        }, 400);
+      }
+    };
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
   }, [showSection2, transitioning, blockScroll]);
 
   // Bloqueo de scroll del body
