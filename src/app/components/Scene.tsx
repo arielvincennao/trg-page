@@ -216,12 +216,12 @@ export default function Scene() {
         )}
         {/* Temple */}
         <div
-          className={`temple absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[90vw] sm:w-[48vw] md:w-[48vw] lg:w-[48vw] ${getAnimationClass(1)}`}
+          className={`temple absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[90vw] sm:w-[48vw] md:w-[48vw] lg:w-[48vw] ${getAnimationClass(1)}`}
           style={{ zIndex: 21 }}
         >
           {/* Sun */}
           <div
-            className={`sun absolute top-[30%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[65vw] sm:w-[28vw] md:w-[28vw] lg:w-[28vw] ${getAnimationClass(2)}`}
+            className={`sun absolute top-[40%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[65vw] sm:w-[28vw] md:w-[28vw] lg:w-[28vw] ${getAnimationClass(2)}`}
             style={{
               zIndex: 1
             }}
@@ -253,7 +253,7 @@ export default function Scene() {
 
           {/* Temple Shadow */}
           <div
-            className="absolute top-[100%] left-[50%] -translate-y-1/2 w-[70vw] sm:w-[40vw] md:w-[40vw] lg:w-[40vw] h-[5vw] rounded-[50%]"
+            className="absolute top-[110%] left-[50%] -translate-y-1/2 w-[70vw] sm:w-[40vw] md:w-[40vw] lg:w-[40vw] h-[5vw] rounded-[50%]"
             style={{
               background: 'radial-gradient(ellipse at center, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0.1) 50%, rgba(255,0,0,0) 70%)',
               filter: 'blur(40px)',
@@ -268,7 +268,7 @@ export default function Scene() {
               isHovered={isTempleHovered}
               onMouseEnter={() => !activeElement && setIsTempleHovered(true)}
               onMouseLeave={() => setIsTempleHovered(false)}
-              className={`object-contain cursor-pointer w-full h-auto ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
+              className={`object-contain cursor-pointer transform origin-center transition-transform duration-300 ${(isTempleHovered || activeElement === 'temple') ? 'scale-110 sm:scale-110 md:scale-110 lg:scale-110' : 'scale-100 sm:scale-100 md:scale-100 lg:scale-100'} ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
               style={{
                 pointerEvents: 'visiblePainted',
                 position: 'relative',
@@ -281,7 +281,7 @@ export default function Scene() {
               isHovered={isTempleHovered}
               onMouseEnter={() => !activeElement && setIsTempleHovered(true)}
               onMouseLeave={() => setIsTempleHovered(false)}
-              className={`object-contain cursor-pointer ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
+              className={`object-contain cursor-pointer transform origin-center transition-transform duration-300 ${(isTempleHovered || activeElement === 'temple') ? 'scale-110 sm:scale-110 md:scale-110 lg:scale-110' : 'scale-100 sm:scale-100 md:scale-100 lg:scale-100'} ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
               style={{
                 pointerEvents: 'visiblePainted',
                 position: 'relative',
@@ -293,7 +293,7 @@ export default function Scene() {
 
           {/* Left Lamp Temple */}
           <div
-            className={`absolute left-[-8%] sm:left-[-13%] md:left-[-13%] lg:left-[-13%] top-[55%] transform -translate-y-1/2 w-[45%] sm:w-[40%] md:w-[40%] lg:w-[40%] h-[45%] sm:h-[40%] md:h-[40%] lg:h-[40%] ${getAnimationClass(3)}`}
+            className={`absolute left-[-22%] sm:left-[-22%] md:left-[-22%] lg:left-[-22%] top-[60%] transform -translate-y-1/2 w-[45%] sm:w-[40%] md:w-[40%] lg:w-[40%] h-[45%] sm:h-[40%] md:h-[40%] lg:h-[40%] ${getAnimationClass(3)}`}
             style={{
               zIndex: 22
             }}
@@ -304,7 +304,7 @@ export default function Scene() {
                 alt="Light"
                 fill
                 priority
-                className={`object-contain cursor-pointer scale-90 ${activeElement && activeElement !== 'leftLight' ? 'opacity-15 pointer-events-none' : ''}`}
+                className={`object-contain cursor-pointer transform origin-center transition-transform duration-300 ${(isLeftLightHovered || activeElement === 'leftLight') ? 'scale-105 sm:scale-105 md:scale-105 lg:scale-105' : 'scale-90 sm:scale-90 md:scale-90 lg:scale-90'} ${activeElement && activeElement !== 'leftLight' ? 'opacity-15 pointer-events-none' : ''}`}
                 onMouseEnter={() => !activeElement && setIsLeftLightHovered(true)}
                 onMouseLeave={() => setIsLeftLightHovered(false)}
                 onClick={() => handleElementClick('leftLight', cardContent.leftLight)}
@@ -329,7 +329,7 @@ export default function Scene() {
 
         {/* Bottom Left Flower */}
         <div
-          className={`${getElementClasses('flower', "flower absolute bottom-[-20%] sm:bottom-[-5%] md:bottom-[-5%] lg:bottom-[-5%] left-[0%] transition-all duration-300 w-[35%] h-[55%] sm:w-[20%] sm:h-[40%] md:w-[20%] md:h-[40%] lg:w-[20%] lg:h-[40%]")} ${getAnimationClass(4)}`}
+          className={`${getElementClasses('flower', "flower absolute bottom-[-22%] sm:bottom-[-10%] md:bottom-[-10%] lg:bottom-[-10%] left-[0%] transition-all duration-300 w-[35%] h-[55%] sm:w-[20%] sm:h-[40%] md:w-[20%] md:h-[40%] lg:w-[20%] lg:h-[40%]")} ${getAnimationClass(4)}`}
           style={{
             zIndex: 21
           }}
@@ -339,7 +339,7 @@ export default function Scene() {
             alt="Flower"
             fill
             priority
-            className={`object-contain cursor-pointer ${(isFlowerHovered || activeElement === 'flower') ? 'scale-180 sm:scale-180 md:scale-180 lg:scale-180' : 'scale-140 sm:scale-140 md:scale-140 lg:scale-140'} ${activeElement && activeElement !== 'flower' ? 'opacity-15 pointer-events-none' : ''}`}
+            className={`object-contain cursor-pointer transition-transform duration-300 ${(isFlowerHovered || activeElement === 'flower') ? 'scale-160 sm:scale-160 md:scale-160 lg:scale-160' : 'scale-140 sm:scale-140 md:scale-140 lg:scale-140'} ${activeElement && activeElement !== 'flower' ? 'opacity-15 pointer-events-none' : ''}`}
             onMouseEnter={() => !activeElement && setIsFlowerHovered(true)}
             onMouseLeave={() => setIsFlowerHovered(false)}
             onClick={() => handleElementClick('flower', cardContent.flower)}
@@ -348,17 +348,15 @@ export default function Scene() {
 
         {/* Right Bottom Tree*/}
         <div
-          className={`${getElementClasses('tree', "tree absolute bottom-[-10%] right-[8%] transition-all duration-300 w-[25%] h-[35%] sm:w-[20%] sm:h-[30%] md:w-[20%] md:h-[30%] lg:w-[20%] lg:h-[30%]")} ${getAnimationClass(5)}`}
-          style={{
-            zIndex: 21
-          }}
+          className={`${getElementClasses('tree', "tree absolute bottom-[-15%] sm:bottom-[-14%] md:bottom-[-11%] lg:bottom-[-11%] right-[8%] transition-all duration-300 w-[25%] h-[35%] sm:w-[20%] sm:h-[30%] md:w-[20%] md:h-[30%] lg:w-[20%] lg:h-[30%] z-10 sm:z-[21] md:z-[21] lg:z-[21]")} ${getAnimationClass(5)}`}
+          style={{}}
         >
           <Image
             src={isTreeHovered || activeElement === 'tree' ? "/assets/tree.svg" : "/assets/tree-off.svg"}
             alt="Tree"
             fill
             priority
-            className={`object-contain cursor-pointer scale-320 sm:scale-320 md:scale-320 lg:scale-320 ${activeElement && activeElement !== 'tree' ? 'opacity-15 pointer-events-none' : ''}`}
+            className={`object-contain cursor-pointer transform origin-center transition-transform duration-300 ${(isTreeHovered || activeElement === 'tree') ? 'scale-350 sm:scale-350 md:scale-350 lg:scale-350' : 'scale-320 sm:scale-320 md:scale-320 lg:scale-320'} ${activeElement && activeElement !== 'tree' ? 'opacity-15 pointer-events-none' : ''}`}
             onMouseEnter={() => !activeElement && setIsTreeHovered(true)}
             onMouseLeave={() => setIsTreeHovered(false)}
             onClick={() => handleElementClick('tree', cardContent.tree)}
@@ -367,7 +365,7 @@ export default function Scene() {
 
         {/* Right Top Lights */}
         <div
-          className={`${getElementClasses('topRightLights', "absolute top-[0] right-[8%] w-[15%] h-[50%] sm:w-[10%] sm:h-[40%] md:w-[10%] md:h-[40%] lg:w-[10%] lg:h-[40%]")} ${getAnimationClass(6)}`}
+          className={`${getElementClasses('topRightLights', "absolute top-[-20%] right-[12%] w-[17%] h-[55%] sm:w-[12%] sm:h-[45%] md:w-[12%] md:h-[45%] lg:w-[12%] lg:h-[45%]")} ${getAnimationClass(6)}`}
           style={{
             zIndex: 21
           }}
@@ -377,7 +375,7 @@ export default function Scene() {
             alt="Lights"
             fill
             priority
-            className={`object-contain cursor-pointer w-full h-auto scale-140 sm:scale-140 md:scale-140 lg:scale-140 ${activeElement && activeElement !== 'topRightLights' ? 'opacity-15 pointer-events-none' : ''}`}
+            className={`object-contain cursor-pointer transform origin-center transition-transform duration-300 ${(isTopRightLightsHovered || activeElement === 'topRightLights') ? 'scale-180 sm:scale-180 md:scale-180 lg:scale-180' : 'scale-160 sm:scale-160 md:scale-160 lg:scale-160'} ${activeElement && activeElement !== 'topRightLights' ? 'opacity-15 pointer-events-none' : ''}`}
             onMouseEnter={() => !activeElement && setIsTopRightLightsHovered(true)}
             onMouseLeave={() => setIsTopRightLightsHovered(false)}
             onClick={() => handleElementClick('topRightLights', cardContent.topRightLights)}
@@ -386,7 +384,7 @@ export default function Scene() {
 
         {/* Left Top Letters */}
         <div
-          className={`${getElementClasses('letters', "absolute top-[8%] left-[5%] w-[30%] h-[22%] sm:w-[15%] sm:h-[14%] md:w-[15%] md:h-[14%] lg:w-[15%] lg:h-[14%]")} ${getAnimationClass(6)}`}
+          className={`${getElementClasses('letters', "absolute top-[8%] left-[5%] w-[30%] h-[22%] sm:w-[15%] sm:h-[14%] md:w-[15%] md:h-[14%] lg:w-[15%] lg:h-[14%] flex justify-center items-center")} ${getAnimationClass(6)}`}
           style={{
             zIndex: 21
           }}
@@ -396,7 +394,7 @@ export default function Scene() {
             alt="Letters"
             fill
             priority
-            className={`object-contain cursor-pointer w-full h-auto scale-105 sm:scale-105 md:scale-105 lg:scale-105 ${activeElement && activeElement !== 'letters' ? 'opacity-15 pointer-events-none' : ''}`}
+            className={`object-contain cursor-pointer transform origin-center transition-transform duration-300 ${isLettersHovered || activeElement === 'letters' ? 'scale-120 sm:scale-120 md:scale-120 lg:scale-120' : 'scale-105 sm:scale-105 md:scale-105 lg:scale-105'} ${activeElement && activeElement !== 'letters' ? 'opacity-15 pointer-events-none' : ''}`}
             onMouseEnter={() => !activeElement && setIsLettersHovered(true)}
             onMouseLeave={() => setIsLettersHovered(false)}
             onClick={() => handleElementClick('letters', cardContent.letters)}

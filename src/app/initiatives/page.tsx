@@ -123,11 +123,11 @@ export default function InitiativesPage() {
       <Navbar />
       <main className="container mx-auto px-4 pt-32 pb-16 relative z-20">
         <h1 className="text-4xl font-bold mb-12 text-center text-white font-[family-name:var(--font-poppins)]">Our Initiatives</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
+        <div className="flex flex-col gap-8 px-0 sm:px-8 overflow-visible md:grid md:grid-cols-2 lg:grid-cols-3">
           {Object.entries(cardContent).map(([key, content]) => (
             <div 
               key={key}
-              className="relative w-full h-[200px] sm:h-[250px] md:h-[300px]"
+              className="relative w-full min-h-[260px] sm:min-h-[250px] md:min-h-[300px] overflow-visible"
             >
               <Card
                 title={content.title}
