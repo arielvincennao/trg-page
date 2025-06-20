@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Temple from '../components/assets/Temple';
 //import TempleOff from '../components/assets/TempleOff';
-import Sun from '../components/assets/Sun';
+//import Sun from '../components/assets/Sun';
 //import SunOff from '../components/assets/SunOff';
 import Image from 'next/image';
 
