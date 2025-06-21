@@ -3,48 +3,32 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
-const Indicators = () => {
-  const [isInSceneSection, setIsInSceneSection] = useState(false);
+interface IndicatorsProps {
+  inMain?: boolean;
+  inScene?: boolean;
+}
+
+const Indicators = ({ inMain, inScene }: IndicatorsProps) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 640);
     };
-    
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Obtener la posición del elemento scene
-      const sceneElement = document.getElementById('scene-section');
-      const scenePosition = sceneElement?.offsetTop || 0;
-      
-      // Calcular si estamos en la sección de la escena
-      const isInScene = currentScrollY >= scenePosition - window.innerHeight * 0.2;
-      
-      // Actualizar el estado basado en la posición
-      setIsInSceneSection(isInScene);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Verificar posición inicial
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
-    <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-row items-center gap-2 text-white text-sm z-50`}>
-      {/* Scroll to view content */}
-      <div className={`flex flex-row items-center gap-2 transition-opacity duration-300 ${isInSceneSection ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+    <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-row items-center gap-2 text-white text-sm z-50`} style={{ minHeight: 40 }}>
+      {/* Scroll to view content (solo en MainContent) */}
+      <div
+        className={`flex flex-row items-center gap-2 transition-all duration-500
+          ${inMain ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'}
+          absolute left-1/2 -translate-x-1/2`}
+        style={{ position: 'absolute' }}
+      >
         <Image
           src="/assets/arrow-down.svg"
           alt="Arrow down"
@@ -56,9 +40,13 @@ const Indicators = () => {
           Scroll to view
         </span>
       </div>
-
-      {/* Hover/Tap to explore content */}
-      <div className={`absolute flex flex-row items-center gap-2 transition-opacity duration-300 ${isInSceneSection ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+      {/* Hover/Tap to explore content (solo en Scene) */}
+      <div
+        className={`flex flex-row items-center gap-2 transition-all duration-500
+          ${inScene ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-4 pointer-events-none'}
+          absolute left-1/2 -translate-x-1/2`}
+        style={{ position: 'absolute' }}
+      >
         <Image
           src={isMobile ? "/assets/tap.svg" : "/assets/mouse.svg"}
           alt={isMobile ? "Tap icon" : "Mouse icon"}

@@ -121,13 +121,13 @@ export default function InitiativesPage() {
       <BackgroundClouds />
       <ParticlesDOM />
       <Navbar />
-      <main className="container mx-auto px-4 pt-32 pb-16 relative z-20">
+      <main className="container mx-auto px-4 pt-32 pb-8 relative z-20">
         <h1 className="text-4xl font-bold mb-12 text-center text-white font-[family-name:var(--font-poppins)]">Our Initiatives</h1>
-        <div className="flex flex-col gap-8 px-0 sm:px-8 overflow-visible md:grid md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex flex-col gap-6 items-center justify-center px-0 sm:px-8 overflow-visible md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:py-3 lg:gap-6 lg:py-3">
           {Object.entries(cardContent).map(([key, content]) => (
             <div 
               key={key}
-              className="relative w-full min-h-[260px] sm:min-h-[250px] md:min-h-[300px] overflow-visible"
+              className="relative w-auto max-w-[420px] min-h-[260px] sm:min-h-[250px] md:min-h-[300px] overflow-visible py-3 md:py-0 lg:py-0"
             >
               <Card
                 title={content.title}

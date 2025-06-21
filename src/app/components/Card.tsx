@@ -13,7 +13,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, buttonText, links }) => {
   return (
-    <div className="relative w-[90vw] sm:w-[420px]">
+    <div className="relative w-full max-w-[420px]">
       <div className="relative w-full">
         <div className="absolute inset-0 bg-[#D02D301A] backdrop-blur-[15px] rounded-2xl border border-[#D02D30]" />
         <div className="relative z-10 p-6 flex flex-col">

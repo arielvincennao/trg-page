@@ -9,7 +9,7 @@ const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-8 left-1/2 -translate-x-1/2 w-11/12 md:w-[45%] bg-[#191919] text-white px-4 md:px-10 py-3 rounded-full flex items-center justify-between gap-12 border border-white/50 font-[family-name:var(--font-poppins)] z-50">
+    <nav className="fixed top-8 left-1/2 -translate-x-1/2 w-11/12 md:w-[45%] bg-[#191919] text-white px-4 md:px-10 py-2 rounded-full flex items-center justify-between gap-12 border border-white/50 font-[family-name:var(--font-poppins)] z-50">
       <div className="flex items-center gap-2">
         <Link href="/">
           <Image
