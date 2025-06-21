@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Navbar from "../components/Navbar";
-import Card from "../components/Card";
 import BackgroundClouds from "../components/BackgroundClouds";
 
 // Definir el tipo Particle para tipado correcto
