@@ -20,7 +20,6 @@ const MainContent = ({ onSectionEnd }: { onSectionEnd: () => void }) => {
   const [transitioning, setTransitioning] = useState(false);
   const [blockScroll, setBlockScroll] = useState(false);
   const [showSection, setShowSection] = useState(true);
-  const [resetKey, setResetKey] = useState(0);
   const scrollContainerRef = useRef(null);
 
   useEffect(() => {

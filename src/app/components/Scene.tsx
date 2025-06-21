@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import SunOff from "./assets/SunOff";
 import Sun from "./assets/Sun";
@@ -51,7 +51,6 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
   useEffect(() => {
     if (!show) return;
     // Inicializar partículas al montar el componente
-    const sceneElement = document.getElementById('scene-section');
     const width = window.innerWidth;
     const height = window.innerHeight;
     const PARTICLE_COUNT = isMobile ? 36 : 72;
@@ -162,10 +161,6 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
   const getElementClasses = (elementId: string, baseClasses: string) => {
     const isDisabled = activeElement && activeElement !== elementId;
     return `${baseClasses} ${isDisabled ? 'opacity-15 pointer-events-none' : ''}`;
-  };
-
-  const getAnimationClass = (delay: number) => {
-    return '';
   };
 
   // Determinar clase de animación de salida
