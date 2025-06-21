@@ -36,7 +36,7 @@ function ParticlesDOM() {
     const width = window.innerWidth;
     const height = window.innerHeight;
     const PARTICLE_COUNT = isMobile ? 24 : 48;
-    const INITIAL_DELAY = 2000;
+    const INITIAL_DELAY = 500;
     const now = Date.now();
     let particlesArr: Particle[] = Array.from({ length: PARTICLE_COUNT }, () => ({
       x: Math.random() * width,
@@ -122,7 +122,7 @@ export default function InitiativesPage() {
       <ParticlesDOM />
       <Navbar />
       <main className="container mx-auto px-4 pt-32 pb-8 relative z-20">
-        <h1 className="text-4xl font-bold mb-12 text-center text-white font-[family-name:var(--font-poppins)]">Our Initiatives</h1>
+        <h1 className="text-xl sm:text-2xl font-bold mb-5 text-left text-white font-[family-name:var(--font-pixelify-sans)] px-6">Initiatives</h1>
         <div className="flex flex-col gap-6 items-center justify-center px-0 sm:px-8 overflow-visible md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:py-3 lg:gap-6 lg:py-3">
           {Object.entries(cardContent).map(([key, content]) => (
             <div 

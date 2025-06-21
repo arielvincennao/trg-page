@@ -21,7 +21,7 @@ const Indicators = ({ inMain, inScene }: IndicatorsProps) => {
   }, []);
 
   return (
-    <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-row items-center gap-2 text-white text-sm z-50`} style={{ minHeight: 40 }}>
+    <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-row items-center gap-2 text-[#666666] text-sm z-50`} style={{ minHeight: 40 }}>
       {/* Scroll to view content (solo en MainContent) */}
       <div
         className={`flex flex-row items-center gap-2 transition-all duration-500
@@ -35,6 +35,7 @@ const Indicators = ({ inMain, inScene }: IndicatorsProps) => {
           width={20}
           height={20}
           className="animate-bounce-arrow"
+          style={{ filter: 'invert(36%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(90%) contrast(90%)' }}
         />
         <span className="font-[family-name:var(--font-poppins)] whitespace-nowrap">
           Scroll to view

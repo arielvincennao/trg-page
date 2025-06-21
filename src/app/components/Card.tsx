@@ -41,7 +41,7 @@ const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, but
           <h2 className="text-white text-xl font-bold mb-4 font-[family-name:var(--font-poppins)]">{title}</h2>
           <p className="text-white/80 text-base mb-6 font-[family-name:var(--font-poppins)]">{description}</p>
           {links && links.length > 0 ? (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 mt-12">
               {links.map((link, idx) => (
                 <a
                   key={idx}
@@ -61,7 +61,7 @@ const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, but
                 e.preventDefault();
                 onExplore();
               }}
-              className="text-white hover:text-white/80 text-base font-medium transition-colors uppercase font-[family-name:var(--font-poppins)] underline underline-offset-2 decoration-white"
+              className="text-white hover:text-white/80 text-base font-medium transition-colors uppercase font-[family-name:var(--font-poppins)] underline underline-offset-2 decoration-white mt-12"
             >
               {buttonText || "Explore"}
             </a>
