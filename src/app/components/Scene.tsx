@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import SunOff from "./assets/SunOff";
 import Sun from "./assets/Sun";
@@ -18,27 +18,17 @@ interface SceneProps {
 
 const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
-  const [isTempleHovered, setIsTempleHovered] = useState(false);
-  const [isLeftLightHovered, setIsLeftLightHovered] = useState(false);
-  const [isFlowerHovered, setIsFlowerHovered] = useState(false);
-  const [isTreeHovered, setIsTreeHovered] = useState(false);
-  const [isTopRightLightsHovered, setIsTopRightLightsHovered] = useState(false);
-  const [isLettersHovered, setIsLettersHovered] = useState(false);
-  const [activeElement, setActiveElement] = useState<string | null>(null);
-  const [activeCard, setActiveCard] = useState<CardContent | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 640);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const [isTempleHovered, setIsTempleHovered] = React.useState(false);
+  const [isLeftLightHovered, setIsLeftLightHovered] = React.useState(false);
+  const [isFlowerHovered, setIsFlowerHovered] = React.useState(false);
+  const [isTreeHovered, setIsTreeHovered] = React.useState(false);
+  const [isTopRightLightsHovered, setIsTopRightLightsHovered] = React.useState(false);
+  const [isLettersHovered, setIsLettersHovered] = React.useState(false);
+  const [activeElement, setActiveElement] = React.useState<string | null>(null);
+  const [activeCard, setActiveCard] = React.useState<CardContent | null>(null);
 
   // Wheel listener to return from section 2 (desktop)
-  useEffect(() => {
+  React.useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (!show || transitioning) return;
       if (e.deltaY < 0) {
@@ -50,7 +40,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
   }, [show, transitioning, onBack]);
 
   // Touch listener to return from section 2 (mobile)
-  useEffect(() => {
+  React.useEffect(() => {
     let lastY: number | null = null;
     const handleTouchStart = (e: TouchEvent) => {
       if (!show || transitioning) return;
