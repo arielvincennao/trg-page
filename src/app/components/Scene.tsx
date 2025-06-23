@@ -7,6 +7,8 @@ import TempleOff from "./assets/TempleOff";
 import Temple from './assets/Temple';
 import Card from './Card';
 import { cardContent, CardContent } from '../data/cardContent';
+import BackgroundClouds from './BackgroundClouds';
+import ParticlesDOM from './ParticlesDOM';
 
 interface SceneProps {
   show: boolean;
@@ -14,20 +16,8 @@ interface SceneProps {
   onBack: () => void;
 }
 
-type Particle = {
-  x: number;
-  y: number;
-  r: number;
-  dx: number;
-  dy: number;
-  speed: number;
-  opacity: number;
-  targetOpacity: number;
-  delay: number;
-};
-
 const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
-  // const [isSunHovered, setIsSunHovered] = useState(false); // <--- COMENTADO
+
   const [isTempleHovered, setIsTempleHovered] = useState(false);
   const [isLeftLightHovered, setIsLeftLightHovered] = useState(false);
   const [isFlowerHovered, setIsFlowerHovered] = useState(false);
@@ -37,7 +27,6 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
   const [activeElement, setActiveElement] = useState<string | null>(null);
   const [activeCard, setActiveCard] = useState<CardContent | null>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -48,65 +37,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    if (!show) return;
-    // Inicializar partículas al montar el componente
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const PARTICLE_COUNT = isMobile ? 36 : 72;
-    const INITIAL_DELAY = 2000; // 2 segundos de delay inicial
-    const now = Date.now();
-    let particlesArr: Particle[] = Array.from({ length: PARTICLE_COUNT }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      r: 1 + Math.random() * 2,
-      speed: 0.2 + Math.random() * 0.5,
-      dx: (Math.random() - 0.5) * 0.8,
-      dy: (Math.random() - 0.5) * 0.8,
-      opacity: 0,
-      targetOpacity: 0.1 + Math.random() * 0.3,
-      delay: now + INITIAL_DELAY
-    }));
-    setParticles(particlesArr);
-
-    let animationId: number;
-    function animate() {
-      const now = Date.now();
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      particlesArr = particlesArr.map(p => {
-        // Fade-in según delay y targetOpacity
-        let opacity = p.opacity;
-        if (now > p.delay && opacity < p.targetOpacity) {
-          opacity = Math.min(p.targetOpacity, opacity + 0.02);
-        }
-        // Movimiento
-        let nx = p.x + p.dx;
-        let ny = p.y + p.dy;
-        if (nx < 0) { nx = 0; p.dx = Math.abs(p.dx); }
-        if (nx > width) { nx = width; p.dx = -Math.abs(p.dx); }
-        if (ny < 0) { ny = 0; p.dy = Math.abs(p.dy); }
-        if (ny > height) { ny = height; p.dy = -Math.abs(p.dy); }
-        // Variación aleatoria
-        let ndx = p.dx + (Math.random() - 0.5) * 0.1;
-        let ndy = p.dy + (Math.random() - 0.5) * 0.1;
-        // Limitar velocidad
-        const maxSpeed = 1;
-        const currentSpeed = Math.sqrt(ndx * ndx + ndy * ndy);
-        if (currentSpeed > maxSpeed) {
-          ndx = (ndx / currentSpeed) * maxSpeed;
-          ndy = (ndy / currentSpeed) * maxSpeed;
-        }
-        return { ...p, x: nx, y: ny, dx: ndx, dy: ndy, opacity };
-      });
-      setParticles([...particlesArr]);
-      animationId = requestAnimationFrame(animate);
-    }
-    animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
-  }, [isMobile, show]);
-
-  // Wheel listener para volver de la sección 2 (desktop)
+  // Wheel listener to return from section 2 (desktop)
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (!show || transitioning) return;
@@ -118,7 +49,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
     return () => window.removeEventListener('wheel', handleWheel);
   }, [show, transitioning, onBack]);
 
-  // Touch listener para volver de la sección 2 (mobile)
+  // Touch listener to return from section 2 (mobile)
   useEffect(() => {
     let lastY: number | null = null;
     const handleTouchStart = (e: TouchEvent) => {
@@ -146,6 +77,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
   const handleCloseCard = () => {
     setActiveCard(null);
     setActiveElement(null);
+    setIsTempleHovered(false);
   };
 
   const handleElementClick = (elementId: string, cardContent: CardContent) => {
@@ -163,91 +95,35 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
     return `${baseClasses} ${isDisabled ? 'opacity-15 pointer-events-none' : ''}`;
   };
 
-  // Determinar clase de animación de salida
+  // Determine exit animation class
   const fadeOut = !show && transitioning;
 
   return (
     <div
       id="scene-section"
-      className={`h-screen relative${fadeOut ? ' fade-out-scene' : ''}`}
+      className={`scene-section-container h-screen relative${fadeOut ? ' fade-out-scene' : ''}`}
       style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        zIndex: 20,
         opacity: transitioning ? 0 : 1,
         transition: 'opacity 0.4s',
         pointerEvents: transitioning ? 'none' : 'auto',
-        overflow: 'hidden',
       }}
     >
-      <div className="h-screen relative overflow-hidden" style={{ zIndex: 20 }}>
-        {/* Canvas de partículas DOM animadas */}
-        <div className="absolute inset-0 pointer-events-none z-[25]">
-          {particles.map((particle, index) => (
-            <div
-              key={index}
-              className="absolute rounded-full"
-              style={{
-                width: particle.r * 2,
-                height: particle.r * 2,
-                left: particle.x,
-                top: particle.y,
-                opacity: particle.opacity,
-                background: '#fff',
-                boxShadow: '0 0 4px 1px #fff',
-                transition: 'opacity 0.2s',
-                pointerEvents: 'none',
-              }}
-            />
-          ))}
-        </div>
+      <div className="h-screen relative overflow-hidden scene-inner-container">
+        {/* Animated DOM particles canvas */}
+        <ParticlesDOM countMobile={12} countDesktop={72} zIndexClass="z-[25]" />
         {/* Temple */}
         <div
-          className="temple absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] sm:w-[48vw] md:w-[48vw] lg:w-[48vw] fade-in-up fade-in-up-delay-1"
-          style={{ zIndex: 21 }}
+          className="temple absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] sm:w-[48vw] md:w-[48vw] lg:w-[48vw] fade-in-up fade-in-up-delay-1 scene-temple"
         >
           {/* Sun */}
           <div
-            className="sun absolute top-[40%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[65vw] sm:w-[28vw] md:w-[28vw] lg:w-[28vw] fade-in-up fade-in-up-delay-2"
-            style={{
-              zIndex: 0
-            }}
+            className="sun absolute top-[40%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[65vw] sm:w-[28vw] md:w-[28vw] lg:w-[28vw] fade-in-up fade-in-up-delay-2 scene-sun"
           >
-            {/*
-            {isSunHovered || activeElement === 'sun' ? (
-              <Sun
-                isHovered={isSunHovered}
-                onMouseEnter={() => !activeElement && setIsSunHovered(true)}
-                onMouseLeave={() => setIsSunHovered(false)}
-                className={`object-contain cursor-pointer w-full h-auto ${activeElement && activeElement !== 'sun' ? 'opacity-15 pointer-events-none' : ''}`}
-                style={{
-                  pointerEvents: 'visiblePainted'
-                }}
-                onClick={() => { }}
-              />
-            ) : (
-              <SunOff
-                isHovered={isSunHovered}
-                onMouseEnter={() => !activeElement && setIsSunHovered(true)}
-                onMouseLeave={() => setIsSunHovered(false)}
-                className={`object-contain cursor-pointer w-full h-auto ${activeElement && activeElement !== 'sun' ? 'opacity-15 pointer-events-none' : ''}`}
-                style={{
-                  pointerEvents: 'visiblePainted'
-                }}
-                onClick={() => { }}
-              />
-            )}
-            */}
             {/* Sun */}
             {activeElement === 'sun' ? (
               <Sun
-                className={`object-contain cursor-pointer w-full h-auto ${activeElement && activeElement !== 'sun' ? 'opacity-15 pointer-events-none' : ''}`}
-                style={{
-                  pointerEvents: 'visiblePainted'
-                }}
+                className={`object-contain cursor-pointer w-full h-auto scene-sun-element ${activeElement && activeElement !== 'sun' ? 'opacity-15 pointer-events-none' : ''}`}
+                style={{}}
                 onClick={() => { }}
                 isHovered={undefined}
                 onMouseEnter={undefined}
@@ -255,10 +131,8 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
               />
             ) : (
               <SunOff
-                className={`object-contain cursor-pointer w-full h-auto ${activeElement && activeElement !== 'sun' ? 'opacity-15 pointer-events-none' : ''}`}
-                style={{
-                  pointerEvents: 'visiblePainted'
-                }}
+                className={`object-contain cursor-pointer w-full h-auto scene-sun-element ${activeElement && activeElement !== 'sun' ? 'opacity-15 pointer-events-none' : ''}`}
+                style={{}}
                 onClick={() => { }}
                 isHovered={undefined}
                 onMouseEnter={undefined}
@@ -269,58 +143,40 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
           {/* Temple Shadow */}
           <div
-            className="absolute top-[100%] left-[12%] -translate-y-1/2 w-[70vw] sm:w-[40vw] md:w-[40vw] lg:w-[40vw] h-[5vw] rounded-[50%] fade-in-up fade-in-up-delay-3"
-            style={{
-              background: 'radial-gradient(ellipse at center, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0.1) 50%, rgba(255,0,0,0) 70%)',
-              filter: 'blur(40px)',
-              zIndex: 20,
-              transform: 'translate(-50%, -50%) scale(1.5)',
-              boxShadow: '0 0 50px rgba(255,0,0,0.2)'
-            }}
+            className="absolute top-[100%] left-[12%] -translate-y-1/2 w-[70vw] sm:w-[40vw] md:w-[40vw] lg:w-[40vw] h-[5vw] rounded-[50%] fade-in-up fade-in-up-delay-3 scene-temple-shadow"
           />
 
           {/* Temple */}
           <div
-            className={`transform origin-center transition-all duration-500 ${(activeElement === 'temple') ? 'scale-110' : 'scale-100'}`}
+            className={`transform origin-center transition-all duration-500 scene-temple-container ${(activeElement === 'temple') ? 'scale-110' : 'scale-100'} ${(!activeElement || isTempleHovered) ? 'scene-temple-container-pointer' : 'scene-temple-container-default'}`}
             onMouseEnter={() => !activeElement && setIsTempleHovered(true)}
             onMouseLeave={() => setIsTempleHovered(false)}
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1 }}
+            onClick={() => handleElementClick('temple', cardContent.temple)}
           >
             {isTempleHovered || activeElement === 'temple' ? (
               <Temple
                 isHovered={isTempleHovered}
                 onMouseEnter={undefined}
                 onMouseLeave={undefined}
-                className={`object-contain cursor-pointer w-full h-auto ${(isTempleHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
-                style={{
-                  pointerEvents: 'visiblePainted',
-                  position: 'relative',
-                  zIndex: 2
-                }}
-                onClick={() => handleElementClick('temple', cardContent.temple)}
+                className={`object-contain w-full h-auto scene-temple-element ${(isTempleHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
+                style={{}}
+                onClick={undefined}
               />
             ) : (
               <TempleOff
                 isHovered={isTempleHovered}
                 onMouseEnter={undefined}
                 onMouseLeave={undefined}
-                className={`object-contain cursor-pointer w-full h-auto ${(isTempleHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
-                style={{
-                  pointerEvents: 'visiblePainted',
-                  position: 'relative',
-                  zIndex: 2
-                }}
-                onClick={() => handleElementClick('temple', cardContent.temple)}
+                className={`object-contain w-full h-auto scene-temple-element ${(isTempleHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
+                style={{}}
+                onClick={undefined}
               />
             )}
           </div>
 
           {/* Left Lamp Temple */}
           <div
-            className={`absolute left-[-27%] sm:left-[-22%] md:left-[-22%] lg:left-[-22%] top-[60%] transform -translate-y-1/2 w-[45%] sm:w-[40%] md:w-[40%] lg:w-[40%] h-[45%] sm:h-[40%] md:h-[40%] lg:h-[40%]`}
-            style={{
-              zIndex: 22
-            }}
+            className={`absolute left-[-27%] sm:left-[-22%] md:left-[-22%] lg:left-[-22%] top-[60%] transform -translate-y-1/2 w-[45%] sm:w-[40%] md:w-[40%] lg:w-[40%] h-[45%] sm:h-[40%] md:h-[40%] lg:h-[40%] scene-left-lamp`}
           >
             <div className="pendulum w-full h-full">
               <Image
@@ -352,10 +208,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
         {/* Bottom Left Flower */}
         <div
-          className={`${getElementClasses('flower', "flower absolute bottom-[-22%] sm:bottom-[-10%] md:bottom-[-8%] lg:bottom-[-8%] left-[-8%] sm:left-[0%] md:left-[-2%] lg:left-[-2%] transition-all duration-300 w-[35%] h-[55%] sm:w-[20%] sm:h-[40%] md:w-[20%] md:h-[40%] lg:w-[20%] lg:h-[40%] fade-in-up fade-in-up-delay-4")}`}
-          style={{
-            zIndex: 21
-          }}
+          className={`${getElementClasses('flower', "flower absolute bottom-[-22%] sm:bottom-[-10%] md:bottom-[-8%] lg:bottom-[-8%] left-[-8%] sm:left-[0%] md:left-[-2%] lg:left-[-2%] transition-all duration-300 w-[35%] h-[55%] sm:w-[20%] sm:h-[40%] md:w-[20%] md:h-[40%] lg:w-[20%] lg:h-[40%] fade-in-up fade-in-up-delay-4 scene-flower")}`}
         >
           <Image
             src={isFlowerHovered || activeElement === 'flower' ? "/assets/flower.svg" : "/assets/flower-off.svg"}
@@ -371,8 +224,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
         {/* Right Bottom Tree*/}
         <div
-          className={`${getElementClasses('tree', "tree absolute bottom-[-15%] sm:bottom-[-14%] md:bottom-[-11%] lg:bottom-[-11%] right-[-2%] sm:right-[8%] md:right-[8%] lg:right-[8%] transition-all duration-300 w-[25%] h-[35%] sm:w-[20%] sm:h-[30%] md:w-[20%] md:h-[30%] lg:w-[20%] lg:h-[30%] z-10 sm:z-[21] md:z-[21] lg:z-[21] fade-in-up fade-in-up-delay-5")}`}
-          style={{}}
+          className={`${getElementClasses('tree', "tree absolute bottom-[-15%] sm:bottom-[-14%] md:bottom-[-11%] lg:bottom-[-11%] right-[-2%] sm:right-[8%] md:right-[8%] lg:right-[8%] transition-all duration-300 w-[25%] h-[35%] sm:w-[20%] sm:h-[30%] md:w-[20%] md:h-[30%] lg:w-[20%] lg:h-[30%] z-10 sm:z-[21] md:z-[21] lg:z-[21] fade-in-up fade-in-up-delay-5 scene-tree")}`}
         >
           <Image
             src={isTreeHovered || activeElement === 'tree' ? "/assets/tree.svg" : "/assets/tree-off.svg"}
@@ -388,10 +240,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
         {/* Right Top Lights */}
         <div
-          className={`${getElementClasses('topRightLights', "pointer-events-none absolute top-[-10%] sm:top-[-12%] md:top-[-20%] lg:top-[-20%] right-[12%] w-[16%] h-[40%] sm:w-[12%] sm:h-[45%] md:w-[12%] md:h-[45%] lg:w-[12%] lg:h-[45%] fade-in-up fade-in-up-delay-6")}`}
-          style={{
-            zIndex: 21
-          }}
+          className={`${getElementClasses('topRightLights', "pointer-events-none absolute top-[-10%] sm:top-[-12%] md:top-[-20%] lg:top-[-20%] right-[12%] w-[16%] h-[40%] sm:w-[12%] sm:h-[45%] md:w-[12%] md:h-[45%] lg:w-[12%] lg:h-[45%] fade-in-up fade-in-up-delay-6 scene-top-right-lights")}`}
         >
           <Image
             src={isTopRightLightsHovered || activeElement === 'topRightLights' ? "/assets/lights.svg" : "/assets/lights-off.svg"}
@@ -407,10 +256,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
         {/* Left Top Letters */}
         <div
-          className={`${getElementClasses('letters', "absolute top-[8%] left-[5%] w-[30%] h-[22%] sm:w-[15%] sm:h-[14%] md:w-[15%] md:h-[14%] lg:w-[15%] lg:h-[14%] flex justify-center items-center fade-in-up fade-in-up-delay-7")}`}
-          style={{
-            zIndex: 21
-          }}
+          className={`${getElementClasses('letters', "absolute top-[8%] left-[5%] w-[30%] h-[22%] sm:w-[15%] sm:h-[14%] md:w-[15%] md:h-[14%] lg:w-[15%] lg:h-[14%] flex justify-center items-center fade-in-up fade-in-up-delay-7 scene-letters")}`}
         >
           <Image
             src={isLettersHovered || activeElement === 'letters' ? "/assets/letters.svg" : "/assets/letters-off.svg"}
@@ -424,6 +270,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
           />
         </div>
       </div>
+      <BackgroundClouds onlyInScene={true} />
     </div>
   );
 };

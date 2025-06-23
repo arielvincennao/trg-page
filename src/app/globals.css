@@ -114,7 +114,7 @@ body::-webkit-scrollbar {
   transform-origin: top center;
 }
 
-/* Estilos específicos para móvil */
+/* Mobile-specific styles */
 @media screen and (max-width: 640px) {
   .scene-section .sun {
     width: 65vw !important;
@@ -572,4 +572,108 @@ body::-webkit-scrollbar {
   100% {
     transform: translate(0);
   }
+}
+
+/* Contact page styles */
+.contact-card {
+  max-width: 586px;
+  width: 100%;
+  min-height: 115px;
+  border: 2px solid #D02D30;
+  background: #D02D301A;
+  border-radius: 24px;
+  box-sizing: border-box;
+}
+
+.contact-card-content {
+  height: 100%;
+}
+
+/* Scene section styles */
+.scene-section-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 20;
+  overflow: hidden;
+}
+
+/* Scene element styles */
+.scene-inner-container {
+  z-index: 20;
+}
+
+.scene-temple {
+  z-index: 21;
+}
+
+.scene-sun {
+  z-index: 0;
+}
+
+.scene-temple-shadow {
+  background: radial-gradient(ellipse at center, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0.1) 50%, rgba(255,0,0,0) 70%);
+  filter: blur(40px);
+  z-index: 20;
+  transform: translate(-50%, -50%) scale(1.5);
+  box-shadow: 0 0 50px rgba(255,0,0,0.2);
+}
+
+.scene-temple-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.scene-temple-container-pointer {
+  cursor: pointer;
+}
+
+.scene-temple-container-default {
+  cursor: default;
+}
+
+.scene-left-lamp {
+  z-index: 22;
+}
+
+.scene-temple-element {
+  pointer-events: visiblePainted;
+  position: relative;
+  z-index: 2;
+  cursor: inherit;
+}
+
+.scene-sun-element {
+  pointer-events: visiblePainted;
+}
+
+.scene-flower {
+  z-index: 21;
+}
+
+.scene-tree {
+  /* Empty style object in original */
+}
+
+.scene-top-right-lights {
+  z-index: 21;
+}
+
+.scene-letters {
+  z-index: 21;
+}
+
+/* Contact page hover effects */
+.contact-icon {
+  transition: all 0.3s ease;
+}
+
+.contact-icon:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
 }

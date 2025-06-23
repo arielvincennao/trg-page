@@ -22,8 +22,8 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       return;
     }
 
-    const duration = 2000; // 2 segundos
-    const interval = 20; // Actualizar cada 20ms
+    const duration = 2000; // 2 seconds
+    const interval = 20; // Update every 20ms
     const steps = duration / interval;
     const increment = 100 / steps;
 
@@ -35,7 +35,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
           setTimeout(() => {
             setIsLoading(false);
             onLoadingComplete?.();
-          }, 500); // Duración del fade out
+          }, 500); // Fade out duration
           return 100;
         }
         return prev + increment;

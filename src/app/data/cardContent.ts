@@ -23,17 +23,35 @@ export const cardContent: CardContentMap = {
   temple: {
     title: "The Phishing Dojo",
     description: "Face the most notorious scam and phishing threats in the web3 ecosystem with the Phishing Dojo's immersive challenges. Can you spot them all?",
-    buttonText: "Enter the phishing dojo"
+    buttonText: "Enter the phishing dojo",
+    links: [
+      {
+        label: "Enter the pishing dojo",
+        url: "https://phishing.therektgames.com/"
+      }
+    ]
   },
   leftLight: {
     title: "Damn Vulnerable DeFi",
     description: "The renowned challenges to dive into real-world smart contract security, featuring the most vulnerable Solidity contracts ever witnessed.",
-    buttonText: "Play now"
+    buttonText: "Play now",
+    links: [
+      {
+        label: "Go to Damn Vulnerable DeFi",
+        url: "https://www.damnvulnerabledefi.xyz/"
+      }
+    ]
   },
   topRightLights: {
     title: "Security Frameworks",
     description: "A curated resource full of best practices and potential pitfalls in crypto security, collaborating with industry experts at the Security Alliance (SEAL).",
-    buttonText: "Learn & contribute"
+    buttonText: "Learn & contribute",
+    links: [
+      {
+        label: "Go to Security Frameworks",
+        url: "https://frameworks.securityalliance.org/"
+      }
+    ]
   },
   tree: {
     title: "Education & awareness",
@@ -41,22 +59,28 @@ export const cardContent: CardContentMap = {
     links: [
       {
         label: "Recent Events",
-        url: "#"
+        url: "https://lu.ma/theredguild"
       },
       {
         label: "Smart contract security course with cyfrin",
-        url: "#"
+        url: "https://updraft.cyfrin.io/courses/security"
       },
       {
         label: "Undercover campaign in ethargentina",
-        url: "#"
+        url: "https://blog.theredguild.org/you-were-not-pwned-the-red-guild-ethereum-argentina-2023/"
       }
     ]
   },
   letters: {
     title: "Security research & bug hunting",
     description: "Independent reviews of smart contracts and web3 infrastructure that share Ethereum's ethos. We share learnings in public reports and blog posts.",
-    buttonText: "Read our blog"
+    buttonText: "Read our blog",
+    links: [
+      {
+        label: "Go to The Red Guild Blog",
+        url: "https://blog.theredguild.org/"
+      }
+    ]
   },
   flower: {
     title: "Tooling",
@@ -64,11 +88,11 @@ export const cardContent: CardContentMap = {
     links: [
       {
         label: "Web3 devcontainer",
-        url: "#"
+        url: "https://github.com/theredguild/devcontainer"
       },
       {
         label: "devsecops toolkit",
-        url: "#"
+        url: "https://github.com/theredguild/DevSecOps-toolkit"
       }
     ]
   }

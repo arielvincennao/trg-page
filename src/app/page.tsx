@@ -14,9 +14,9 @@ export default function Home() {
   const [showSection2, setShowSection2] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
   const [blockScroll, setBlockScroll] = useState(false);
-  const [unmountScene, setUnmountScene] = useState(false); // NUEVO
+  const [unmountScene, setUnmountScene] = useState(false);
 
-  // Cuando termina la animación de MainContent (Section1)
+  // When MainContent animation ends (Section1)
   const handleSection1End = () => {
     setTransitioning(true);
     setBlockScroll(true);
@@ -25,12 +25,12 @@ export default function Home() {
       setShowSection2(true);
       setTransitioning(false);
       setBlockScroll(false);
-      setUnmountScene(false); // Asegura que Scene esté montado
+      setUnmountScene(false); // Ensures Scene is mounted
       window.scrollTo({ top: 0, behavior: 'auto' });
-    }, 200); // antes 400
+    }, 200);
   };
 
-  // Volver de Scene (Section2) a MainContent (Section1)
+  // Return from Scene (Section2) to MainContent (Section1)
   const handleBackToSection1 = () => {
     setTransitioning(true);
     setBlockScroll(true);
@@ -44,9 +44,9 @@ export default function Home() {
         setBlockScroll(false);
       }, 100);
       setTimeout(() => {
-        setUnmountScene(true); // Desmonta Scene después del fade-out
-      }, 300); // Espera duración del fade-out-scene
-    }, 200); // antes 400
+        setUnmountScene(true); // Unmounts Scene after fade-out
+      }, 300); // Wait for fade-out-scene duration
+    }, 200);
   };
 
   React.useEffect(() => {

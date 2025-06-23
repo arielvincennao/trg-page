@@ -23,7 +23,7 @@ const ProgressBar: React.FC = () => {
       console.log(`Scroll: ${progress}%`);
       lastLoggedPercent.current = progress;
     } else if (diff >= 10) {
-      // Si el usuario salta más de 10% de golpe
+      // If user jumps more than 10% at once
       const direction = progress > last ? 10 : -10;
       const nextLogged = last + direction;
       if ((direction > 0 && progress >= nextLogged) || (direction < 0 && progress <= nextLogged)) {
