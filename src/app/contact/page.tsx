@@ -3,6 +3,7 @@
 import Navbar from "../components/Navbar";
 import BackgroundClouds from "../components/BackgroundClouds";
 import ParticlesDOM from '../components/ParticlesDOM';
+import XIcon from '../components/XIcon';
 
 export default function ContactPage() {
   return (
@@ -16,7 +17,7 @@ export default function ContactPage() {
           <div className="flex flex-1 items-center justify-between w-full px-8 contact-card-content">
             {/* Social media */}
             <a href="https://x.com/theredguild" className="w-12 h-12 flex items-center justify-center" target="_blank" rel="noopener noreferrer">
-              <img src="/assets/contact-section/x-icon.svg" alt="X" className="w-7 h-7 contact-icon" />
+              <XIcon className="w-7 h-7 text-white contact-icon" />
             </a>
             <a href="mailto:hello@theredguild.org" className="w-12 h-12 flex items-center justify-center" target="_blank" rel="noopener noreferrer">
               <img src="/assets/contact-section/letter-icon.svg" alt="Letter" className="w-9 h-9 contact-icon" />
