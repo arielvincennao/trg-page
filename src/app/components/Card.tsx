@@ -13,35 +13,37 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, buttonText, links }) => {
   return (
-    <div className="relative w-full max-w-[420px]">
-      <div className="relative w-full">
+    <div className="relative w-full h-[310px]">
+      <div className="relative w-full h-full">
         <div className="absolute inset-0 bg-[#D02D301A] backdrop-blur-[15px] rounded-2xl border border-[#D02D30]" />
-        <div className="relative z-10 p-6 flex flex-col">
-          {onClose && (
-            <button 
-              className="absolute -top-3 -right-3 w-8 h-8 bg-white/80 rounded-full border border-[#D02D30] flex items-center justify-center text-[#D02D30] hover:bg-white transition-colors cursor-pointer"
-              onClick={onClose}
-            >
-              <svg 
-                width="16" 
-                height="16" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-                className="w-4 h-4"
+        <div className="relative z-10 p-4 pt-5 pb-6 flex flex-col h-full justify-between">
+          <div>
+            {onClose && (
+              <button 
+                className="absolute -top-3 -right-3 w-8 h-8 bg-white/80 rounded-full border border-[#D02D30] flex items-center justify-center text-[#D02D30] hover:bg-white transition-colors cursor-pointer"
+                onClick={onClose}
               >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-          )}
-          <h2 className="text-white text-xl font-bold mb-4 font-[family-name:var(--font-poppins)]">{title}</h2>
-          <p className="text-white/80 text-base mb-6 font-[family-name:var(--font-poppins)]">{description}</p>
+                <svg 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                  className="w-4 h-4"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            )}
+            <h2 className="text-white text-xl font-bold mb-4 font-[family-name:var(--font-poppins)]">{title}</h2>
+            <p className="text-white/80 text-base font-[family-name:var(--font-poppins)]">{description}</p>
+          </div>
           {links && links.length > 0 ? (
-            <div className="flex flex-col gap-2 mt-12">
+            <div className="flex flex-col gap-3 mt-6">
               {links.map((link, idx) => (
                 <a
                   key={idx}
@@ -61,7 +63,7 @@ const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, but
                 e.preventDefault();
                 onExplore();
               }}
-              className="text-white hover:text-white/80 text-base font-medium transition-colors uppercase font-[family-name:var(--font-poppins)] underline underline-offset-2 decoration-white mt-12"
+              className="text-white hover:text-white/80 text-base font-medium transition-colors uppercase font-[family-name:var(--font-poppins)] underline underline-offset-2 decoration-white mt-6"
             >
               {buttonText || "Explore"}
             </a>

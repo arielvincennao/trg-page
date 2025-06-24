@@ -3,7 +3,7 @@
 import Navbar from "../components/Navbar";
 import BackgroundClouds from "../components/BackgroundClouds";
 import ParticlesDOM from '../components/ParticlesDOM';
-import XIcon from '../components/XIcon';
+import XIcon from '../components/assets/XIcon';
 
 export default function ContactPage() {
   return (
