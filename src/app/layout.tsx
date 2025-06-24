@@ -15,7 +15,7 @@ const pixelifySans = Pixelify_Sans({
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-const ogImage = "https://opengraph.b-cdn.net/production/images/eb2472d0-8c3f-40b6-b5c9-62393f6155b8.svg?token=XxnmoWiLW2XSvhGryRs57u_TEOIP8aN5-N3vLCQ1UUk&height=30&width=39&expires=33286786998";
+const ogImage = "https://opengraph.b-cdn.net/production/images/e40efc77-0740-4c48-b3f8-f8cc5c1d5720.png?token=I0ecXikVP-poYNtEyFMuJyPRCVQ6JdgFd7tHAt_3iJk&height=730&width=1200&expires=33286790432";
 
 export const metadata: Metadata = {
   title: "The Red Guild",
