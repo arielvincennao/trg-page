@@ -7,7 +7,6 @@ import TempleOff from "./assets/TempleOff";
 import Temple from './assets/Temple';
 import Card from './Card';
 import { cardContent, CardContent } from '../data/cardContent';
-import BackgroundClouds from './BackgroundClouds';
 import ParticlesDOM from './ParticlesDOM';
 
 interface SceneProps {
@@ -260,7 +259,6 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
           />
         </div>
       </div>
-      <BackgroundClouds onlyInScene={true} />
     </div>
   );
 };

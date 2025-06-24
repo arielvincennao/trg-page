@@ -7,6 +7,7 @@ interface BackgroundCloudsProps {
 }
 
 const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
+  // Las nubes siempre deben tener opacidad 100%
   const cloudLeftOpacity = 1;
   const cloudRightOpacity = 1;
   const crossOpacity = 1;
@@ -24,7 +25,7 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
             width={359}
             height={316}
             style={{ opacity: cloudLeftOpacity }}
-            className="object-contain [mix-blend-mode:screen] brightness-[14.28] absolute inset-0"
+            className="object-contain absolute inset-0"
             priority
           />
         </div>
@@ -39,7 +40,7 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
             width={359}
             height={316}
             style={{ opacity: cloudRightOpacity }}
-            className="object-contain [mix-blend-mode:screen] brightness-[14.28] absolute inset-0"
+            className="object-contain absolute inset-0"
             priority
           />
         </div>
@@ -55,7 +56,7 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
               width={300}
               height={300}
               style={{ opacity: crossOpacity }}
-              className="object-contain [mix-blend-mode:screen] brightness-[1.5] absolute inset-0"
+              className="object-contain absolute inset-0"
               priority
             />
           </div>
@@ -72,7 +73,7 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
               width={200}
               height={200}
               style={{ opacity: glitchLeftOpacity }}
-              className="object-contain [mix-blend-mode:screen] brightness-[1.2] absolute inset-0"
+              className="object-contain absolute inset-0"
               priority
             />
           </div>
@@ -89,7 +90,7 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
               width={200}
               height={200}
               style={{ opacity: glitchRightOpacity, transform: 'scaleX(-1)' }}
-              className="object-contain [mix-blend-mode:screen] brightness-[1.2] absolute inset-0"
+              className="object-contain absolute inset-0"
               priority
             />
           </div>

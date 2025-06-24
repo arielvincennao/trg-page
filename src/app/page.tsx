@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <div className="bg-black relative min-h-screen">
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
-        <BackgroundClouds />
+        <BackgroundClouds onlyInScene={showSection2} />
       </div>
       <Navbar />
       <Indicators inMain={showSection1} inScene={showSection2} />
