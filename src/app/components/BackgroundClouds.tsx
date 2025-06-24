@@ -7,12 +7,7 @@ interface BackgroundCloudsProps {
 }
 
 const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
-  // Las nubes siempre deben tener opacidad 100%
-  const cloudLeftOpacity = 1;
-  const cloudRightOpacity = 1;
-  const crossOpacity = 1;
-  const glitchLeftOpacity = 1;
-  const glitchRightOpacity = 1;
+
 
   return (
     <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-10 overflow-visible">
@@ -24,7 +19,6 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
             alt="Cloud background"
             width={359}
             height={316}
-            style={{ opacity: cloudLeftOpacity }}
             className="object-contain absolute inset-0"
             priority
           />
@@ -39,7 +33,6 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
             alt="Cloud background"
             width={359}
             height={316}
-            style={{ opacity: cloudRightOpacity }}
             className="object-contain absolute inset-0"
             priority
           />
@@ -55,7 +48,6 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
               alt="Decorative cross"
               width={300}
               height={300}
-              style={{ opacity: crossOpacity }}
               className="object-contain absolute inset-0"
               priority
             />
@@ -72,7 +64,6 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
               alt="Glitch effect"
               width={200}
               height={200}
-              style={{ opacity: glitchLeftOpacity }}
               className="object-contain absolute inset-0"
               priority
             />
@@ -89,7 +80,7 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
               alt="Glitch effect"
               width={200}
               height={200}
-              style={{ opacity: glitchRightOpacity, transform: 'scaleX(-1)' }}
+              style={{ transform: 'scaleX(-1)' }}
               className="object-contain absolute inset-0"
               priority
             />
