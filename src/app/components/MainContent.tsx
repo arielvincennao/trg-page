@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 
-const TEXT = 'We advance security and education in the crypto ecosystem with research, tools and resources for the public benefit.';
+const TEXT = 'Advancing crypto security with research, tools and resources for the public good.';
 const COLOR_START = { r: 255, g: 255, b: 255 };
 const COLOR_END = { r: 247, g: 57, b: 47 }; // Rojo
 const TRANSITION_SCROLL = 500;
@@ -52,9 +52,9 @@ const MainContent = ({ onSectionEnd }: { onSectionEnd: () => void }) => {
   }, [transitioning, blockScroll]);
 
   const lines = [
-    'We advance security and education',
-    ' in the crypto ecosystem with research,',
-    ' tools and resources for the public benefit.',
+    'Advancing crypto security',
+    ' with research, tools and resources',
+    ' for the public good.'
   ];
 
   if (!showSection) return null;
@@ -74,7 +74,7 @@ const MainContent = ({ onSectionEnd }: { onSectionEnd: () => void }) => {
           justifyContent: 'center',
           zIndex: 10,
           opacity: transitioning ? 0 : 1,
-          transition: 'opacity 0.4s',
+          transition: 'opacity 0.09s',
           pointerEvents: transitioning ? 'none' : 'auto',
         }}
       >

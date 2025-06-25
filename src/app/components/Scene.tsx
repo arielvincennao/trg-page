@@ -112,7 +112,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
       className={`scene-section-container h-screen relative${fadeOut ? ' fade-out-scene' : ''}`}
       style={{
         opacity: transitioning ? 0 : 1,
-        transition: 'opacity 0.4s',
+        transition: 'opacity 0.09s',
         pointerEvents: transitioning ? 'none' : 'auto',
         cursor: showCursor && isDesktop ? 'none' : 'auto',
       }}
@@ -223,21 +223,28 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
         </div>
 
         {activeCard && (
-          <div className="fixed top-[65%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000] w-full px-2 sm:px-0 max-w-[95vw] sm:max-w-[420px]">
-            <Card
-              title={activeCard.title}
-              description={activeCard.description}
-              buttonText={activeCard.buttonText}
-              links={activeCard.links}
-              onClose={handleCloseCard}
-              onExplore={handleExplore}
-            />
-          </div>
+          <>
+            {/* Overlay para cerrar la card al hacer clic fuera */}
+            <div className="fixed inset-0 z-[999]" onClick={handleCloseCard} />
+            {/* Card en su posición original */}
+            <div className="fixed top-[65%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000] w-full px-2 sm:px-0 max-w-[95vw] sm:max-w-[420px]">
+              <div onClick={e => e.stopPropagation()}>
+                <Card
+                  title={activeCard.title}
+                  description={activeCard.description}
+                  buttonText={activeCard.buttonText}
+                  links={activeCard.links}
+                  onClose={handleCloseCard}
+                  onExplore={handleExplore}
+                />
+              </div>
+            </div>
+          </>
         )}
 
         {/* Bottom Left Flower */}
         <div
-          className={`${getElementClasses('flower', "flower absolute bottom-[-22%] sm:bottom-[-10%] md:bottom-[-8%] lg:bottom-[-8%] left-[-8%] sm:left-[0%] md:left-[-2%] lg:left-[-2%] transition-all duration-300 w-[35%] h-[55%] sm:w-[20%] sm:h-[40%] md:w-[20%] md:h-[40%] lg:w-[20%] lg:h-[40%] fade-in-up fade-in-up-delay-4 scene-flower")}`}
+          className={`${getElementClasses('flower', "flower absolute bottom-[-7%] sm:bottom-[-10%] md:bottom-[-8%] lg:bottom-[-8%] left-[-8%] sm:left-[0%] md:left-[-2%] lg:left-[-2%] transition-all duration-300 w-[35%] h-[32%] sm:w-[20%] sm:h-[40%] md:w-[20%] md:h-[40%] lg:w-[20%] lg:h-[40%] fade-in-up fade-in-up-delay-4 scene-flower")}`}
           onMouseEnter={() => { if (!activeElement) { setIsFlowerHovered(true); setShowCursor(true); }}}
           onMouseLeave={() => { setIsFlowerHovered(false); setShowCursor(false); }}
           style={showCursor && isDesktop ? { cursor: 'none' } : {}}
@@ -256,7 +263,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
         {/* Right Bottom Tree*/}
         <div
-          className={`${getElementClasses('tree', "tree absolute bottom-[-15%] sm:bottom-[-14%] md:bottom-[-11%] lg:bottom-[-11%] right-[-2%] sm:right-[8%] md:right-[8%] lg:right-[8%] transition-all duration-300 w-[25%] h-[35%] sm:w-[20%] sm:h-[30%] md:w-[20%] md:h-[30%] lg:w-[20%] lg:h-[30%] z-10 sm:z-[21] md:z-[21] lg:z-[21] fade-in-up fade-in-up-delay-5 scene-tree")}`}
+          className={`${getElementClasses('tree', "tree absolute bottom-[-7%] sm:bottom-[-14%] md:bottom-[-11%] lg:bottom-[-11%] right-[-2%] sm:right-[8%] md:right-[8%] lg:right-[8%] transition-all duration-300 w-[25%] h-[35%] sm:w-[20%] sm:h-[30%] md:w-[20%] md:h-[30%] lg:w-[20%] lg:h-[30%] z-10 sm:z-[21] md:z-[21] lg:z-[21] fade-in-up fade-in-up-delay-5 scene-tree")}`}
           onMouseEnter={() => { if (!activeElement) { setIsTreeHovered(true); setShowCursor(true); }}}
           onMouseLeave={() => { setIsTreeHovered(false); setShowCursor(false); }}
           style={showCursor && isDesktop ? { cursor: 'none' } : {}}
@@ -294,7 +301,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
         {/* Left Top Letters */}
         <div
-          className={`${getElementClasses('letters', "absolute top-[8%] left-[5%] w-[30%] h-[22%] sm:w-[15%] sm:h-[14%] md:w-[15%] md:h-[14%] lg:w-[15%] lg:h-[14%] flex justify-center items-center fade-in-up fade-in-up-delay-7 scene-letters")}`}
+          className={`${getElementClasses('letters', "absolute top-[6%] left-[3%] w-[38%] h-[28%] sm:w-[20%] sm:h-[18%] md:w-[20%] md:h-[18%] lg:w-[20%] lg:h-[18%] flex justify-center items-center fade-in-up fade-in-up-delay-7 scene-letters")}`}
           onMouseEnter={() => { if (!activeElement) { setIsLettersHovered(true); setShowCursor(true); }}}
           onMouseLeave={() => { setIsLettersHovered(false); setShowCursor(false); }}
           style={showCursor && isDesktop ? { cursor: 'none' } : {}}

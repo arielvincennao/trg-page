@@ -32,7 +32,7 @@ const Navbar = () => {
         </li>
         <li>
           <a 
-            href="https://theredguild.org/" 
+            href="https://blog.theredguild.org/" 
             target="_blank"
             rel="noopener noreferrer"
             data-text="Blog"

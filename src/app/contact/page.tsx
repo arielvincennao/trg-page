@@ -26,7 +26,7 @@ export default function ContactPage() {
               <img src="/assets/contact-section/github-icon.svg" alt="GitHub" className="w-8 h-8 contact-icon" />
             </a>
             <a href="https://blog.theredguild.org/" className="w-12 h-12 flex items-center justify-center" target="_blank" rel="noopener noreferrer">
-              <span className="text-white text-base font-[family-name:var(--font-poppins)] contact-icon">Blog</span>
+              <img src="/assets/contact-section/blog-icon.svg" alt="Blog" className="w-12 h-12 contact-icon" />
             </a>
           </div>
         </div>
@@ -41,6 +41,9 @@ export default function ContactPage() {
               <img src="/assets/contact-section/security-alliance.svg" alt="Security Alliance" className="w-40 h-24 object-contain" />
             </a>
           </div>
+          <p className="text-gray-500 text-center mt-4 text-sm font-[family-name:var(--font-poppins)] max-w-full md:whitespace-nowrap whitespace-normal">
+            The Red Guild works thanks to grants and donations - if you'd like to support our public-benefit work, get in touch.
+          </p>
         </div>
       </main>
     </div>

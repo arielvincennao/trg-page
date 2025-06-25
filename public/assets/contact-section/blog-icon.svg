@@ -1,0 +1,7 @@
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cuadro de texto -->
+  <rect x="7" y="8" width="16" height="20" rx="2" stroke="white" stroke-width="2" fill="none"/>
+  <path d="M11 13H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <path d="M11 17H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <path d="M11 21H17" stroke="white" stroke-width="2" stroke-linecap="round"/>
+</svg> 
