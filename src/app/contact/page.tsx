@@ -42,7 +42,7 @@ export default function ContactPage() {
             </a>
           </div>
           <p className="text-gray-500 text-center mt-4 text-sm font-[family-name:var(--font-poppins)] max-w-full md:whitespace-nowrap whitespace-normal">
-            The Red Guild works thanks to grants and donations - if you'd like to support our public-benefit work, get in touch.
+            The Red Guild works thanks to grants and donations - if you&#39;d like to support our public-benefit work, get in touch.
           </p>
         </div>
       </main>
