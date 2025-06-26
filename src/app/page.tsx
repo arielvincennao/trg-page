@@ -57,13 +57,13 @@ export default function Home() {
   }, [transitioning, blockScroll]);
 
   return (
-    <div className="bg-black relative min-h-screen">
+    <div className="bg-black relative min-h-[100dvh]">
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
         <BackgroundClouds onlyInScene={showSection2} />
       </div>
       <Navbar />
       <Indicators inMain={showSection1} inScene={showSection2} />
-      <main className="relative min-h-screen z-10">
+      <main className="relative min-h-[100dvh] z-10">
         <LoadingScreen enabled={showLoading} onLoadingComplete={() => setShowLoading(false)} />
         {showSection1 && <MainContent onSectionEnd={handleSection1End} />}
         {(showSection2 || (!unmountScene && transitioning)) && (

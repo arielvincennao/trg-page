@@ -12,7 +12,7 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-10 overflow-visible">
       {/* Left Cloud */}
-      <div className="absolute top-[4%] left-[-3%] w-[200px] h-[176px] sm:w-[280px] sm:h-[246px] md:w-[320px] md:h-[281px] lg:w-[360px] lg:h-[316px] overflow-visible scale-150">
+      <div className="absolute top-[4%] left-[-3%] w-[150px] h-[120px] sm:w-[280px] sm:h-[246px] md:w-[320px] md:h-[281px] lg:w-[360px] lg:h-[316px] overflow-visible scale-150">
         <div className="relative w-full h-full">
           <Image
             src="/assets/background/bg-cloud.svg"
@@ -26,7 +26,7 @@ const BackgroundClouds = ({ onlyInScene }: BackgroundCloudsProps) => {
       </div>
       
       {/* Right Cloud */}
-      <div className="absolute top-[32%] right-[-2%] w-[200px] h-[176px] sm:w-[280px] sm:h-[246px] md:w-[320px] md:h-[281px] lg:w-[360px] lg:h-[316px] overflow-visible scale-150">
+      <div className="absolute top-[32%] right-[-2%] w-[150px] h-[120px] sm:w-[280px] sm:h-[246px] md:w-[320px] md:h-[281px] lg:w-[360px] lg:h-[316px] overflow-visible scale-150">
         <div className="relative w-full h-full">
           <Image
             src="/assets/background/bg-cloud.svg"
