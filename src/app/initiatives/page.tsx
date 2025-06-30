@@ -18,7 +18,7 @@ export default function InitiativesPage() {
       <ParticlesDOM countMobile={24} countDesktop={48} />
       <Navbar />
       <main className="container mx-auto px-4 pt-45 pb-8 relative z-20">
-        <h1 className="text-lg sm:text-xl mb-8 text-center text-white font-[family-name:var(--font-pixelify-sans)] px-6">Initiatives</h1>
+        <h1 className="text-lg sm:text-xl mb-8 text-center text-white font-spartan-title px-6">Initiatives</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-0 sm:px-8 overflow-visible">
           {Object.entries(cardContent).map(([key, content]) => (
             <div 

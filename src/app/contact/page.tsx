@@ -12,7 +12,7 @@ export default function ContactPage() {
       <ParticlesDOM countMobile={24} countDesktop={48} />
       <Navbar />
       <main className="container mx-auto px-4 pt-32 pb-8 relative z-30 flex flex-col items-center justify-center w-full">
-        <h1 className="text-lg sm:text-xl text-center text-white font-[family-name:var(--font-pixelify-sans)] px-6">Contact Us</h1>
+        <h1 className="text-lg sm:text-xl text-center text-white font-spartan-title px-6">Contact Us</h1>
         <div className="mx-auto flex flex-col items-center justify-center mt-10 backdrop-blur-[15px] contact-card">
           <div className="flex flex-1 items-center justify-between w-full px-8 contact-card-content">
             {/* Social media */}
@@ -32,7 +32,7 @@ export default function ContactPage() {
         </div>
         {/* Supporters & Collaborators */}
         <div className="flex flex-col items-center justify-center mt-30">
-          <span className="text-white text-lg mb-4 font-[family-name:var(--font-pixelify-sans)]">Supporters & Collaborators</span>
+          <span className="text-white text-lg mb-4 font-spartan-subtitle">Supporters & Collaborators</span>
           <div className="flex flex-row gap-30">
             <a href="https://ethereum.foundation/" target="_blank" rel="noopener noreferrer">
               <img src="/assets/contact-section/ethereum-foundation.svg" alt="Ethereum Foundation" className="w-40 h-24 object-contain" />
@@ -41,7 +41,7 @@ export default function ContactPage() {
               <img src="/assets/contact-section/security-alliance.svg" alt="Security Alliance" className="w-40 h-24 object-contain" />
             </a>
           </div>
-          <p className="text-center mt-4 text-sm font-[family-name:var(--font-poppins)] max-w-full md:whitespace-nowrap whitespace-normal" style={{ color: '#7F7F7F' }}>
+          <p className="text-center mt-4 text-sm font-spartan-caption max-w-full md:whitespace-nowrap whitespace-normal" style={{ color: '#7F7F7F' }}>
             The Red Guild works thanks to grants and donations - if you&#39;d like to support our public-benefit work, get in touch.
           </p>
         </div>

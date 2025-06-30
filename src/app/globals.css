@@ -42,7 +42,7 @@ body::-webkit-scrollbar {
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -692,7 +692,7 @@ body::-webkit-scrollbar {
   justify-content: center;
   color: #fff;
   font-size: 12px;
-  font-family: var(--font-pixelify-sans);
+  font-family: 'Spartan', sans-serif;
   pointer-events: none;
   z-index: 9999;
   user-select: none;
@@ -707,4 +707,80 @@ body::-webkit-scrollbar {
 
 .custom-cursor--hidden {
   opacity: 0;
+}
+
+/* Typography classes for Spartan font */
+.font-spartan {
+  font-family: 'Spartan', sans-serif;
+  line-height: 1.3;
+}
+
+.font-spartan-title {
+  font-family: 'Spartan', sans-serif;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.font-spartan-subtitle {
+  font-family: 'Spartan', sans-serif;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.font-spartan-heading {
+  font-family: 'Spartan', sans-serif;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.font-spartan-body {
+  font-family: 'Spartan', sans-serif;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.font-spartan-caption {
+  font-family: 'Spartan', sans-serif;
+  font-weight: 500;
+  line-height: 1.3;
+  font-size: 0.875rem;
+}
+
+/* Pixelify Sans class for active characters */
+.font-pixelify-sans {
+  font-family: var(--font-pixelify-sans);
+  line-height: 1.3;
+}
+
+/* Cursor personalizado para Scene */
+.scene-see-more-cursor {
+  cursor: none !important;
+}
+
+.scene-see-more-cursor-wrapper {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scene-see-more-cursor-label {
+  font-family: 'Pixelify Sans', 'Pixelify', sans-serif;
+  font-size: 10px;
+  color: #fff;
+  background: #222;
+  border-radius: 6px;
+  padding: 1px 6px;
+  margin-top: 24px;
+  margin-left: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  opacity: 0.95;
+  text-transform: uppercase;
 }

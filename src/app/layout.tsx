@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Poppins, Pixelify_Sans } from "next/font/google";
+import { Inter, Pixelify_Sans } from "next/font/google";
 import "./globals.css";
 
-const poppins = Poppins({
+const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-poppins",
+  variable: "--font-inter",
 });
 
 const pixelifySans = Pixelify_Sans({
@@ -54,9 +54,12 @@ export default function RootLayout({
       <head>
         {/* Add any necessary meta tags here */}
         <link rel="icon" href="/assets/navbar-logo.svg" type="image/svg+xml" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body
-        className={`${poppins.variable} ${pixelifySans.variable} antialiased`}
+        className={`${inter.variable} ${pixelifySans.variable} antialiased`}
         suppressHydrationWarning
       >
         {children}

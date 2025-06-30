@@ -89,7 +89,7 @@ const MainContent = ({ onSectionEnd }: { onSectionEnd: () => void }) => {
               sizes="169px"
             />
           </div>
-          <h1 className="text-base sm:text-xl lg:text-4xl text-center w-11/12 md:w-[45%] min-h-[120px] flex items-center justify-center">
+          <h1 className="text-base sm:text-xl lg:text-4xl text-center w-11/12 md:w-[45%] min-h-[120px] flex items-center justify-center font-spartan-title">
             <div className="flex flex-col items-center gap-2">
               {lines.map((line, lineIndex) => {
                 const startIndex = TEXT.indexOf(line);
@@ -103,10 +103,10 @@ const MainContent = ({ onSectionEnd }: { onSectionEnd: () => void }) => {
                       return (
                         <span
                           key={charIndex}
+                          className={isActive ? 'font-pixelify-sans' : 'font-spartan-title'}
                           style={{
                             color: isActive ? `rgb(${color.r},${color.g},${color.b})` : '#666666',
                             transition: 'color 0.3s, font-family 0.3s',
-                            fontFamily: isActive ? 'var(--font-pixelify-sans)' : 'var(--font-poppins)',
                           }}
                         >
                           {char === ' ' ? '\u00A0' : char}

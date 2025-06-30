@@ -37,7 +37,7 @@ const Indicators = ({ inMain, inScene }: IndicatorsProps) => {
             className="animate-bounce-arrow absolute left-[-28px] top-1/2 -translate-y-1/2"
             style={{ filter: 'invert(36%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(90%) contrast(90%)' }}
           />
-          <span className="font-[family-name:var(--font-poppins)] whitespace-nowrap relative z-10">
+          <span className="font-spartan-body whitespace-nowrap relative z-10">
             Scroll to view
           </span>
         </span>
@@ -56,7 +56,7 @@ const Indicators = ({ inMain, inScene }: IndicatorsProps) => {
             height={20}
             className={isMobile ? "animate-tap absolute left-[-28px] top-1/2 -translate-y-1/2" : "animate-mouse-circle absolute left-[-28px] top-1/2 -translate-y-1/2"}
           />
-          <span className="font-[family-name:var(--font-poppins)] whitespace-nowrap relative z-10">
+          <span className="font-spartan-body whitespace-nowrap relative z-10">
             {isMobile ? "Tap to explore" : "Hover to explore"}
           </span>
         </span>
