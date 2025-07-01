@@ -21,13 +21,13 @@ export interface CardContentMap {
 
 export const cardContent: CardContentMap = {
   temple: {
-    title: "The Phishing Dojo",
+    title: "Phishing Dojo",
     description: "Face the most notorious scam and phishing threats in the web3 ecosystem with the Phishing Dojo's immersive challenges. Can you spot them all?",
-    buttonText: "Enter the phishing dojo",
+    buttonText: "Enter the Phishing Dojo",
     links: [
       {
-        label: "Enter the phishing dojo",
-        url: "https://phishing.therektgames.com/"
+        label: "Enter the Phishing Dojo",
+        url: "https://phishingdojo.com/"
       }
     ]
   },
@@ -49,7 +49,7 @@ export const cardContent: CardContentMap = {
     links: [
       {
         label: "Learn & contribute",
-        url: "https://frameworks.securityalliance.org/"
+        url: "https://frameworks.securityalliance.dev"
       }
     ]
   },
@@ -58,22 +58,22 @@ export const cardContent: CardContentMap = {
     description: "We organize, coordinate and participate in conferences, workshops and hackathons. With a strong foothold in LATAM.",
     links: [
       {
-        label: "Recent Events",
+        label: "Events archive",
         url: "https://lu.ma/theredguild"
       },
       {
-        label: "Smart contract security course with cyfrin",
+        label: "Smart contract security course with Cyrin",
         url: "https://updraft.cyfrin.io/courses/security"
       },
       {
-        label: "Undercover campaign in ethargentina",
+        label: "Undercover campaign at Ethereum Argentina",
         url: "https://blog.theredguild.org/you-were-not-pwned-the-red-guild-ethereum-argentina-2023/"
       }
     ]
   },
   letters: {
-    title: "Security research & bug hunting",
-    description: "Independent reviews of smart contracts and web3 infrastructure that share Ethereum's ethos. We share learnings in public reports and blog posts.",
+    title: "Security Research & Advisories",
+    description: "Public investigations and technical posts like the Ethereum 7702 accounts deep dive, VSCode extensions audit, and the SLOVENLY COMET advisory.",
     buttonText: "Read our blog",
     links: [
       {
@@ -83,16 +83,20 @@ export const cardContent: CardContentMap = {
     ]
   },
   flower: {
-    title: "Tooling",
+    title: "Open-Source Tooling",
     description: "We build open-source repositories to promote safer development environments.",
     links: [
       {
-        label: "Web3 devcontainer",
+        label: "Web3 DevContainer",
         url: "https://github.com/theredguild/devcontainer"
       },
       {
-        label: "devsecops toolkit",
+        label: "DevSecOps toolkit",
         url: "https://github.com/theredguild/DevSecOps-toolkit"
+      },
+      {
+        label: "DevSecOOPS docs",
+        url: "https://devsecoops.theredguild.org/"
       }
     ]
   }
