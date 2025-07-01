@@ -55,7 +55,7 @@ const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, but
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white hover:text-white/80 text-base font-spartan-subtitle transition-colors uppercase underline underline-offset-2 decoration-white"
+                  className="text-white hover:text-white/80 text-base font-spartan-subtitle transition-colors underline underline-offset-2 decoration-white"
                 >
                   {link.label}
                 </a>
