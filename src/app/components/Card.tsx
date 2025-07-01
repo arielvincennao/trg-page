@@ -39,8 +39,13 @@ const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, but
                 </svg>
               </button>
             )}
-            <h2 className="text-white text-xl font-bold mb-4 font-[family-name:var(--font-poppins)]">{title}</h2>
-            <p className="text-white/80 text-base font-[family-name:var(--font-poppins)]">{description}</p>
+            <h2 className="text-white text-xl font-spartan-title mb-4">{title}</h2>
+            <p className="text-white/80 text-base font-spartan-body" 
+               dangerouslySetInnerHTML={{ __html: description.replace(
+                 /<a /g,
+                 "<a style='text-decoration:underline;color:#fff;' "
+               ) }} 
+            />
           </div>
           {links && links.length > 0 ? (
             <div className="flex flex-col gap-3 mt-6">
@@ -50,7 +55,7 @@ const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, but
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white hover:text-white/80 text-base font-medium transition-colors uppercase font-[family-name:var(--font-poppins)] underline underline-offset-2 decoration-white"
+                  className="text-white hover:text-white/80 text-base font-spartan-subtitle transition-colors uppercase underline underline-offset-2 decoration-white"
                 >
                   {link.label}
                 </a>
@@ -63,7 +68,7 @@ const Card: React.FC<CardProps> = ({ title, description, onClose, onExplore, but
                 e.preventDefault();
                 onExplore();
               }}
-              className="text-white hover:text-white/80 text-base font-medium transition-colors uppercase font-[family-name:var(--font-poppins)] underline underline-offset-2 decoration-white mt-6"
+              className="text-white hover:text-white/80 text-base font-spartan-subtitle transition-colors uppercase underline underline-offset-2 decoration-white mt-6"
             >
               {buttonText || "Explore"}
             </a>

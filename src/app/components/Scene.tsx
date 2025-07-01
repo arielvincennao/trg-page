@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import SunOff from "./assets/SunOff";
 import Sun from "./assets/Sun";
@@ -25,6 +25,16 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
   const [isLettersHovered, setIsLettersHovered] = React.useState(false);
   const [activeElement, setActiveElement] = React.useState<string | null>(null);
   const [activeCard, setActiveCard] = React.useState<CardContent | null>(null);
+  const [customCursor, setCustomCursor] = React.useState({ visible: false, x: 0, y: 0 });
+  const [isDesktop, setIsDesktop] = React.useState(true);
+
+  // Detect if desktop
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
 
   // Wheel listener to return from section 2 (desktop)
   React.useEffect(() => {
@@ -60,24 +70,19 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
     };
   }, [show, transitioning, onBack]);
 
-  // Cursor
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const [showCursor, setShowCursor] = React.useState(false);
-  const [cursorPos, setCursorPos] = React.useState({ x: 0, y: 0 });
-
+  // Handle custom cursor
   useEffect(() => {
+    if (!customCursor.visible || !isDesktop) return;
     const handleMouseMove = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
+      setCustomCursor(c => ({ ...c, x: e.clientX, y: e.clientY }));
     };
-    if (showCursor) {
-      window.addEventListener('mousemove', handleMouseMove);
-    } else {
-      window.removeEventListener('mousemove', handleMouseMove);
-    }
+    window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [showCursor]);
+  }, [customCursor.visible, isDesktop]);
 
-  const isDesktop = typeof window !== 'undefined' ? window.innerWidth >= 1024 : true;
+  // Functions to show/hide custom cursor
+  const showSeeMoreCursor = () => { if (isDesktop) setCustomCursor(c => ({ ...c, visible: true })); };
+  const hideSeeMoreCursor = () => setCustomCursor(c => ({ ...c, visible: false }));
 
   if (!show) return null;
 
@@ -109,25 +114,20 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
   return (
     <div
       id="scene-section"
-      className={`scene-section-container h-screen relative${fadeOut ? ' fade-out-scene' : ''}`}
+      className={`scene-section-container h-screen relative${fadeOut ? ' fade-out-scene' : ''} ${customCursor.visible ? 'scene-see-more-cursor' : ''}`}
       style={{
         opacity: transitioning ? 0 : 1,
         transition: 'opacity 0.09s',
         pointerEvents: transitioning ? 'none' : 'auto',
-        cursor: showCursor && isDesktop ? 'none' : 'auto',
       }}
     >
-      {/* Cursor */}
-      {showCursor && isDesktop && (
+      {/* Cursor personalizado */}
+      {customCursor.visible && isDesktop && (
         <div
-          ref={cursorRef}
-          className={`custom-cursor${showCursor ? '' : ' custom-cursor--hidden'}`}
-          style={{
-            left: cursorPos.x,
-            top: cursorPos.y
-          }}
+          className="scene-see-more-cursor-wrapper"
+          style={{ transform: `translate3d(${customCursor.x}px, ${customCursor.y}px, 0)` }}
         >
-          SEE MORE
+          <div className="scene-see-more-cursor-label">See more</div>
         </div>
       )}
       <div className="h-screen relative overflow-hidden scene-inner-container">
@@ -140,14 +140,13 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
           {/* Sun */}
           <div
             className="sun absolute top-[40%] left-[48%] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 w-[65vw] sm:w-[28vw] md:w-[28vw] lg:w-[28vw] fade-in-up fade-in-up-delay-2 scene-sun"
-            onMouseEnter={() => { if (!activeElement) { setIsTempleHovered(true); setShowCursor(true); }}}
-            onMouseLeave={() => { setIsTempleHovered(false); setShowCursor(false); }}
-            style={showCursor && isDesktop ? { cursor: 'none' } : {}}
+            onMouseEnter={showSeeMoreCursor}
+            onMouseLeave={hideSeeMoreCursor}
           >
             {/* Sun */}
             {activeElement === 'sun' ? (
               <Sun
-                className={`object-contain${showCursor && isDesktop ? '' : ' cursor-pointer'} w-full h-auto scene-sun-element ${activeElement && activeElement !== 'sun' ? 'opacity-15 pointer-events-none' : ''}`}
+                className={`object-contain${activeElement && activeElement !== 'sun' ? ' opacity-15 pointer-events-none' : ''} w-full h-auto scene-sun-element`}
                 style={{}}
                 onClick={() => { }}
                 isHovered={undefined}
@@ -156,7 +155,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
               />
             ) : (
               <SunOff
-                className={`object-contain${showCursor && isDesktop ? '' : ' cursor-pointer'} w-full h-auto scene-sun-element ${activeElement && activeElement !== 'sun' ? 'opacity-15 pointer-events-none' : ''}`}
+                className={`object-contain${activeElement && activeElement !== 'sun' ? ' opacity-15 pointer-events-none' : ''} w-full h-auto scene-sun-element`}
                 style={{}}
                 onClick={() => { }}
                 isHovered={undefined}
@@ -173,10 +172,9 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
           {/* Temple */}
           <div
-            className={`transform origin-center transition-all duration-500 scene-temple-container ${(activeElement === 'temple') ? 'scale-110' : 'scale-100'} ${(!activeElement || isTempleHovered) ? 'scene-temple-container-pointer' : 'scene-temple-container-default'}`}
-            onMouseEnter={() => { if (!activeElement) { setIsTempleHovered(true); setShowCursor(true); }}}
-            onMouseLeave={() => { setIsTempleHovered(false); setShowCursor(false); }}
-            style={showCursor && isDesktop ? { cursor: 'none' } : {}}
+            className={`transform origin-center transition-all duration-500 scene-temple-container ${(activeElement === 'temple') ? 'scale-110' : 'scale-100'} ${(!activeElement || isTempleHovered) ? 'scene-temple-container-pointer' : 'scene-temple-container-default'} h-[40%]`}
+            onMouseEnter={() => { if (!activeElement) { setIsTempleHovered(true); } showSeeMoreCursor(); }}
+            onMouseLeave={() => { setIsTempleHovered(false); hideSeeMoreCursor(); }}
             onClick={() => handleElementClick('temple', cardContent.temple)}
           >
             {isTempleHovered || activeElement === 'temple' ? (
@@ -184,7 +182,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
                 isHovered={isTempleHovered}
                 onMouseEnter={undefined}
                 onMouseLeave={undefined}
-                className={`object-contain${showCursor && isDesktop ? '' : ' cursor-pointer'} w-full h-auto scene-temple-element ${(isTempleHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
+                className={`object-contain${activeElement && activeElement !== 'temple' ? ' opacity-15 pointer-events-none' : ''} w-full h-auto scene-temple-element ${(isTempleHovered && !activeElement) ? 'brightness-125' : ''}`}
                 style={{}}
                 onClick={undefined}
               />
@@ -193,7 +191,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
                 isHovered={isTempleHovered}
                 onMouseEnter={undefined}
                 onMouseLeave={undefined}
-                className={`object-contain${showCursor && isDesktop ? '' : ' cursor-pointer'} w-full h-auto scene-temple-element ${(isTempleHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'temple' ? 'opacity-15 pointer-events-none' : ''}`}
+                className={`object-contain${activeElement && activeElement !== 'temple' ? ' opacity-15 pointer-events-none' : ''} w-full h-auto scene-temple-element ${(isTempleHovered && !activeElement) ? 'brightness-125' : ''}`}
                 style={{}}
                 onClick={undefined}
               />
@@ -201,21 +199,21 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
           </div>
 
           {/* Left Lamp Temple */}
-          <div
-            className={`absolute left-[-27%] sm:left-[-22%] md:left-[-22%] lg:left-[-22%] top-[60%] transform -translate-y-1/2 w-[45%] sm:w-[40%] md:w-[40%] lg:w-[40%] h-[45%] sm:h-[40%] md:h-[40%] lg:h-[40%] scene-left-lamp`}
-            onMouseEnter={() => { if (!activeElement) { setIsLeftLightHovered(true); setShowCursor(true); }}}
-            onMouseLeave={() => { setIsLeftLightHovered(false); setShowCursor(false); }}
-            style={showCursor && isDesktop ? { cursor: 'none' } : {}}
-          >
-            <div className="pendulum w-full h-full">
-              <Image
-                src={isLeftLightHovered || activeElement === 'leftLight' ? "/assets/light-on.svg" : "/assets/light-off.svg"}
-                alt="Light"
-                fill
-                priority
-                className={`object-contain${showCursor && isDesktop ? '' : ' cursor-pointer'} transform origin-center transition-transform duration-300 ${(activeElement === 'leftLight') ? 'scale-105 sm:scale-105 md:scale-105 lg:scale-105' : 'scale-90 sm:scale-90 md:scale-90 lg:scale-90'} ${(isLeftLightHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'leftLight' ? 'opacity-15 pointer-events-none' : ''}`}
-                onMouseEnter={() => !activeElement && setIsLeftLightHovered(true)}
-                onMouseLeave={() => setIsLeftLightHovered(false)}
+          <div className="absolute left-[0%] top-[60%] transform -translate-y-1/2 w-[20%] h-[45%] scene-left-lamp">
+            <div className="pendulum w-full h-full relative">
+              <div className="absolute left-[-55%] top-1/2 -translate-y-1/2 w-full h-full z-10 pointer-events-none">
+                <Image
+                  src={isLeftLightHovered || activeElement === 'leftLight' ? "/assets/light-on.svg" : "/assets/light-off.svg"}
+                  alt="Light"
+                  fill
+                  priority
+                  className={`object-contain transform origin-center transition-transform duration-300 ${(activeElement === 'leftLight') ? 'scale-180' : 'scale-160'} ${(isLeftLightHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'leftLight' ? 'opacity-15' : ''}`}
+                />
+              </div>
+              <div
+                className="relative w-full h-full z-20 pointer-events-auto cursor-pointer"
+                onMouseEnter={() => { if (!activeElement) { setIsLeftLightHovered(true); } showSeeMoreCursor(); }}
+                onMouseLeave={() => { setIsLeftLightHovered(false); hideSeeMoreCursor(); }}
                 onClick={() => handleElementClick('leftLight', cardContent.leftLight)}
               />
             </div>
@@ -224,9 +222,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
         {activeCard && (
           <>
-            {/* Overlay para cerrar la card al hacer clic fuera */}
             <div className="fixed inset-0 z-[999]" onClick={handleCloseCard} />
-            {/* Card en su posición original */}
             <div className="fixed top-[65%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000] w-full px-2 sm:px-0 max-w-[95vw] sm:max-w-[420px]">
               <div onClick={e => e.stopPropagation()}>
                 <Card
@@ -244,17 +240,16 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
         {/* Bottom Left Flower */}
         <div
-          className={`${getElementClasses('flower', "flower absolute bottom-[-7%] sm:bottom-[-10%] md:bottom-[-8%] lg:bottom-[-8%] left-[-8%] sm:left-[0%] md:left-[-2%] lg:left-[-2%] transition-all duration-300 w-[35%] h-[32%] sm:w-[20%] sm:h-[40%] md:w-[20%] md:h-[40%] lg:w-[20%] lg:h-[40%] fade-in-up fade-in-up-delay-4 scene-flower")}`}
-          onMouseEnter={() => { if (!activeElement) { setIsFlowerHovered(true); setShowCursor(true); }}}
-          onMouseLeave={() => { setIsFlowerHovered(false); setShowCursor(false); }}
-          style={showCursor && isDesktop ? { cursor: 'none' } : {}}
+          className={`${getElementClasses('flower', "flower absolute bottom-[-7%] sm:bottom-[-10%] md:bottom-[-8%] lg:bottom-[-8%] left-[-8%] sm:left-[0%] md:left-[-2%] lg:left-[-2%] transition-all duration-300 w-[35%] h-[32%] sm:w-[20%] sm:h-[40%] md:w-[20%] md:h-[40%] lg:w-[20%] lg:h-[40%] fade-in-up fade-in-up-delay-4 scene-flower cursor-pointer")}`}
+          onMouseEnter={() => { if (!activeElement) { setIsFlowerHovered(true); } showSeeMoreCursor(); }}
+          onMouseLeave={() => { setIsFlowerHovered(false); hideSeeMoreCursor(); }}
         >
           <Image
             src={isFlowerHovered || activeElement === 'flower' ? "/assets/flower.svg" : "/assets/flower-off.svg"}
             alt="Flower"
             fill
             priority
-            className={`object-contain${showCursor && isDesktop ? '' : ' cursor-pointer'} transition-transform duration-300 ${(activeElement === 'flower') ? 'scale-160 sm:scale-160 md:scale-160 lg:scale-160' : 'scale-140 sm:scale-140 md:scale-140 lg:scale-140'} ${(isFlowerHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'flower' ? 'opacity-15 pointer-events-none' : ''}`}
+            className={`object-contain${activeElement && activeElement !== 'flower' ? ' opacity-15 pointer-events-none' : ''} transition-transform duration-300 ${(activeElement === 'flower') ? 'scale-160 sm:scale-160 md:scale-160 lg:scale-160' : 'scale-140 sm:scale-140 md:scale-140 lg:scale-140'} ${(isFlowerHovered && !activeElement) ? 'brightness-125' : ''}`}
             onMouseEnter={() => !activeElement && setIsFlowerHovered(true)}
             onMouseLeave={() => setIsFlowerHovered(false)}
             onClick={() => handleElementClick('flower', cardContent.flower)}
@@ -262,37 +257,36 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
         </div>
 
         {/* Right Bottom Tree*/}
-        <div
-          className={`${getElementClasses('tree', "tree absolute bottom-[-7%] sm:bottom-[-14%] md:bottom-[-11%] lg:bottom-[-11%] right-[-2%] sm:right-[8%] md:right-[8%] lg:right-[8%] transition-all duration-300 w-[25%] h-[35%] sm:w-[20%] sm:h-[30%] md:w-[20%] md:h-[30%] lg:w-[20%] lg:h-[30%] z-10 sm:z-[21] md:z-[21] lg:z-[21] fade-in-up fade-in-up-delay-5 scene-tree")}`}
-          onMouseEnter={() => { if (!activeElement) { setIsTreeHovered(true); setShowCursor(true); }}}
-          onMouseLeave={() => { setIsTreeHovered(false); setShowCursor(false); }}
-          style={showCursor && isDesktop ? { cursor: 'none' } : {}}
-        >
-          <Image
-            src={isTreeHovered || activeElement === 'tree' ? "/assets/tree.svg" : "/assets/tree-off.svg"}
-            alt="Tree"
-            fill
-            priority
-            className={`object-contain${showCursor && isDesktop ? '' : ' cursor-pointer'} transform origin-center transition-transform duration-300 ${(activeElement === 'tree') ? 'scale-350 sm:scale-350 md:scale-350 lg:scale-350' : 'scale-320 sm:scale-320 md:scale-320 lg:scale-320'} ${(isTreeHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'tree' ? 'opacity-15 pointer-events-none' : ''}`}
-            onMouseEnter={() => !activeElement && setIsTreeHovered(true)}
-            onMouseLeave={() => setIsTreeHovered(false)}
+        <div className="absolute bottom-[-7%] sm:bottom-[-14%] md:bottom-[-11%] lg:bottom-[-11%] right-[-2%] sm:right-[8%] md:right-[8%] lg:right-[8%] w-[32%] h-[38%] sm:w-[26%] sm:h-[48%] md:w-[26%] md:h-[48%] lg:w-[26%] lg:h-[48%] z-[21] fade-in-up fade-in-up-delay-5 scene-tree">
+          <div className="absolute inset-0 z-10 pointer-events-none">
+            <Image
+              src={isTreeHovered || activeElement === 'tree' ? "/assets/tree.svg" : "/assets/tree-off.svg"}
+              alt="Tree"
+              fill
+              priority
+              className={`object-contain transform origin-center transition-transform duration-300 ${(activeElement === 'tree') ? 'scale-250' : 'scale-200'} ${(isTreeHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'tree' ? 'opacity-15' : ''}`}
+            />
+          </div>
+          <div
+            className="relative w-full h-full z-20 pointer-events-auto cursor-pointer"
+            onMouseEnter={() => { if (!activeElement) { setIsTreeHovered(true); } showSeeMoreCursor(); }}
+            onMouseLeave={() => { setIsTreeHovered(false); hideSeeMoreCursor(); }}
             onClick={() => handleElementClick('tree', cardContent.tree)}
           />
         </div>
 
         {/* Right Top Lights */}
         <div
-          className={`${getElementClasses('topRightLights', "pointer-events-none absolute top-[-10%] sm:top-[-12%] md:top-[-20%] lg:top-[-20%] right-[12%] w-[16%] h-[40%] sm:w-[12%] sm:h-[45%] md:w-[12%] md:h-[45%] lg:w-[12%] lg:h-[45%] fade-in-up fade-in-up-delay-6 scene-top-right-lights")}`}
-          onMouseEnter={() => { if (!activeElement) { setIsTopRightLightsHovered(true); setShowCursor(true); }}}
-          onMouseLeave={() => { setIsTopRightLightsHovered(false); setShowCursor(false); }}
-          style={showCursor && isDesktop ? { cursor: 'none' } : {}}
+          className={`${getElementClasses('topRightLights', "pointer-events-none absolute top-[-10%] sm:top-[-12%] md:top-[-20%] lg:top-[-20%] right-[12%] w-[16%] h-[40%] sm:w-[12%] sm:h-[45%] md:w-[12%] md:h-[45%] lg:w-[12%] lg:h-[45%] fade-in-up fade-in-up-delay-6 scene-top-right-lights cursor-pointer")}`}
+          onMouseEnter={() => { if (!activeElement) { setIsTopRightLightsHovered(true); } showSeeMoreCursor(); }}
+          onMouseLeave={() => { setIsTopRightLightsHovered(false); hideSeeMoreCursor(); }}
         >
           <Image
             src={isTopRightLightsHovered || activeElement === 'topRightLights' ? "/assets/lights.svg" : "/assets/lights-off.svg"}
             alt="Lights"
             fill
             priority
-            className={`pointer-events-auto object-contain${showCursor && isDesktop ? '' : ' cursor-pointer'} transform origin-center transition-transform duration-300 ${(activeElement === 'topRightLights') ? 'scale-180 sm:scale-180 md:scale-180 lg:scale-180' : 'scale-160 sm:scale-160 md:scale-160 lg:scale-160'} ${(isTopRightLightsHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'topRightLights' ? 'opacity-15 pointer-events-none' : ''}`}
+            className={`pointer-events-auto object-contain${activeElement && activeElement !== 'topRightLights' ? ' opacity-15 pointer-events-none' : ''} transform origin-center transition-transform duration-300 ${(activeElement === 'topRightLights') ? 'scale-180 sm:scale-180 md:scale-180 lg:scale-180' : 'scale-160 sm:scale-160 md:scale-160 lg:scale-160'} ${(isTopRightLightsHovered && !activeElement) ? 'brightness-125' : ''}`}
             onMouseEnter={() => !activeElement && setIsTopRightLightsHovered(true)}
             onMouseLeave={() => setIsTopRightLightsHovered(false)}
             onClick={() => handleElementClick('topRightLights', cardContent.topRightLights)}
@@ -300,20 +294,20 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
         </div>
 
         {/* Left Top Letters */}
-        <div
-          className={`${getElementClasses('letters', "absolute top-[6%] left-[3%] w-[38%] h-[28%] sm:w-[20%] sm:h-[18%] md:w-[20%] md:h-[18%] lg:w-[20%] lg:h-[18%] flex justify-center items-center fade-in-up fade-in-up-delay-7 scene-letters")}`}
-          onMouseEnter={() => { if (!activeElement) { setIsLettersHovered(true); setShowCursor(true); }}}
-          onMouseLeave={() => { setIsLettersHovered(false); setShowCursor(false); }}
-          style={showCursor && isDesktop ? { cursor: 'none' } : {}}
-        >
-          <Image
-            src={isLettersHovered || activeElement === 'letters' ? "/assets/letters.svg" : "/assets/letters-off.svg"}
-            alt="Letters"
-            fill
-            priority
-            className={`object-contain${showCursor && isDesktop ? '' : ' cursor-pointer'} transform origin-center transition-transform duration-300 ${(activeElement === 'letters') ? 'scale-120 sm:scale-120 md:scale-120 lg:scale-120' : 'scale-105 sm:scale-105 md:scale-105 lg:scale-105'} ${(isLettersHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'letters' ? 'opacity-15 pointer-events-none' : ''}`}
-            onMouseEnter={() => !activeElement && setIsLettersHovered(true)}
-            onMouseLeave={() => setIsLettersHovered(false)}
+        <div className={`${getElementClasses('letters', "absolute top-[12%] left-[3%] w-[18%] h-[18%] sm:w-[10%] sm:h-[12%] md:w-[10%] md:h-[12%] lg:w-[10%] lg:h-[12%] flex justify-center items-center fade-in-up fade-in-up-delay-7 scene-letters")}`}>
+          <div className="absolute left-[140%] sm:left-[120%] md:left-[120%] lg:left-[120%] top-[85%] sm:top-[70%] md:top-[70%] lg:top-[70%] -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[36vw] sm:w-[20vw] sm:h-[18vw] md:w-[20vw] md:h-[18vw] lg:w-[20vw] lg:h-[18vw] pointer-events-none">
+            <Image
+              src={isLettersHovered || activeElement === 'letters' ? "/assets/letters.svg" : "/assets/letters-off.svg"}
+              alt="Letters"
+              fill
+              priority
+              className={`object-contain transform origin-center transition-transform duration-300 ${(activeElement === 'letters') ? 'scale-120' : 'scale-100'}`}
+            />
+          </div>
+          <div
+            className="relative w-full h-full z-20 pointer-events-auto cursor-pointer"
+            onMouseEnter={() => { if (!activeElement) { setIsLettersHovered(true); } showSeeMoreCursor(); }}
+            onMouseLeave={() => { setIsLettersHovered(false); hideSeeMoreCursor(); }}
             onClick={() => handleElementClick('letters', cardContent.letters)}
           />
         </div>

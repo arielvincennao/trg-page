@@ -26,7 +26,7 @@ export const cardContent: CardContentMap = {
     buttonText: "Enter the phishing dojo",
     links: [
       {
-        label: "Enter the pishing dojo",
+        label: "Enter the phishing dojo",
         url: "https://phishing.therektgames.com/"
       }
     ]
@@ -37,18 +37,18 @@ export const cardContent: CardContentMap = {
     buttonText: "Play now",
     links: [
       {
-        label: "Go to Damn Vulnerable DeFi",
+        label: "Play now",
         url: "https://www.damnvulnerabledefi.xyz/"
       }
     ]
   },
   topRightLights: {
     title: "Security Frameworks",
-    description: "A curated resource full of best practices and potential pitfalls in crypto security, collaborating with industry experts at the Security Alliance (SEAL).",
+    description: "A curated resource full of best practices and potential pitfalls in crypto security, collaborating with industry experts at the <a href='https://www.securityalliance.org/' target='_blank' rel='noopener noreferrer'>Security Alliance (SEAL)</a>.",
     buttonText: "Learn & contribute",
     links: [
       {
-        label: "Go to Security Frameworks",
+        label: "Learn & contribute",
         url: "https://frameworks.securityalliance.org/"
       }
     ]
@@ -77,7 +77,7 @@ export const cardContent: CardContentMap = {
     buttonText: "Read our blog",
     links: [
       {
-        label: "Go to The Red Guild Blog",
+        label: "Read our blog",
         url: "https://blog.theredguild.org/"
       }
     ]
