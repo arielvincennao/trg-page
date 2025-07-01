@@ -121,7 +121,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
         pointerEvents: transitioning ? 'none' : 'auto',
       }}
     >
-      {/* Cursor personalizado */}
+      {/* Scene cursor */}
       {customCursor.visible && isDesktop && (
         <div
           className="scene-see-more-cursor-wrapper"
@@ -173,10 +173,37 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
           {/* Temple */}
           <div
             className={`transform origin-center transition-all duration-500 scene-temple-container ${(activeElement === 'temple') ? 'scale-110' : 'scale-100'} ${(!activeElement || isTempleHovered) ? 'scene-temple-container-pointer' : 'scene-temple-container-default'} h-[40%]`}
-            onMouseEnter={() => { if (!activeElement) { setIsTempleHovered(true); } showSeeMoreCursor(); }}
-            onMouseLeave={() => { setIsTempleHovered(false); hideSeeMoreCursor(); }}
-            onClick={() => handleElementClick('temple', cardContent.temple)}
+            style={{position: 'relative'}}
           >
+            {/* Temple area hitboxes */}
+            <div
+              className="temple-hitbox temple-hitbox-left"
+              onMouseEnter={() => { if (!activeElement) { setIsTempleHovered(true); } showSeeMoreCursor(); }}
+              onMouseLeave={() => { setIsTempleHovered(false); hideSeeMoreCursor(); }}
+              onClick={() => handleElementClick('temple', cardContent.temple)}
+              style={{ pointerEvents: 'auto', cursor: (!activeElement || isTempleHovered) ? 'pointer' : 'default' }}
+            />
+            <div
+              className="temple-hitbox temple-hitbox-right"
+              onMouseEnter={() => { if (!activeElement) { setIsTempleHovered(true); } showSeeMoreCursor(); }}
+              onMouseLeave={() => { setIsTempleHovered(false); hideSeeMoreCursor(); }}
+              onClick={() => handleElementClick('temple', cardContent.temple)}
+              style={{ pointerEvents: 'auto', cursor: (!activeElement || isTempleHovered) ? 'pointer' : 'default' }}
+            />
+            <div
+              className="temple-hitbox temple-hitbox-top"
+              onMouseEnter={() => { if (!activeElement) { setIsTempleHovered(true); } showSeeMoreCursor(); }}
+              onMouseLeave={() => { setIsTempleHovered(false); hideSeeMoreCursor(); }}
+              onClick={() => handleElementClick('temple', cardContent.temple)}
+              style={{ pointerEvents: 'auto', cursor: (!activeElement || isTempleHovered) ? 'pointer' : 'default' }}
+            />
+            <div
+              className="temple-hitbox temple-hitbox-mid"
+              onMouseEnter={() => { if (!activeElement) { setIsTempleHovered(true); } showSeeMoreCursor(); }}
+              onMouseLeave={() => { setIsTempleHovered(false); hideSeeMoreCursor(); }}
+              onClick={() => handleElementClick('temple', cardContent.temple)}
+              style={{ pointerEvents: 'auto', cursor: (!activeElement || isTempleHovered) ? 'pointer' : 'default' }}
+            />
             {isTempleHovered || activeElement === 'temple' ? (
               <Temple
                 isHovered={isTempleHovered}
