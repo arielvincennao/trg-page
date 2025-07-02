@@ -172,7 +172,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
 
           {/* Temple */}
           <div
-            className={`transform origin-center transition-all duration-500 scene-temple-container ${(activeElement === 'temple') ? 'scale-110' : 'scale-100'} ${(!activeElement || isTempleHovered) ? 'scene-temple-container-pointer' : 'scene-temple-container-default'} h-[40%]`}
+            className={`transform origin-center transition-all duration-500 scene-temple-container ${(activeElement === 'temple') ? 'scale-115' : 'scale-100'} ${(!activeElement || isTempleHovered) ? 'scene-temple-container-pointer' : 'scene-temple-container-default'} h-[40%]`}
             style={{position: 'relative'}}
           >
             {/* Temple area hitboxes */}
@@ -234,7 +234,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
                   alt="Light"
                   fill
                   priority
-                  className={`object-contain transform origin-center transition-transform duration-300 ${(activeElement === 'leftLight') ? 'scale-180' : 'scale-160'} ${(isLeftLightHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'leftLight' ? 'opacity-15' : ''}`}
+                  className={`object-contain transform origin-center transition-transform duration-300 ${(activeElement === 'leftLight') ? 'scale-175' : 'scale-160'} ${(isLeftLightHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'leftLight' ? 'opacity-15' : ''}`}
                 />
               </div>
               <div
@@ -276,7 +276,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
             alt="Flower"
             fill
             priority
-            className={`object-contain${activeElement && activeElement !== 'flower' ? ' opacity-15 pointer-events-none' : ''} transition-transform duration-300 ${(activeElement === 'flower') ? 'scale-160 sm:scale-160 md:scale-160 lg:scale-160' : 'scale-140 sm:scale-140 md:scale-140 lg:scale-140'} ${(isFlowerHovered && !activeElement) ? 'brightness-125' : ''}`}
+            className={`object-contain${activeElement && activeElement !== 'flower' ? ' opacity-15 pointer-events-none' : ''} transition-transform duration-300 ${(activeElement === 'flower') ? 'scale-155 sm:scale-155 md:scale-155 lg:scale-155' : 'scale-140 sm:scale-140 md:scale-140 lg:scale-140'} ${(isFlowerHovered && !activeElement) ? 'brightness-125' : ''}`}
             onMouseEnter={() => !activeElement && setIsFlowerHovered(true)}
             onMouseLeave={() => setIsFlowerHovered(false)}
             onClick={() => handleElementClick('flower', cardContent.flower)}
@@ -291,7 +291,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
               alt="Tree"
               fill
               priority
-              className={`object-contain transform origin-center transition-transform duration-300 ${(activeElement === 'tree') ? 'scale-250' : 'scale-200'} ${(isTreeHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'tree' ? 'opacity-15' : ''}`}
+              className={`object-contain transform origin-center transition-transform duration-300 ${(activeElement === 'tree') ? 'scale-215' : 'scale-200'} ${(isTreeHovered && !activeElement) ? 'brightness-125' : ''} ${activeElement && activeElement !== 'tree' ? 'opacity-15' : ''}`}
             />
           </div>
           <div
@@ -313,7 +313,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
             alt="Lights"
             fill
             priority
-            className={`pointer-events-auto object-contain${activeElement && activeElement !== 'topRightLights' ? ' opacity-15 pointer-events-none' : ''} transform origin-center transition-transform duration-300 ${(activeElement === 'topRightLights') ? 'scale-180 sm:scale-180 md:scale-180 lg:scale-180' : 'scale-160 sm:scale-160 md:scale-160 lg:scale-160'} ${(isTopRightLightsHovered && !activeElement) ? 'brightness-125' : ''}`}
+            className={`pointer-events-auto object-contain${activeElement && activeElement !== 'topRightLights' ? ' opacity-15 pointer-events-none' : ''} transform origin-center transition-transform duration-300 ${(activeElement === 'topRightLights') ? 'scale-175 sm:scale-175 md:scale-175 lg:scale-175' : 'scale-160 sm:scale-160 md:scale-160 lg:scale-160'} ${(isTopRightLightsHovered && !activeElement) ? 'brightness-125' : ''}`}
             onMouseEnter={() => !activeElement && setIsTopRightLightsHovered(true)}
             onMouseLeave={() => setIsTopRightLightsHovered(false)}
             onClick={() => handleElementClick('topRightLights', cardContent.topRightLights)}
@@ -328,7 +328,7 @@ const Scene: React.FC<SceneProps> = ({ show, transitioning, onBack }) => {
               alt="Letters"
               fill
               priority
-              className={`object-contain transform origin-center transition-transform duration-300 ${(activeElement === 'letters') ? 'scale-120' : 'scale-100'}`}
+              className={`object-contain transform origin-center transition-transform duration-300 ${(activeElement === 'letters') ? 'scale-115' : 'scale-100'}`}
             />
           </div>
           <div
